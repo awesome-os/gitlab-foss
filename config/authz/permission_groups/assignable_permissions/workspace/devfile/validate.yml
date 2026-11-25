@@ -1,0 +1,9 @@
+---
+name: validate_devfile
+description: Grants the ability to validate a devfile.
+boundaries:
+  - user
+available_for:
+  - granular_access_token
+permissions:
+  - validate_devfile

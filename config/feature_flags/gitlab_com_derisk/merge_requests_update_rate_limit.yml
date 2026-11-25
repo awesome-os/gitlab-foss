@@ -1,0 +1,10 @@
+---
+name: merge_requests_update_rate_limit
+description: Enforces the per-user rate limit on merge request updates, shared between the REST API, GraphQL, and the web UI; while disabled, updates over the limit are only logged
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/606719
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/270214
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/639741
+milestone: '19.6'
+group: group::code review
+type: gitlab_com_derisk
+default_enabled: false

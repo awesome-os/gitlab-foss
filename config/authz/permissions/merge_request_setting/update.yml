@@ -1,0 +1,3 @@
+---
+name: update_merge_request_setting
+description: Grants the ability to update merge request settings, such as merge checks, required commit SHAs and GitLab Duo Code Review settings

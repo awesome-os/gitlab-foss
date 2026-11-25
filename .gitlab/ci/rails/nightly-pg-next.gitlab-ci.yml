@@ -1,0 +1,86 @@
+# Included from rails.gitlab-ci.yml only in the PG next nightly schedule.
+
+# PG18 (Nightly) — NEXT PG version (currently PG18, set by .rspec-base-pg18). Runs only when its own nightly
+# schedule sets NIGHTLY_PG_ROLE=next.
+rspec migration pg18:
+  extends:
+    - .rspec-base-pg18
+    - .rspec-base-migration
+    - .rails:rules:default-branch-schedule-nightly-pg-next--code-backstage
+    - .rspec-migration-parallel
+
+rspec background_migration pg18:
+  extends:
+    - .rspec-base-pg18
+    - .rspec-base-migration
+    - .rails:rules:default-branch-schedule-nightly-pg-next--code-backstage
+    - .rspec-background-migration-parallel
+
+rspec unit-a pg18:
+  extends:
+    - .rspec-base-pg18
+    - .rails:rules:default-branch-schedule-nightly-pg-next--code-backstage
+    - .rspec-unit-a-parallel
+
+rspec unit-b pg18:
+  extends:
+    - .rspec-base-pg18
+    - .rails:rules:default-branch-schedule-nightly-pg-next--code-backstage
+    - .rspec-unit-b-parallel
+
+rspec integration pg18:
+  extends:
+    - .rspec-base-pg18
+    - .rails:rules:default-branch-schedule-nightly-pg-next--code-backstage
+    - .rspec-integration-parallel
+
+rspec system pg18:
+  extends:
+    - .rspec-base-pg18
+    - .rspec-system-parallel
+  rules:
+    - !reference [".rails:rules:only-run-system-if-medium-runners-available", rules]
+    - !reference [".rails:rules:default-branch-schedule-nightly-pg-next--code-backstage", rules]
+
+# PG18 (EE-Nightly) — NEXT PG version (currently PG18, set by .rspec-ee-base-pg18). Runs only when its own nightly
+# schedule sets NIGHTLY_PG_ROLE=next. Each non-default PG version runs in its own nightly schedule to keep every
+# pipeline under the 2000-job limit.
+rspec-ee migration pg18:
+  extends:
+    - .rspec-ee-base-pg18
+    - .rspec-base-migration
+    - .rails:rules:default-branch-schedule-nightly-pg-next--code-backstage-ee-only
+    - .rspec-ee-migration-parallel
+
+rspec-ee background_migration pg18:
+  extends:
+    - .rspec-ee-base-pg18
+    - .rspec-base-migration
+    - .rails:rules:default-branch-schedule-nightly-pg-next--code-backstage-ee-only
+    - .rspec-ee-background-migration-parallel
+
+rspec-ee unit-a pg18:
+  extends:
+    - .rspec-ee-base-pg18
+    - .rails:rules:default-branch-schedule-nightly-pg-next--code-backstage-ee-only
+    - .rspec-ee-unit-a-parallel
+
+rspec-ee unit-b pg18:
+  extends:
+    - .rspec-ee-base-pg18
+    - .rails:rules:default-branch-schedule-nightly-pg-next--code-backstage-ee-only
+    - .rspec-ee-unit-b-parallel
+
+rspec-ee integration pg18:
+  extends:
+    - .rspec-ee-base-pg18
+    - .rails:rules:default-branch-schedule-nightly-pg-next--code-backstage-ee-only
+    - .rspec-ee-integration-parallel
+
+rspec-ee system pg18:
+  extends:
+    - .rspec-ee-base-pg18
+    - .rspec-ee-system-parallel
+  rules:
+    - !reference [".rails:rules:only-run-system-if-medium-runners-available", rules]
+    - !reference [".rails:rules:default-branch-schedule-nightly-pg-next--code-backstage-ee-only", rules]

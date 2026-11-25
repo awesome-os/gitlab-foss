@@ -1,0 +1,12 @@
+---
+GraphQL/DefaultForOptionalArgument:
+  Exclude:
+    - 'app/graphql/mutations/design_management/update.rb'
+    - 'app/graphql/mutations/jira_import/start.rb'
+    - 'app/graphql/mutations/ml/models/edit.rb'
+    - 'app/graphql/resolvers/ml/find_model_version_resolver.rb'
+    - 'app/graphql/subscriptions/notes/base.rb'
+    - 'ee/app/graphql/mutations/dast/profiles/update.rb'
+    - 'ee/app/graphql/mutations/dast_site_tokens/create.rb'
+    - 'ee/app/graphql/mutations/projects/set_compliance_framework.rb'
+    - 'ee/app/graphql/mutations/virtual_registries/registry/create.rb'

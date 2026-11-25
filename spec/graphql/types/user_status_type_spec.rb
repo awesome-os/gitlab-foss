@@ -1,0 +1,26 @@
+# frozen_string_literal: true
+
+require 'spec_helper'
+
+RSpec.describe Types::UserStatusType do
+  specify { expect(described_class.graphql_name).to eq('UserStatus') }
+
+  it 'exposes the expected fields' do
+    expected_fields = %i[
+      emoji
+      message
+      message_html
+      availability
+      clear_status_at
+    ]
+
+    expect(described_class).to have_graphql_fields(*expected_fields).at_least
+  end
+
+  it 'requires read_user_status on the user from a granular token', :aggregate_failures do
+    directive = described_class.directives.find { |d| d.is_a?(::Directives::Authz::GranularScope) }
+
+    expect(directive.arguments[:permissions]).to eq(%w[read_user_status])
+    expect(directive.arguments[:boundary_type]).to eq('user')
+  end
+end

@@ -1,0 +1,11 @@
+---
+name: reuse_route_constraint_routable_lookup
+description: Reuse the project resolved by the route constraint in RoutableActions#find_routable!
+  instead of looking it up a second time.
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/issues/640053
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/271239
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/issues/640432
+milestone: '19.6'
+group: group::organizations
+type: gitlab_com_derisk
+default_enabled: false

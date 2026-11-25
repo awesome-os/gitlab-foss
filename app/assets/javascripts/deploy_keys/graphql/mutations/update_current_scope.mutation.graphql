@@ -1,0 +1,4 @@
+# @feature_category: continuous_delivery
+mutation updateCurrentScope($scope: DeployKeysScope) {
+  currentScope(scope: $scope) @client
+}

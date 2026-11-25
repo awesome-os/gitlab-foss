@@ -1,0 +1,6 @@
+# @feature_category: continuous_delivery
+mutation action($action: LocalAction) {
+  action(action: $action) @client {
+    errors
+  }
+}

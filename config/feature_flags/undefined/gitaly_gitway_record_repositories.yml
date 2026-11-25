@@ -1,0 +1,10 @@
+---
+name: gitaly_gitway_record_repositories
+description: Has gitway create a repository directory record the first time an RPC on its routed listener names a repository, once Gitaly has answered OK. Rails only sends it to gitway as gitaly-feature-gitway-record-repositories metadata; nothing in Rails reads it, and Gitaly ignores it. The actor is the repository.
+feature_issue_url: https://gitlab.com/gitlab-org/gitway/-/work_items/72
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/271880
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/640797
+milestone: '19.7'
+group: group::gitaly
+type: undefined
+default_enabled: false

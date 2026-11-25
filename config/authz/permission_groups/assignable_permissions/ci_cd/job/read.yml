@@ -1,0 +1,9 @@
+---
+name: read_job
+description: Grants the ability to read jobs and the code quality reports they produce
+boundaries:
+  - project
+available_for:
+  - granular_access_token
+permissions:
+  - read_job

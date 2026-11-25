@@ -1,0 +1,10 @@
+---
+# Cop supports --autocorrect.
+Layout/EmptyLinesAroundBlockBody:
+  Exclude:
+    - 'ee/spec/features/registrations/identity_verification_spec.rb'
+    - 'ee/spec/lib/security/security_orchestration_policies/policy_scope_checker_spec.rb'
+    - 'ee/spec/lib/security/security_orchestration_policies/policy_scope_fetcher_spec.rb'
+    - 'ee/spec/support/shared_examples/virtual_registries/registry_upstream_registries_count.rb'
+    - 'spec/support/shared_examples/ci/job_token_policies_shared_examples.rb'
+    - 'spec/support/shared_examples/projects/container_repository/cleanup_tags_service_shared_examples.rb'

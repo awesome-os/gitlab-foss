@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$comment": "Placeholder until the factory configuration format is decided in https://gitlab.com/gitlab-org/gitlab/-/issues/641243.",
+  "type": "object",
+  "properties": {
+    "content": {
+      "type": "string",
+      "description": "The factory configuration as published."
+    }
+  },
+  "required": [
+    "content"
+  ],
+  "additionalProperties": false
+}

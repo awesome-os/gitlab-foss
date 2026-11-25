@@ -1,0 +1,11 @@
+---
+name: block_project_bots_on_last_token_revocation
+description: Block a project or group bot user when its last active access token is
+  revoked
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/639760
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/270275
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/639762
+milestone: '19.6'
+group: group::authorization
+type: gitlab_com_derisk
+default_enabled: false

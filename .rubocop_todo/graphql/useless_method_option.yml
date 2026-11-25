@@ -1,0 +1,7 @@
+---
+GraphQL/UselessMethodOption:
+  Exclude:
+    - 'app/graphql/types/blob_viewer_type.rb'
+    - 'app/graphql/types/namespace_type.rb'
+    - 'app/graphql/types/work_items/type_type.rb'
+    - 'ee/app/graphql/types/vulnerability_type.rb'

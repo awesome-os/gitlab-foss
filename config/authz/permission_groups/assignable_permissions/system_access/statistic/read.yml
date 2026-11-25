@@ -1,0 +1,15 @@
+---
+name: read_statistic
+description: Grants the ability to read statistics, including the usage trends measurements of the instance
+boundaries:
+  - instance
+  - project
+available_for:
+  - granular_access_token
+permissions:
+  - read_statistic
+  - read_usage_trends_measurement
+assignable_when:
+  - condition: admin
+    boundaries:
+      - instance

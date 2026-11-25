@@ -1,0 +1,11 @@
+# Older versions fail to install Yarn from `packageManager`: https://github.com/jdx/mise/pull/15493
+min_version = "2026.11.6"
+
+[plugins]
+ruby = "https://gitlab.com/gitlab-org/quality/tooling/asdf-gitlab-ruby.git"
+
+[env]
+USE_PRECOMPILED_RUBY = "true"
+
+[settings]
+idiomatic_version_file_enable_tools = ["yarn"]

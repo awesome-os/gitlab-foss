@@ -1,0 +1,17 @@
+---
+table_name: duo_workflows_session_capsules
+classes:
+- Ai::DuoWorkflows::SessionCapsule
+feature_categories:
+- duo_agent_platform
+description: Points to session capsules that Duo Agent Platform clients upload at a
+  session boundary, so that the session can resume elsewhere, for example in a new
+  CI job, with work that was not pushed. A capsule is a tar archive of a git bundle,
+  an uncommitted patch and a manifest, stored in the duo_session_capsules object
+  storage location.
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/267892
+milestone: '19.6'
+gitlab_schema: gitlab_main_org
+sharding_key:
+  namespace_id: namespaces
+table_size: small

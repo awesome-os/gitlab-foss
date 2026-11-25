@@ -1,0 +1,10 @@
+# @feature_category: mcp_server
+query getWikiPage($slug: String!, $projectId: ProjectID, $namespaceId: NamespaceID) {
+  wikiPage(slug: $slug, projectId: $projectId, namespaceId: $namespaceId) {
+    id
+    title
+    slug
+    content
+    webUrl
+  }
+}

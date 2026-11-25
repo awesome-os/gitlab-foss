@@ -1,0 +1,10 @@
+---
+name: routable_runner_registration_token
+description: Mints group and project runner registration tokens in the routable token format, which carries the cell ID.
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/597465
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/270048
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/640059
+milestone: '19.7'
+group: group::cells infrastructure
+type: gitlab_com_derisk
+default_enabled: false

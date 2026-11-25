@@ -1,0 +1,166 @@
+# Included from rails.gitlab-ci.yml only in the weekly schedule.
+
+##################################################
+# Default branch weekly scheduled jobs #
+# Integration tests with Valkey instead of Redis, using the production PG version (PG17)
+
+rspec unit-a pg17 valkey:
+  extends:
+    - .rspec-base-pg17-valkey
+    - .rspec-unit-a-parallel
+    - .rails:rules:default-branch-schedule-weekly--code-backstage-default-rules
+
+rspec unit-b pg17 valkey:
+  extends:
+    - .rspec-base-pg17-valkey
+    - .rspec-unit-b-parallel
+    - .rails:rules:default-branch-schedule-weekly--code-backstage-default-rules
+
+rspec integration pg17 valkey:
+  extends:
+    - .rspec-base-pg17-valkey
+    - .rspec-integration-parallel
+    - .rails:rules:default-branch-schedule-weekly--code-backstage-default-rules
+
+rspec system pg17 valkey:
+  extends:
+    - .rspec-base-pg17-valkey
+    - .rspec-system-parallel
+    - .rails:rules:default-branch-schedule-weekly--code-backstage-default-rules
+
+# Compatibility tests against Redis 7.0 (the minimum version), using the production PG version (PG17)
+
+rspec unit-a pg17 redis70:
+  extends:
+    - .rspec-base-pg17-redis70
+    - .rspec-unit-a-parallel
+    - .rails:rules:default-branch-schedule-weekly--code-backstage-default-rules
+
+rspec unit-b pg17 redis70:
+  extends:
+    - .rspec-base-pg17-redis70
+    - .rspec-unit-b-parallel
+    - .rails:rules:default-branch-schedule-weekly--code-backstage-default-rules
+
+rspec integration pg17 redis70:
+  extends:
+    - .rspec-base-pg17-redis70
+    - .rspec-integration-parallel
+    - .rails:rules:default-branch-schedule-weekly--code-backstage-default-rules
+
+rspec system pg17 redis70:
+  extends:
+    - .rspec-base-pg17-redis70
+    - .rspec-system-parallel
+    - .rails:rules:default-branch-schedule-weekly--code-backstage-default-rules
+
+# Default branch weekly scheduled jobs #
+##################################################
+
+##################################################
+# EE: default branch weekly scheduled jobs #
+# Integration tests with Elasticsearch 8.X and OpenSearch versions
+# and the actual PG production version (PG17)
+
+rspec-ee unit-a pg17 es8:
+  extends:
+    - .rspec-base-pg17
+    - .rspec-ee-base-pg17-es8
+    - .rspec-ee-unit-a-parallel
+    - .rails:rules:default-branch-schedule-weekly--code-backstage-ee-only
+
+rspec-ee unit-b pg17 es8:
+  extends:
+    - .rspec-base-pg17
+    - .rspec-ee-base-pg17-es8
+    - .rspec-ee-unit-b-parallel
+    - .rails:rules:default-branch-schedule-weekly--code-backstage-ee-only
+
+rspec-ee integration pg17 es8:
+  extends:
+    - .rspec-base-pg17
+    - .rspec-ee-base-pg17-es8
+    - .rspec-ee-integration-parallel
+    - .rails:rules:default-branch-schedule-weekly--code-backstage-ee-only
+
+rspec-ee system pg17 es8:
+  extends:
+    - .rspec-base-pg17
+    - .rspec-ee-base-pg17-es8
+    - .rspec-ee-system-parallel
+  rules:
+    - !reference [".rails:rules:default-branch-schedule-weekly--code-backstage-ee-only", rules]
+
+rspec-ee unit-a pg17 opensearch-latest:
+  tags:
+    - $GLCI_MEDIUM_RUNNER_REQUIRED
+  extends:
+    - .rspec-base-pg17
+    - .rspec-ee-base-pg17-opensearch-latest
+    - .rspec-ee-unit-a-parallel
+    - .rails:rules:default-branch-schedule-weekly--code-backstage-ee-only
+
+rspec-ee unit-b pg17 opensearch-latest:
+  tags:
+    - $GLCI_MEDIUM_RUNNER_REQUIRED
+  extends:
+    - .rspec-base-pg17
+    - .rspec-ee-base-pg17-opensearch-latest
+    - .rspec-ee-unit-b-parallel
+    - .rails:rules:default-branch-schedule-weekly--code-backstage-ee-only
+
+rspec-ee integration pg17 opensearch-latest:
+  extends:
+    - .rspec-base-pg17
+    - .rspec-ee-base-pg17-opensearch-latest
+    - .rspec-ee-integration-parallel
+    - .rails:rules:default-branch-schedule-weekly--code-backstage-ee-only
+
+rspec-ee system pg17 opensearch-latest:
+  tags:
+    - $GLCI_MEDIUM_RUNNER_REQUIRED
+  extends:
+    - .rspec-base-pg17
+    - .rspec-ee-base-pg17-opensearch-latest
+    - .rspec-ee-system-parallel
+  rules:
+    - !reference [".rails:rules:default-branch-schedule-weekly--code-backstage-ee-only", rules]
+
+rspec-ee unit-a pg17 pgvector17 es8:
+  tags:
+    - $GLCI_MEDIUM_RUNNER_REQUIRED
+  extends:
+    - .rspec-base-pg17
+    - .rspec-ee-base-pg17-pgvector17-es8
+    - .rspec-ee-unit-a-parallel
+    - .rails:rules:default-branch-schedule-weekly--code-backstage-ee-only
+
+rspec-ee unit-b pg17 pgvector17 es8:
+  tags:
+    - $GLCI_MEDIUM_RUNNER_REQUIRED
+  extends:
+    - .rspec-base-pg17
+    - .rspec-ee-base-pg17-pgvector17-es8
+    - .rspec-ee-unit-b-parallel
+    - .rails:rules:default-branch-schedule-weekly--code-backstage-ee-only
+
+rspec-ee integration pg17 pgvector17 es8:
+  extends:
+    - .rspec-base-pg17
+    - .rspec-ee-base-pg17-pgvector17-es8
+    - .rspec-ee-integration-parallel
+    - .rails:rules:default-branch-schedule-weekly--code-backstage-ee-only
+
+rspec-ee system pg17 pgvector17 es8:
+  tags:
+    - $GLCI_MEDIUM_RUNNER_REQUIRED
+  extends:
+    - .rspec-base-pg17
+    - .rspec-ee-base-pg17-pgvector17-es8
+    - .rspec-ee-system-parallel
+  rules:
+    - !reference [".rails:rules:only-run-system-if-medium-runners-available", rules]
+    - !reference [".rails:rules:default-branch-schedule-weekly--code-backstage-ee-only", rules]
+
+# EE: default branch weekly scheduled jobs #
+##################################################

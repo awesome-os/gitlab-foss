@@ -1,0 +1,7 @@
+# @feature_category: continuous_delivery
+query discoverFluxHelmReleasesQuery($configuration: LocalConfiguration) {
+  discoverFluxHelmReleases(configuration: $configuration) @client {
+    supportedVersion
+    preferredVersion
+  }
+}

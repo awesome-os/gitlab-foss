@@ -1,0 +1,9 @@
+---
+name: billable_usage_export
+description: Let administrators of offline-licensed instances export a usage report to upload to the Customers Portal
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/257491
+rollout_issue_url: https://gitlab.com/gitlab-org/customers-gitlab-com/-/work_items/19976
+milestone: '19.5'
+type: beta
+group: group::cost management
+default_enabled: true

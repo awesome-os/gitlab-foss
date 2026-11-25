@@ -1,0 +1,10 @@
+---
+name: dependency_firewall_native_enablement_proxy
+description: Transparently enforces the Dependency Firewall in the pipelines of projects covered by a Dependency Firewall policy, by starting one job-level proxy per CI job, with no .gitlab-ci.yml changes
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/633967
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/269242
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/640827
+milestone: '19.6'
+group: group::dependency firewall
+type: wip
+default_enabled: false

@@ -1,0 +1,16 @@
+- first_deletion_at = @application_setting.ml_experiment_tracking_run_first_deletion_at
+
+= gitlab_ui_form_for @application_setting, url: general_admin_application_settings_path(anchor: 'js-ml-experiment-tracking-settings'), html: { class: 'fieldset-form', id: 'ml-experiment-tracking-settings' } do |f|
+  = form_errors(@application_setting)
+
+  %fieldset
+    .form-group
+      = f.label :ml_experiment_tracking_run_retention_days, s_('MlExperimentTracking|Run retention period (days)'), class: 'label-bold'
+      = f.number_field :ml_experiment_tracking_run_retention_days, class: 'form-control gl-form-input', min: 0,
+        max: ApplicationSetting::ML_EXPERIMENT_TRACKING_RUN_RETENTION_DAYS_MAX
+      .form-text{ class: '!gl-text-subtle' }
+        = s_('MlExperimentTracking|Number of days to keep runs that no model version uses, and experiments that have no runs left. The period of a run starts at its last update, or on the day you turn on retention if that is later. Changing the period keeps that day. Set to 0 to keep all runs and experiments.')
+      - if first_deletion_at
+        .form-text{ class: '!gl-text-subtle' }
+          = format(s_('MlExperimentTracking|Deletion starts on %{date} at the earliest.'), date: l(first_deletion_at.to_date, format: :long))
+  = f.submit _('Save changes'), pajamas_button: true

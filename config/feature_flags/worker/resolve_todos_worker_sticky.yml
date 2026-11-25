@@ -1,0 +1,10 @@
+---
+name: resolve_todos_worker_sticky
+description: Change the MergeRequests::ResolveTodosWorker data_consistency to sticky
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/641103
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/272365
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/641118
+milestone: '19.7'
+group: group::code review
+type: worker
+default_enabled: false

@@ -1,0 +1,317 @@
+# frozen_string_literal: true
+
+require 'spec_helper'
+
+RSpec.describe 'User', feature_category: :user_profile do
+  include GraphqlHelpers
+
+  let_it_be_with_reload(:current_user) { create(:user) }
+
+  shared_examples 'a working user query' do
+    it_behaves_like 'a working graphql query' do
+      before do
+        # TODO: This license stub is necessary because the remote development workspaces field
+        #       defined in the EE version of UserInterface gets picked up here and thus the license
+        #       check happens. This comes from the `ancestors` call in
+        #       lib/graphql/schema/member/has_fields.rb#fields in the graphql library.
+        stub_licensed_features(remote_development: true)
+
+        post_graphql(query, current_user: current_user)
+      end
+    end
+
+    it 'includes the user' do
+      post_graphql(query, current_user: current_user)
+
+      expect(graphql_data['user']).not_to be_nil
+    end
+
+    it 'returns no user when global restricted_visibility_levels includes PUBLIC' do
+      stub_application_setting(restricted_visibility_levels: [Gitlab::VisibilityLevel::PUBLIC])
+
+      post_graphql(query)
+
+      expect(graphql_data['user']).to be_nil
+    end
+  end
+
+  context 'when id parameter is used' do
+    let(:query) { graphql_query_for(:user, { id: current_user.to_global_id.to_s }) }
+
+    it_behaves_like 'a working user query'
+  end
+
+  context 'when username parameter is used' do
+    context 'when username is identically cased' do
+      let(:query) { graphql_query_for(:user, { username: current_user.username.to_s }) }
+
+      it_behaves_like 'a working user query'
+    end
+
+    context 'when username is differently cased' do
+      let(:query) { graphql_query_for(:user, { username: current_user.username.to_s.upcase }) }
+
+      it_behaves_like 'a working user query'
+    end
+  end
+
+  context 'when username and id parameter are used' do
+    let_it_be(:query) do
+      graphql_query_for(
+        :user,
+        { id: current_user.to_global_id.to_s, username: current_user.username },
+        'id'
+      )
+    end
+
+    it 'displays an error' do
+      post_graphql(query)
+
+      expect_graphql_errors_to_include(
+        'One and only one of [id, username] arguments is required.'
+      )
+    end
+  end
+
+  describe 'email fields' do
+    before_all do
+      current_user.commit_email = current_user.emails.first.email
+      current_user.save!
+    end
+
+    let_it_be(:query) do
+      graphql_query_for(
+        :user,
+        { username: current_user.username },
+        'emails { nodes { email } } commitEmail namespaceCommitEmails { nodes { id } }'
+      )
+    end
+
+    let_it_be(:email_1) { create(:email, user: current_user) }
+    let_it_be(:email_2) { create(:email, user: current_user) }
+    let_it_be(:namespace_commit_email_1) { create(:namespace_commit_email, email: email_1) }
+    let_it_be(:namespace_commit_email_2) { create(:namespace_commit_email, email: email_2) }
+
+    context 'with permission' do
+      it 'returns the relevant email details' do
+        post_graphql(query, current_user: current_user)
+
+        expect(graphql_data['user']['emails']['nodes'].pluck('email')).to match_array(
+          current_user.emails.map(&:email))
+        expect(graphql_data['user']['namespaceCommitEmails']['nodes']).not_to be_empty
+        expect(graphql_data['user']['commitEmail']).to eq(current_user.commit_email)
+      end
+    end
+
+    context 'without permission' do
+      it 'does not return email details' do
+        post_graphql(query, current_user: create(:user))
+
+        expect(graphql_data['user']['emails']['nodes']).to be_empty
+        expect(graphql_data['user']['namespaceCommitEmails']['nodes']).to be_empty
+        expect(graphql_data['user']['commitEmail']).to be_nil
+      end
+    end
+  end
+
+  describe 'userPreferences field' do
+    let(:query) do
+      graphql_query_for(:user, { username: current_user.username }, 'userPreferences { firstDayOfWeek }')
+    end
+
+    before do
+      current_user.user_preference.update!(first_day_of_week: UserPreference::FIRST_DAYS_OF_WEEK[:monday])
+    end
+
+    it 'returns the first day of the week' do
+      post_graphql(query, current_user: current_user)
+
+      expect(graphql_data.dig('user', 'userPreferences', 'firstDayOfWeek')).to eq('MONDAY')
+    end
+
+    context 'when the stored value is not one the preferences page offers' do
+      before do
+        current_user.user_preference.first_day_of_week = 2
+        current_user.user_preference.save!(validate: false)
+      end
+
+      it 'returns null' do
+        post_graphql(query, current_user: current_user)
+
+        expect(graphql_data.dig('user', 'userPreferences', 'firstDayOfWeek')).to be_nil
+      end
+    end
+  end
+
+  describe 'userPreferences emojiSkinTone field' do
+    let(:query) do
+      graphql_query_for(:user, { username: current_user.username }, 'userPreferences { emojiSkinTone }')
+    end
+
+    it 'returns DEFAULT for a user who has not chosen a tone' do
+      post_graphql(query, current_user: current_user)
+
+      expect(graphql_data.dig('user', 'userPreferences', 'emojiSkinTone')).to eq('DEFAULT')
+    end
+  end
+
+  describe 'granular PAT authorization' do
+    let(:query) { graphql_query_for(:user, { username: current_user.username }, '__typename') }
+
+    it_behaves_like 'authorizing granular token permissions for GraphQL', :read_user do
+      let(:user) { current_user }
+      let(:boundary_object) { :user }
+      let(:request) { post_graphql(query, token: { personal_access_token: pat }) }
+    end
+
+    context 'when querying emails field' do
+      let(:query) { graphql_query_for(:user, { username: current_user.username }, 'emails { nodes { email } }') }
+
+      it_behaves_like 'authorizing granular token permissions for GraphQL', [:read_user, :read_user_email] do
+        let(:user) { current_user }
+        let(:boundary_object) { :user }
+        let(:request) { post_graphql(query, token: { personal_access_token: pat }) }
+      end
+    end
+
+    context 'when querying userPreferences field' do
+      let(:query) { graphql_query_for(:user, { username: current_user.username }, 'userPreferences { issuesSort }') }
+
+      it_behaves_like 'authorizing granular token permissions for GraphQL', [:read_user, :read_user_preference] do
+        let(:user) { current_user }
+        let(:boundary_object) { :user }
+        let(:request) { post_graphql(query, token: { personal_access_token: pat }) }
+      end
+    end
+
+    context 'when querying userPermissions field' do
+      let(:query) { graphql_query_for(:user, { username: current_user.username }, 'userPermissions { createSnippet }') }
+
+      it_behaves_like 'authorizing granular token permissions for GraphQL with a skipped child type', :read_user do
+        let(:user) { current_user }
+        let(:boundary_object) { :user }
+        let(:request) { post_graphql(query, token: { personal_access_token: pat }) }
+        let(:skipped_data_path) { %i[user user_permissions] }
+      end
+    end
+
+    context 'when querying status field' do
+      let_it_be(:status) { create(:user_status, user: current_user) }
+      let(:query) { graphql_query_for(:user, { username: current_user.username }, 'status { message }') }
+
+      it 'returns the status to a token that can read user statuses', :aggregate_failures do
+        pat = create(:granular_pat, user: current_user, boundary: ::Authz::Boundary.for(:user),
+          permissions: %w[read_user read_status])
+
+        post_graphql(query, token: { personal_access_token: pat })
+
+        expect(graphql_errors).to be_nil
+        expect(graphql_data_at(:user, :status, :message)).to eq('I crave coffee')
+      end
+
+      it_behaves_like 'denying a granular token that only authorizes the parent of a field', :read_user do
+        let(:user) { current_user }
+        let(:boundary_object) { :user }
+        let(:request) { post_graphql(query, token: { personal_access_token: pat }) }
+        let(:parent_data_path) { %i[user] }
+        let(:field_data_path) { %i[user status] }
+      end
+    end
+
+    context 'when querying ide field' do
+      let(:query) { graphql_query_for(:user, { username: current_user.username }, 'ide { codeSuggestionsEnabled }') }
+
+      it_behaves_like 'authorizing granular token permissions for GraphQL with a skipped child type', :read_user do
+        let(:user) { current_user }
+        let(:boundary_object) { :user }
+        let(:request) { post_graphql(query, token: { personal_access_token: pat }) }
+        let(:skipped_data_path) { %i[user ide] }
+      end
+    end
+
+    context 'when querying callouts field' do
+      let_it_be(:callout) { create(:callout, user: current_user) }
+      let(:query) do
+        graphql_query_for(:user, { username: current_user.username }, 'callouts { nodes { featureName } }')
+      end
+
+      it_behaves_like 'authorizing granular token permissions for GraphQL with a skipped child type', :read_user do
+        let(:user) { current_user }
+        let(:boundary_object) { :user }
+        let(:request) { post_graphql(query, token: { personal_access_token: pat }) }
+        let(:skipped_data_path) { [:user, :callouts, :nodes, 0] }
+      end
+    end
+
+    context 'when querying groupCallouts field' do
+      let_it_be(:group_callout) { create(:group_callout, user: current_user) }
+      let(:query) do
+        graphql_query_for(:user, { username: current_user.username }, 'groupCallouts { nodes { featureName } }')
+      end
+
+      it_behaves_like 'authorizing granular token permissions for GraphQL with a skipped child type', :read_user do
+        let(:user) { current_user }
+        let(:boundary_object) { :user }
+        let(:request) { post_graphql(query, token: { personal_access_token: pat }) }
+        let(:skipped_data_path) { [:user, :group_callouts, :nodes, 0] }
+      end
+    end
+
+    context 'when querying namespaceCommitEmails field' do
+      let_it_be(:namespace_commit_email) do
+        create(:namespace_commit_email, email: create(:email, user: current_user))
+      end
+
+      let(:query) do
+        graphql_query_for(:user, { username: current_user.username }, 'namespaceCommitEmails { nodes { id } }')
+      end
+
+      it_behaves_like 'authorizing granular token permissions for GraphQL with a skipped child type',
+        [:read_user, :read_user_email] do
+        let(:user) { current_user }
+        let(:boundary_object) { :user }
+        let(:request) { post_graphql(query, token: { personal_access_token: pat }) }
+        let(:skipped_data_path) { [:user, :namespace_commit_emails, :nodes, 0] }
+      end
+
+      it_behaves_like 'denying a granular token that only authorizes the parent of a field', :read_user do
+        let(:user) { current_user }
+        let(:boundary_object) { :user }
+        let(:request) { post_graphql(query, token: { personal_access_token: pat }) }
+        let(:parent_data_path) { %i[user] }
+        let(:field_data_path) { %i[user namespace_commit_emails] }
+      end
+    end
+  end
+
+  describe 'organizations field' do
+    let_it_be(:organization) { current_user.organization }
+    let_it_be(:another_organization) { create(:organization) }
+    let_it_be(:another_user) { create(:user, organization: another_organization) }
+
+    let(:query) do
+      graphql_query_for(
+        :user,
+        { username: current_user.username.to_s.upcase },
+        'organizations { nodes { path } }'
+      )
+    end
+
+    context 'with permission' do
+      it 'returns the relevant organization details' do
+        post_graphql(query, current_user: current_user)
+
+        expect(graphql_data.dig('user', 'organizations', 'nodes').pluck('path'))
+          .to match_array(organization.path)
+      end
+    end
+
+    context 'without permission' do
+      it 'does not return organization details' do
+        post_graphql(query, current_user: another_user)
+
+        expect(graphql_data.dig('user', 'organizations', 'nodes')).to be_nil
+      end
+    end
+  end
+end

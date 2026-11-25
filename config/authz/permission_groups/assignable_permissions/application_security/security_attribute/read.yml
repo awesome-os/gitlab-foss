@@ -1,0 +1,9 @@
+---
+name: read_security_attribute
+description: Grants the ability to read security attributes and security categories
+boundaries:
+  - group
+available_for:
+  - granular_access_token
+permissions:
+  - read_security_attribute

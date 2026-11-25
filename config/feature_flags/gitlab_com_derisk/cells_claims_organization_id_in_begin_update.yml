@@ -1,0 +1,10 @@
+---
+name: cells_claims_organization_id_in_begin_update
+description: Resolve and send organization_id on each Cells claim record
+feature_issue_url: https://gitlab.com/gitlab-com/gl-infra/tenant-scale/cells-infrastructure/team/-/work_items/1058
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/267704
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/639714
+milestone: '19.6'
+group: group::cells infrastructure
+type: gitlab_com_derisk
+default_enabled: false

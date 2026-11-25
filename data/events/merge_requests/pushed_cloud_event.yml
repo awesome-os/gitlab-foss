@@ -1,0 +1,7 @@
+---
+event: MergeRequests::PushedCloudEvent
+description: Published once for each open merge request of a source branch when a push changes the
+  head of the branch, after the merge request diffs are reloaded. Also published for a force push to
+  an older commit. Not published when the push deletes the branch. Events of one push are published
+  as a group.
+feature_category: code_review_workflow

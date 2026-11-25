@@ -1,0 +1,3 @@
+---
+name: read_project_member_invite
+description: Grants the ability to read pending invitations and pending promotions of project members

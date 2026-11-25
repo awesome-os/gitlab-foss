@@ -1,0 +1,445 @@
+---
+stage: GitLab Dedicated
+group: Import
+info: To determine the technical writer assigned to the Stage/Group associated with this page, see <https://handbook.gitlab.com/handbook/marketing/product-and-technical-marketing/technical-writing/#assignments>
+title: Import API
+description: "Import repositories from GitHub or Bitbucket Server with the REST API."
+---
+
+{{< details >}}
+
+- Tier: Free, Premium, Ultimate
+- Offering: GitLab.com, GitLab Self-Managed, GitLab Dedicated
+
+{{< /details >}}
+
+{{< history >}}
+
+- Reassigning contributions to a personal namespace owner when importing to a personal namespace [introduced](https://gitlab.com/gitlab-org/gitlab/-/issues/525342) in GitLab 18.3 [with a feature flag](../administration/feature_flags/_index.md) named `user_mapping_to_personal_namespace_owner`. Disabled by default.
+- Reassigning contributions to a personal namespace owner when importing to a personal namespace [generally available](https://gitlab.com/gitlab-org/gitlab/-/merge_requests/211626) in GitLab 18.6. Feature flag `user_mapping_to_personal_namespace_owner` removed.
+- `single_endpoint_notes_import` [made always enabled](https://gitlab.com/gitlab-org/gitlab/-/merge_requests/250959) for newly configured imports in GitLab 19.4, and can no longer be disabled. Imports configured on earlier GitLab versions keep their previously configured value.
+- `continuous_sync` in `optional_stages` for `POST /import/github` [introduced](https://gitlab.com/gitlab-org/gitlab/-/merge_requests/271321) in GitLab 19.7 [with a feature flag](../administration/feature_flags/_index.md) named `github_continuous_import`. Disabled by default.
+
+{{< /history >}}
+
+> [!flag]
+> The availability of this feature is controlled by a feature flag.
+> For more information, see the history.
+
+Use this API to [import repositories from external sources](../user/import/_index.md).
+
+> [!note]
+> User contribution mapping is not supported when you import projects to a [personal namespace](../user/namespace/_index.md#types-of-namespaces).
+> When you import to a personal namespace, all contributions are assigned to the personal namespace owner and they cannot be reassigned.
+
+## Import repository from GitHub
+
+Imports a repository from GitHub to GitLab.
+
+This endpoint shares a rate limit with starting imports from the UI and with file-based project imports. By default, the limit is six requests per minute for each user. Administrators can [change this limit](../administration/settings/import_export_rate_limits.md).
+
+Prerequisites:
+
+- [Prerequisites for GitHub importer](../user/project/import/github.md#prerequisites).
+- The namespace set in `target_namespace` must exist.
+- The namespace can be your user namespace or an existing group that you have the Maintainer or Owner role for.
+
+```plaintext
+POST /import/github
+```
+
+| Attribute               | Type    | Required | Description |
+|-------------------------|---------|----------|-------------|
+| `personal_access_token` | string  | Yes      | GitHub personal access token. |
+| `repo_id`               | integer | Yes      | GitHub repository ID. |
+| `target_namespace`      | string  | Yes      | Namespace to import repository into. Supports subgroups like `/namespace/subgroup`. Must not be blank. |
+| `github_hostname`       | string  | No       | Custom GitHub Enterprise hostname. Do not set for GitHub.com. From GitLab 16.5 to GitLab 17.1, you must include the path `/api/v3`. |
+| `new_name`              | string  | No       | Name of the new project. Also used as the new path so must not start or end with a special character and must not contain consecutive special characters. |
+| `optional_stages`       | object  | No       | [Additional items to import](../user/project/import/github.md#select-additional-items-to-import). |
+| `pagination_limit`      | integer | No       | Number of items retrieved per API request to GitHub. The default value is 100 items per page. For project imports from large repositories, a lower number can reduce the risk of GitHub API endpoints returning `500` or `502` errors. However, a smaller page size increases migration times. |
+| `timeout_strategy`      | string  | No       | Strategy for handling import timeouts. Valid values are `optimistic` (continue to next stage of import) or `pessimistic` (fail immediately). Defaults to `pessimistic`. |
+
+```shell
+curl --request POST \
+  --url "https://gitlab.example.com/api/v4/import/github" \
+  --header "content-type: application/json" \
+  --header "Authorization: Bearer <your_access_token>" \
+  --data '{
+    "personal_access_token": "aBc123abC12aBc123abC12abC123+_A/c123",
+    "repo_id": "12345",
+    "target_namespace": "group/subgroup",
+    "new_name": "NEW-NAME",
+    "github_hostname": "https://github.example.com",
+    "optional_stages": {
+      "attachments_import": true,
+      "collaborators_import": true
+    }
+}'
+```
+
+The following keys are available for `optional_stages`:
+
+- `attachments_import`, for Markdown attachments import.
+- `collaborators_import`, for importing direct repository collaborators who are not outside collaborators.
+- `continuous_sync`, to keep the project updated from GitHub after the import. Only available for GitHub.com,
+  in a group with a Premium or Ultimate license. The request returns `422` if `github_hostname` is set to
+  another host, if the feature is not enabled for your account, or if the group is not licensed.
+  For the limits of a personal access token, see
+  [continuous sync with a personal access token](#continuous-sync-with-a-personal-access-token).
+- `single_endpoint_notes_import`, for an alternative and more thorough comments import method that is
+  optional on GitLab 19.3 and earlier. On GitLab 19.4 and later, this method is mandatory for newly
+  configured imports.
+
+For more information, see [select additional items to import](../user/project/import/github.md#select-additional-items-to-import).
+
+Example response:
+
+```json
+{
+    "id": 27,
+    "name": "my-repo",
+    "full_path": "/root/my-repo",
+    "full_name": "Administrator / my-repo",
+    "refs_url": "/root/my-repo/refs",
+    "import_source": "my-github/repo",
+    "import_status": "scheduled",
+    "human_import_status_name": "scheduled",
+    "provider_link": "/my-github/repo",
+    "relation_type": null
+}
+```
+
+### Continuous sync with a personal access token
+
+`POST /import/github` reads from GitHub with the token in `personal_access_token`.
+When you set `continuous_sync`, GitLab keeps using this token after the import to update the project.
+The token then has limits that the GitHub OAuth flow does not have.
+
+Personal access tokens:
+
+- Cannot be refreshed. Updates stop when the token expires. Use a token with no expiration,
+  or a long one.
+- Must have permission to create a webhook on the GitHub repository, so that GitHub can send changes
+  to GitLab. Use one of the following:
+
+  - A classic token with the `repo` or `admin:repo_hook` scope.
+  - A fine-grained token with read and write access to webhooks.
+    The GitHub importer supports only classic tokens, so other import stages might fail
+    with a fine-grained token.
+    For a repository in an organization, set the organization as the resource owner of the token.
+    Otherwise, GitHub returns `404` for every request.
+
+If GitHub does not allow GitLab to create the webhook, the import still succeeds, and the project
+stays connected to GitHub without a webhook.
+The import response and the import status don't report the missing webhook.
+To check whether GitLab created the webhook, view the webhooks in the settings of the GitHub repository.
+Changes then reach GitLab when GitLab checks GitHub, about every 30 minutes, and in the final update
+when you stop updates.
+
+If GitHub keeps rejecting the token, for example because the token expired or was revoked,
+GitLab disconnects the project from GitHub.
+For more information, see [reconnect GitHub](../user/project/import/github_sync.md#reconnect-github).
+To reconnect a project imported with a personal access token, use the
+[restore endpoint](#restore-github-updates-with-a-new-personal-access-token) with a new token.
+The new token can belong to a different GitHub account, but it must read the same GitHub repository.
+
+### Import a public project through the API using a group access token
+
+When you import a project from GitHub to GitLab through the API using a group access
+token:
+
+- The GitLab project inherits the original project's visibility settings. As a result, the project is
+  publicly accessible if the original project is public.
+- If the `path` or `target_namespace` does not exist, the project import fails.
+
+### Cancel GitHub project import
+
+Cancels an in-progress GitHub project import.
+
+```plaintext
+POST /import/github/cancel
+```
+
+| Attribute    | Type    | Required | Description |
+|--------------|---------|----------|-------------|
+| `project_id` | integer | Yes      | GitLab project ID. |
+
+```shell
+curl --request POST \
+  --url "https://gitlab.example.com/api/v4/import/github/cancel" \
+  --header "content-type: application/json" \
+  --header "PRIVATE-TOKEN: <your_access_token>" \
+  --data '{
+    "project_id": 12345
+}'
+```
+
+Example response:
+
+```json
+{
+    "id": 160,
+    "name": "my-repo",
+    "full_path": "/root/my-repo",
+    "full_name": "Administrator / my-repo",
+    "import_source": "source/source-repo",
+    "import_status": "canceled",
+    "human_import_status_name": "canceled",
+    "provider_link": "/source/source-repo"
+}
+```
+
+Returns the following status codes:
+
+- `200 OK`: the project import is being canceled.
+- `400 Bad Request`: the project import cannot be canceled.
+- `404 Not Found`: the project associated with `project_id` does not exist.
+
+### Restore GitHub updates with a new personal access token
+
+{{< details >}}
+
+- Tier: Premium, Ultimate
+- Offering: GitLab.com, GitLab Self-Managed, GitLab Dedicated
+
+{{< /details >}}
+
+{{< history >}}
+
+- [Introduced](https://gitlab.com/gitlab-org/gitlab/-/work_items/634424) in GitLab 19.7. This endpoint is not behind a feature flag, but only applies to projects with GitHub updates, which depend on the `github_continuous_import` [feature flag](../administration/feature_flags/_index.md). Disabled by default.
+
+{{< /history >}}
+
+Reconnects GitHub updates for a project that was imported with a personal access token
+and continuous sync.
+Use this endpoint after GitLab disconnects GitHub updates because GitHub revoked the token or the token expired.
+The new token replaces the stored token.
+GitLab records a [`github_updates_restored`](../user/compliance/audit_event_types.md) audit event for the project.
+
+This endpoint shares a rate limit with starting imports from the UI and with file-based project imports.
+By default, the limit is six requests per minute for each user.
+Administrators can [change this limit](../administration/settings/import_export_rate_limits.md).
+
+Prerequisites:
+
+- You must have the Maintainer or Owner role for the project.
+- GitHub updates for the project must be disconnected.
+- The new token must have read access to the GitHub repository that the project was imported from.
+
+```plaintext
+POST /projects/:id/import/github/sync/restore
+```
+
+| Attribute               | Type              | Required | Description |
+|-------------------------|-------------------|----------|-------------|
+| `id`                    | integer or string | Yes      | ID or [URL-encoded path](rest/_index.md#namespaced-paths) of the project. |
+| `personal_access_token` | string            | Yes      | New GitHub personal access token. |
+
+```shell
+curl --request POST \
+  --url "https://gitlab.example.com/api/v4/projects/12345/import/github/sync/restore" \
+  --header "content-type: application/json" \
+  --header "PRIVATE-TOKEN: <your_access_token>" \
+  --data '{
+    "personal_access_token": "<new_github_personal_access_token>"
+}'
+```
+
+If the token can't manage repository webhooks, GitHub updates are restored without a webhook,
+and the response contains a `warning`. Changes are then checked on a schedule.
+For the token permissions that create a webhook, see
+[continuous sync with a personal access token](#continuous-sync-with-a-personal-access-token).
+
+If successful, returns `200` and the following response attributes:
+
+| Attribute               | Type    | Description |
+|-------------------------|---------|-------------|
+| `state`                 | string  | Which side owns the repository. After a restore, this is the state the repository had before it was disconnected, usually `provider_canonical`. |
+| `read_only`             | boolean | If `true`, the project is read-only because GitHub is the source of truth. |
+| `final_pass_incomplete` | boolean | If `true`, a stop finished without every data type being current. |
+| `data`                  | object  | Update status for each type of data, keyed by the type. |
+| `data.<type>.state`     | string  | State of the updates for this type of data. |
+| `data.<type>.last_updated_at` | string | Time of the last successful update, in ISO 8601 format. |
+| `data.<type>.last_checked_at` | string | Time of the last check, in ISO 8601 format. |
+| `warning`               | string  | Only present when the webhook could not be created. Explains that changes are checked on a schedule. |
+
+Example response:
+
+```json
+{
+    "state": "provider_canonical",
+    "read_only": true,
+    "final_pass_incomplete": false,
+    "data": {
+        "source": {
+            "state": "current",
+            "last_updated_at": "2026-11-18T10:15:00.000Z",
+            "last_checked_at": "2026-11-18T10:15:00.000Z"
+        }
+    },
+    "warning": "Updates are not received instantly because GitHub did not allow creating a webhook. Changes are checked on a schedule instead. Use a token that can manage repository webhooks to receive them sooner."
+}
+```
+
+Returns the following status codes:
+
+- `200 OK`: GitHub updates are restored.
+- `400 Bad Request`: `personal_access_token` is missing or blank.
+- `401 Unauthorized`: GitHub rejected the personal access token.
+- `403 Forbidden`: you do not have permission to restore GitHub updates for the project.
+- `404 Not Found`: the project does not exist, or it has no GitHub updates.
+- `409 Conflict`: GitHub updates are not disconnected, or another change to them is in progress.
+- `422 Unprocessable Entity`: the project was not imported with a personal access token,
+  or the token can't read the GitHub repository that the project was imported from.
+- `429 Too Many Requests`: you exceeded the rate limit of this endpoint.
+- `503 Service Unavailable`: GitHub is not available.
+
+### Import GitHub gists into GitLab snippets
+
+{{< history >}}
+
+- Rate limit introduced in GitLab 19.6.
+
+{{< /history >}}
+
+Imports personal GitHub gists into GitLab snippets.
+You can import gists with up to 10 files. GitHub gists with more than 10 files are skipped. You should manually migrate these GitHub gists.
+
+If any gists couldn't be imported, an email is sent with a list of gists that were not imported.
+
+By default, this endpoint has a rate limit of six requests per minute for each user. Administrators can [change this limit](../administration/settings/import_export_rate_limits.md#change-the-github-gists-import-rate-limit) with the application settings API or the Rails console.
+
+```plaintext
+POST /import/github/gists
+```
+
+| Attribute               | Type   | Required | Description |
+|-------------------------|--------|----------|-------------|
+| `personal_access_token` | string | Yes      | GitHub personal access token. |
+
+```shell
+curl --request POST \
+  --url "https://gitlab.example.com/api/v4/import/github/gists" \
+  --header "content-type: application/json" \
+  --header "PRIVATE-TOKEN: <your_gitlab_access_token>" \
+  --data '{
+    "personal_access_token": "<your_github_personal_access_token>"
+}'
+```
+
+Returns the following status codes:
+
+- `202 Accepted`: the gists import is being started.
+- `401 Unauthorized`: user's GitHub personal access token is invalid.
+- `422 Unprocessable Entity`: the gists import is already in progress.
+- `429 Too Many Requests`: the user has exceeded GitHub's rate limit or the rate limit of this endpoint.
+
+## Import repository from Bitbucket Server
+
+{{< history >}}
+
+- Validation of `bitbucket_server_project` and `bitbucket_server_repo` [introduced](https://gitlab.com/gitlab-org/gitlab/-/work_items/429234) in GitLab 19.1.
+- Rate limit introduced in GitLab 19.6.
+
+{{< /history >}}
+
+Imports a repository from Bitbucket Server to GitLab.
+
+The Bitbucket Project Key is only used for finding the repository in Bitbucket.
+You must specify a `target_namespace` if you want to import the repository to a GitLab group.
+If you do not specify `target_namespace`, the project imports to your personal user namespace.
+
+This endpoint shares a rate limit with starting imports from the UI and with file-based project imports. By default, the limit is six requests per minute for each user. Administrators can [change this limit](../administration/settings/import_export_rate_limits.md).
+
+Prerequisites:
+
+- For more information, see [prerequisites for Bitbucket Server importer](../user/import/bitbucket_server.md).
+
+```plaintext
+POST /import/bitbucket_server
+```
+
+| Attribute                   | Type   | Required | Description |
+|-----------------------------|--------|----------|-------------|
+| `bitbucket_server_project`  | string | Yes      | Bitbucket project key. Must contain only letters, numbers, hyphens, underscores, periods, or whitespace characters. Personal project keys start with `~`. |
+| `bitbucket_server_repo`     | string | Yes      | Bitbucket repository name. Must contain only letters, numbers, hyphens, underscores, periods, or whitespace characters. |
+| `bitbucket_server_url`      | string | Yes      | Bitbucket Server URL. |
+| `bitbucket_server_username` | string | Yes      | Bitbucket Server username. |
+| `personal_access_token`     | string | Yes      | Bitbucket Server personal access token or password. |
+| `new_name`                  | string | No       | Name of the new project. Also used as the new path so must not start or end with a special character and must not contain consecutive special characters. |
+| `target_namespace`          | string | No       | Namespace to import repository into. Supports subgroups like `/namespace/subgroup`. |
+| `timeout_strategy`          | string | No       | Strategy for handling import timeouts. Valid values are `optimistic` (continue to next stage of import) or `pessimistic` (fail immediately). Defaults to `pessimistic`. |
+
+```shell
+curl --request POST \
+  --url "https://gitlab.example.com/api/v4/import/bitbucket_server" \
+  --header "content-type: application/json" \
+  --header "PRIVATE-TOKEN: <your_access_token>" \
+  --data '{
+    "bitbucket_server_url": "http://bitbucket.example.com",
+    "bitbucket_server_username": "root",
+    "personal_access_token": "Nzk4MDcxODY4MDAyOiP8y410zF3tGAyLnHRv/E0+3xYs",
+    "bitbucket_server_project": "NEW",
+    "bitbucket_server_repo": "my-repo",
+    "new_name": "NEW-NAME"
+}'
+```
+
+## Import repository from Bitbucket Cloud
+
+{{< history >}}
+
+- [Introduced](https://gitlab.com/gitlab-org/gitlab/-/issues/215036) in GitLab 17.0.
+- Support for Bitbucket Cloud API tokens [added](https://gitlab.com/gitlab-org/gitlab/-/work_items/575583) in GitLab 18.9.
+- Support for Bitbucket Cloud app passwords [removed](https://gitlab.com/gitlab-org/gitlab/-/work_items/588961) in GitLab 19.0.
+- Rate limit introduced in GitLab 19.6.
+
+{{< /history >}}
+
+Imports a repository from Bitbucket Cloud to GitLab.
+
+This endpoint shares a rate limit with starting imports from the UI and with file-based project imports. By default, the limit is six requests per minute for each user. Administrators can [change this limit](../administration/settings/import_export_rate_limits.md).
+
+Prerequisites:
+
+- The [prerequisites for Bitbucket Cloud importer](../user/import/bitbucket_cloud.md).
+- A [Bitbucket Cloud API token](#bitbucket-cloud-api-token-scopes) with the required scopes.
+
+```plaintext
+POST /import/bitbucket
+```
+
+| Attribute             | Type   | Required | Description |
+|:----------------------|:-------|:---------|:------------|
+| `bitbucket_api_token` | string | Yes      | Bitbucket Cloud API token. |
+| `bitbucket_email`     | string | Yes      | Bitbucket Cloud email. |
+| `repo_path`           | string | Yes      | Path to repository. |
+| `target_namespace`    | string | Yes      | Namespace to import repository into. Supports subgroups like `/namespace/subgroup`. |
+| `new_name`            | string | No       | Name of the new project. Also used as the new path so must not start or end with a special character and must not contain consecutive special characters. |
+
+```shell
+curl --request POST \
+  --url "https://gitlab.example.com/api/v4/import/bitbucket" \
+  --header "content-type: application/json" \
+  --header "PRIVATE-TOKEN: <your_access_token>" \
+  --data '{
+    "bitbucket_email": "email@example.com",
+    "bitbucket_api_token": "your_bitbucket_api_token",
+    "repo_path": "username/my_project",
+    "target_namespace": "my_group/my_subgroup",
+    "new_name": "new_project_name"
+}'
+```
+
+### Bitbucket Cloud API token scopes
+
+If you're using a Bitbucket Cloud API token for authentication, the token must have the following scopes:
+
+- `read:repository:bitbucket`
+- `read:pullrequest:bitbucket`
+
+## Related topics
+
+- [Group migration by direct transfer API](bulk_imports.md).
+- [Group import and export API](group_import_export.md).
+- [Project import and export API](project_import_export.md).

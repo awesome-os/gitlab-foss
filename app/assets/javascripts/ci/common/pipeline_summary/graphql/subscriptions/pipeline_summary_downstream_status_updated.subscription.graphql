@@ -1,0 +1,14 @@
+# @feature_category: pipeline_composition
+subscription pipelineSummaryDownstreamStatusUpdated($pipelineId: CiPipelineID!) {
+  ciPipelineStatusUpdated(pipelineId: $pipelineId) {
+    id
+    detailedStatus {
+      id
+      detailsPath
+      icon
+      label
+      name
+      tooltip
+    }
+  }
+}

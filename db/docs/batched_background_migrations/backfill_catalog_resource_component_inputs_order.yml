@@ -1,0 +1,11 @@
+---
+migration_job_name: BackfillCatalogResourceComponentInputsOrder
+description: Backfills spec['inputs_order'] for CI/CD Catalog components published
+  before it was introduced, by reading the input order from the component YAML at
+  the version SHA
+feature_category: pipeline_composition
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/263566
+milestone: '19.6'
+queued_migration_version: 20261117102347
+gitlab_schema: gitlab_main_org
+finalized_by: # version of the migration that finalized this BBM

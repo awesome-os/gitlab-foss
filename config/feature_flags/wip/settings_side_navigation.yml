@@ -1,0 +1,10 @@
+---
+name: settings_side_navigation
+description: Shows a side navigation for all project, group, Admin, Organization admin, and user settings pages, and keeps the profile sidebar with a Settings section on user settings pages.
+feature_issue_url:
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/263655
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/635057
+milestone: '19.7'
+group: group::design strategy
+type: wip
+default_enabled: false

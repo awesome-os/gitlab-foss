@@ -1,0 +1,21 @@
+---
+description: Backend resolution of a Feature Library search, with the tier that
+  resolved the query. Fired once per search request.
+internal_events: true
+action: resolve_feature_library_search
+identifiers:
+- user
+- project
+- namespace
+additional_properties:
+  label:
+    description: Resolution tier - exact_map, keyword_extract or no_match
+product_group: activation
+product_categories:
+- onboarding
+milestone: '19.7'
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/268442
+tiers:
+- free
+- premium
+- ultimate

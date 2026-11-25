@@ -1,0 +1,7 @@
+# @feature_category: continuous_delivery
+query discoverFluxKustomizationsQuery($configuration: LocalConfiguration) {
+  discoverFluxKustomizations(configuration: $configuration) @client {
+    supportedVersion
+    preferredVersion
+  }
+}

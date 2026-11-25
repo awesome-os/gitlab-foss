@@ -1,0 +1,56 @@
+# Included from rails.gitlab-ci.yml only in nightly schedules.
+
+# PG17
+# Integration tests with supported Elasticsearch and OpenSearch versions
+# and the actual PG production version (PG17)
+rspec-ee unit-a pg17 opensearch1:
+  extends:
+    - .rspec-ee-base-pg17-opensearch1
+    - .rspec-ee-unit-a-parallel
+    - .rails:rules:default-branch-schedule-nightly--code-backstage-ee-only
+
+rspec-ee unit-b pg17 opensearch1:
+  extends:
+    - .rspec-ee-base-pg17-opensearch1
+    - .rspec-ee-unit-b-parallel
+    - .rails:rules:default-branch-schedule-nightly--code-backstage-ee-only
+
+rspec-ee unit-a pg17 opensearch2:
+  extends:
+    - .rspec-ee-base-pg17-opensearch2
+    - .rspec-ee-unit-a-parallel
+    - .rails:rules:default-branch-schedule-nightly--code-backstage-ee-only
+
+rspec-ee unit-b pg17 opensearch2:
+  extends:
+    - .rspec-ee-base-pg17-opensearch2
+    - .rspec-ee-unit-b-parallel
+    - .rails:rules:default-branch-schedule-nightly--code-backstage-ee-only
+
+rspec-ee integration pg17 opensearch1:
+  extends:
+    - .rspec-ee-base-pg17-opensearch1
+    - .rspec-ee-integration-parallel
+    - .rails:rules:default-branch-schedule-nightly--code-backstage-ee-only
+
+rspec-ee integration pg17 opensearch2:
+  extends:
+    - .rspec-ee-base-pg17-opensearch2
+    - .rspec-ee-integration-parallel
+    - .rails:rules:default-branch-schedule-nightly--code-backstage-ee-only
+
+rspec-ee system pg17 opensearch1:
+  extends:
+    - .rspec-ee-base-pg17-opensearch1
+    - .rspec-ee-system-parallel
+  rules:
+    - !reference [".rails:rules:only-run-system-if-medium-runners-available", rules]
+    - !reference [".rails:rules:default-branch-schedule-nightly--code-backstage-ee-only", rules]
+
+rspec-ee system pg17 opensearch2:
+  extends:
+    - .rspec-ee-base-pg17-opensearch2
+    - .rspec-ee-system-parallel
+  rules:
+    - !reference [".rails:rules:only-run-system-if-medium-runners-available", rules]
+    - !reference [".rails:rules:default-branch-schedule-nightly--code-backstage-ee-only", rules]

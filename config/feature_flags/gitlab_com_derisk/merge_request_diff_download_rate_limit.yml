@@ -1,0 +1,12 @@
+---
+name: merge_request_diff_download_rate_limit
+description: Enforces the rate limits on merge request .diff and .patch downloads
+  (per user when signed in, per IP address when anonymous); while disabled, requests
+  over the limit are only logged
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/635697
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/270001
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/639589
+milestone: '19.7'
+group: group::code review
+type: gitlab_com_derisk
+default_enabled: false

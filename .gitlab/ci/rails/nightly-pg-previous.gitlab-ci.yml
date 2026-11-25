@@ -1,0 +1,85 @@
+# Included from rails.gitlab-ci.yml only in the PG previous nightly schedule.
+
+# PG16 (Nightly) — PREVIOUS PG version (currently PG16, set by .rspec-base-pg16). Runs only when its own nightly
+# schedule sets NIGHTLY_PG_ROLE=previous.
+rspec migration pg16:
+  extends:
+    - .rspec-base-pg16
+    - .rspec-base-migration
+    - .rails:rules:default-branch-schedule-nightly-pg-previous--code-backstage
+    - .rspec-migration-parallel
+
+rspec background_migration pg16:
+  extends:
+    - .rspec-base-pg16
+    - .rspec-base-migration
+    - .rails:rules:default-branch-schedule-nightly-pg-previous--code-backstage
+    - .rspec-background-migration-parallel
+
+rspec unit-a pg16:
+  extends:
+    - .rspec-base-pg16
+    - .rails:rules:default-branch-schedule-nightly-pg-previous--code-backstage
+    - .rspec-unit-a-parallel
+
+rspec unit-b pg16:
+  extends:
+    - .rspec-base-pg16
+    - .rails:rules:default-branch-schedule-nightly-pg-previous--code-backstage
+    - .rspec-unit-b-parallel
+
+rspec integration pg16:
+  extends:
+    - .rspec-base-pg16
+    - .rails:rules:default-branch-schedule-nightly-pg-previous--code-backstage
+    - .rspec-integration-parallel
+
+rspec system pg16:
+  extends:
+    - .rspec-base-pg16
+    - .rspec-system-parallel
+  rules:
+    - !reference [".rails:rules:only-run-system-if-medium-runners-available", rules]
+    - !reference [".rails:rules:default-branch-schedule-nightly-pg-previous--code-backstage", rules]
+
+# PG16 (EE-Nightly) — PREVIOUS PG version (currently PG16, set by .rspec-ee-base-pg16). Runs only when its own
+# nightly schedule sets NIGHTLY_PG_ROLE=previous.
+rspec-ee migration pg16:
+  extends:
+    - .rspec-ee-base-pg16
+    - .rspec-base-migration
+    - .rails:rules:default-branch-schedule-nightly-pg-previous--code-backstage-ee-only
+    - .rspec-ee-migration-parallel
+
+rspec-ee background_migration pg16:
+  extends:
+    - .rspec-ee-base-pg16
+    - .rspec-base-migration
+    - .rails:rules:default-branch-schedule-nightly-pg-previous--code-backstage-ee-only
+    - .rspec-ee-background-migration-parallel
+
+rspec-ee unit-a pg16:
+  extends:
+    - .rspec-ee-base-pg16
+    - .rails:rules:default-branch-schedule-nightly-pg-previous--code-backstage-ee-only
+    - .rspec-ee-unit-a-parallel
+
+rspec-ee unit-b pg16:
+  extends:
+    - .rspec-ee-base-pg16
+    - .rails:rules:default-branch-schedule-nightly-pg-previous--code-backstage-ee-only
+    - .rspec-ee-unit-b-parallel
+
+rspec-ee integration pg16:
+  extends:
+    - .rspec-ee-base-pg16
+    - .rails:rules:default-branch-schedule-nightly-pg-previous--code-backstage-ee-only
+    - .rspec-ee-integration-parallel
+
+rspec-ee system pg16:
+  extends:
+    - .rspec-ee-base-pg16
+    - .rspec-ee-system-parallel
+  rules:
+    - !reference [".rails:rules:only-run-system-if-medium-runners-available", rules]
+    - !reference [".rails:rules:default-branch-schedule-nightly-pg-previous--code-backstage-ee-only", rules]

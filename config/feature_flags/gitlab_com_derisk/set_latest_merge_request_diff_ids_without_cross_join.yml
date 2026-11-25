@@ -1,0 +1,11 @@
+---
+name: set_latest_merge_request_diff_ids_without_cross_join
+description: Reset latest merge request diff ids after project import without joining
+  the merge request diff tables in a single statement
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/635375
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/269435
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/639260
+milestone: '19.7'
+group: group::code review
+type: gitlab_com_derisk
+default_enabled: false

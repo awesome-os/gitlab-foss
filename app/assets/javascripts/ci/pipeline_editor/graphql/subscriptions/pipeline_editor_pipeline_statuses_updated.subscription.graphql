@@ -1,0 +1,6 @@
+# @feature_category: pipeline_composition
+subscription pipelineEditorPipelineStatusesUpdated($fullPath: ID!, $sha: String!) {
+  ciPipelineStatusesUpdated(projectFullPath: $fullPath, sha: $sha) {
+    id
+  }
+}

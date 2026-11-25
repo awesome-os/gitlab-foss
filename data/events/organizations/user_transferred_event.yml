@@ -1,0 +1,8 @@
+---
+event: Organizations::UserTransferredEvent
+description: Published once per batch of users whose `organization_id` changed during
+  an organization transfer. The users, their personal namespaces and the projects in
+  those namespaces are moved with `update_all`, so the moved user ids travel on the
+  event. May be delivered more than once for the same user, so subscribers must be
+  idempotent. Not emitted when the surrounding transaction is rolled back.
+feature_category: organization

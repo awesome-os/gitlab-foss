@@ -1,0 +1,9 @@
+---
+name: update_ai_user_memory
+description: Grants the ability to update AI user memory content
+boundaries:
+  - user
+available_for:
+  - granular_access_token
+permissions:
+  - update_ai_user_memory

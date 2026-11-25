@@ -1,0 +1,3 @@
+---
+name: read_security_configuration
+description: Grants the ability to read the security configuration of a project

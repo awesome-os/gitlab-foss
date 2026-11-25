@@ -1,0 +1,62 @@
+# Rate limit contract for the authentication limiters.
+# Loaded at boot by Gitlab::RateLimit::RuleDocument and checked in CI by
+# `bundle exec rake gitlab:rate_limits:validate`.
+# Schema: gitlab.ratelimit.config.v1 AvailableLimiters, from gitlab-org/protos.
+#
+# A limiter is declared with its description in exactly one file. A later file
+# may list it again with available_properties only.
+available_limiters:
+  git_basic_auth:
+    description: >-
+      Bans an IP after repeated git and container registry authentication failures
+      (Gitlab::Auth::GitBasicAuthBan).
+    available_properties:
+      - ip
+  applimiter_email_verification:
+    description: Gitlab::ApplicationRateLimiter key email_verification. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - subject
+  applimiter_email_verification_code_send:
+    description: Gitlab::ApplicationRateLimiter key email_verification_code_send. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_iam_silent_login_reject:
+    description: Gitlab::ApplicationRateLimiter key iam_silent_login_reject. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - ip
+  applimiter_oauth_dynamic_registration:
+    description: Gitlab::ApplicationRateLimiter key oauth_dynamic_registration. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - ip
+  applimiter_profile_add_new_email:
+    description: Gitlab::ApplicationRateLimiter key profile_add_new_email. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_profile_resend_email_confirmation:
+    description: Gitlab::ApplicationRateLimiter key profile_resend_email_confirmation. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_profile_update_username:
+    description: Gitlab::ApplicationRateLimiter key profile_update_username. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_service_account_creation:
+    description: Gitlab::ApplicationRateLimiter key service_account_creation. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_ssh_certificate_authentication:
+    description: Gitlab::ApplicationRateLimiter key ssh_certificate_authentication. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - ip
+  applimiter_token_exchange:
+    description: Gitlab::ApplicationRateLimiter key token_exchange. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_user_sign_in:
+    description: Gitlab::ApplicationRateLimiter key user_sign_in. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_user_sign_up:
+    description: Gitlab::ApplicationRateLimiter key user_sign_up. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - ip

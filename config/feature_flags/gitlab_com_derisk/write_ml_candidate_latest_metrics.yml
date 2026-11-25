@@ -1,0 +1,10 @@
+---
+name: write_ml_candidate_latest_metrics
+description: Store the latest value of each ML run metric when metrics are logged
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/635217
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/270985
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/640098
+milestone: '19.7'
+group: group::mlops
+type: gitlab_com_derisk
+default_enabled: false

@@ -1,0 +1,9 @@
+---
+migration_job_name: NullifyNamespaceIdOnScanResultPolicies
+description: Nullifies namespace_id on scan_result_policies rows where project_id is
+  also set, so that each row has exactly one sharding key column set.
+feature_category: security_policy_management
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/272785
+milestone: '19.7'
+queued_migration_version: 20261119220915
+gitlab_schema: gitlab_main_org

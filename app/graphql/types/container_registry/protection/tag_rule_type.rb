@@ -1,0 +1,34 @@
+# frozen_string_literal: true
+
+module Types
+  module ContainerRegistry
+    module Protection
+      class TagRuleType < ::Types::BaseObject
+        graphql_name 'ContainerProtectionTagRule'
+        description 'A container repository tag protection rule designed to prevent users with a certain ' \
+          'access level or lower from altering the container registry.'
+
+        implements Types::ContainerRegistry::Protection::AccessLevelInterface
+
+        authorize :admin_container_image
+
+        authorize_granular_token permissions: :read_container_registry_protection_tag_rule, boundary: :project,
+          boundary_type: :project
+
+        expose_permissions Types::PermissionTypes::ContainerRegistry::Protection::TagRule
+
+        field :id,
+          ::Types::GlobalIDType[::ContainerRegistry::Protection::TagRule],
+          null: false,
+          description: 'ID of the container repository tag protection rule.'
+
+        field :tag_name_pattern,
+          GraphQL::Types::String,
+          null: false,
+          description:
+            'The pattern that matches container image tags to protect. ' \
+            'For example, `v1.*`. Wildcard character `*` allowed.'
+      end
+    end
+  end
+end

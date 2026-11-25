@@ -1,0 +1,10 @@
+---
+name: codequality_report_size_limit
+description: Skip parsing Code Quality report artifacts larger than Ci::Artifactable::CODEQUALITY_MAX_BYTES and memoize the parsed report on the pipeline
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/267955
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/632477
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/632477
+milestone: '19.7'
+group: group::code scanning
+type: gitlab_com_derisk
+default_enabled: false

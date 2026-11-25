@@ -1,0 +1,11 @@
+---
+name: enforce_track_namespace_visits_rate_limit
+description: Enforce the per-user rate limit on POST /-/track_namespace_visits instead
+  of only logging it
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/637421
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/272280
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/641109
+milestone: '19.7'
+group: group::acquisition
+type: gitlab_com_derisk
+default_enabled: false

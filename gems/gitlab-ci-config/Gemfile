@@ -1,0 +1,9 @@
+# frozen_string_literal: true
+
+source "https://rubygems.org"
+
+# Specify your gem's dependencies in gitlab-ci-config.gemspec
+gemspec
+
+gem 'gitlab-safe_request_store', path: '../gitlab-safe_request_store'
+gem 'gitlab-utils', path: '../gitlab-utils'

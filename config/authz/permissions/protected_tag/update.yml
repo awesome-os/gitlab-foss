@@ -1,0 +1,3 @@
+---
+name: update_protected_tag
+description: Grants the ability to update protected tags, including the tag name pattern and which roles can create matching tags

@@ -1,0 +1,15 @@
+# @feature_category: continuous_delivery
+#import "~/kubernetes_dashboard/graphql/queries/workload_item.fragment.graphql"
+
+query getFluxHelmReleaseQuery($configuration: LocalConfiguration, $fluxResourcePath: String) {
+  fluxHelmRelease(configuration: $configuration, fluxResourcePath: $fluxResourcePath) @client {
+    ...WorkloadItem
+    kind
+    conditions {
+      message
+      reason
+      status
+      type
+    }
+  }
+}

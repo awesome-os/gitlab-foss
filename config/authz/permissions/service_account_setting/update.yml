@@ -1,0 +1,4 @@
+---
+name: update_service_account_setting
+description: Grants the ability to change service account settings of a top-level group,
+  such as whether service account tokens must have an expiration date.

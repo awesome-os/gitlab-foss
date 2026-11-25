@@ -1,0 +1,6 @@
+# @feature_category: continuous_delivery
+mutation updateCanaryIngress($input: EnvironmentsCanaryIngressUpdateInput!) {
+  environmentsCanaryIngressUpdate(input: $input) {
+    errors
+  }
+}

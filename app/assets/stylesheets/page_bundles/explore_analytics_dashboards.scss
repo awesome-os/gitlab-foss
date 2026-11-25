@@ -1,0 +1,87 @@
+@import 'mixins_and_variables_and_functions';
+
+// The checkbox label is an inline-block, so with nowrap text it grows to the full name and
+// nothing inside it can truncate. Capping it at the checkbox's width lets the name shrink.
+.scope-picker-item-checkbox .custom-control-label {
+  @apply gl-max-w-full;
+}
+
+// Below md the filters stack vertically and would cover most of a small
+// viewport when stuck, so the bar only sticks once it lays out as a row.
+@include media-breakpoint-up(md) {
+  .explore-analytics-dashboard {
+    .explore-dashboard-filters {
+      position: sticky;
+      top: $calc-application-header-height;
+      z-index: 1;
+      background-color: var(--gl-background-color-default);
+    }
+
+    // Chart tooltips are GlPopovers (z-index 1060) rendered inside the panels.
+    // Isolating the grid traps them in its own stacking context, so the bar's
+    // z-index: 1 paints over them without having to outrank modals (1050).
+    .grid-stack {
+      isolation: isolate;
+    }
+  }
+
+  // Keyboard focus jumps and anchor scrolls align the target with the edge of
+  // the scrolling element, which the opaque stuck bar covers. The paneled
+  // layout scrolls .panel-content-inner, and scroll padding only applies on the
+  // element that scrolls. 10rem clears the stuck view tabs and filter row, plus
+  // the focus ring. Guard on the dashboard class so routes that load this
+  // bundle without a sticky bar (the dashboards list) keep the default alignment.
+  // stylelint-disable-next-line gitlab/no-has -- only applies while the sticky dashboard layout is rendered
+  .panel-content-inner:has(.explore-analytics-dashboard) {
+    scroll-padding-top: 10rem;
+  }
+}
+
+// The dashboard page adds these hooks only when a dashboard's YAML names a theme and
+// `analytics_dashboard_themes` is on. The rest of the themed look is utility classes.
+// The tabs' nav wrapper draws a full-width line under the track. GlTabs sets the class itself.
+// stylelint-disable-next-line gitlab/no-gl-class -- GlTabs offers no prop for the wrapper class
+.explore-dashboard-pill-tabs .gl-tabs-wrapper {
+  @apply gl-border-b-0;
+}
+
+// GlTabs draws the selected underline with `::before`. The selected pill needs a selector.
+.explore-dashboard-pill-tab {
+  &::before {
+    display: none;
+  }
+
+  &.active {
+    @apply gl-bg-default;
+    @apply gl-text-default;
+
+    // GlTabs draws the focus ring with `box-shadow`, so the raised shadow would hide it.
+    &:not(:focus-visible) {
+      @apply gl-shadow-sm;
+    }
+  }
+}
+
+// A thin ring of the brand orange and purple. The mask keeps the button's own fill showing.
+.duo-analyze-button {
+  position: relative;
+  box-shadow: none;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 1.5px;
+    border-radius: inherit;
+    background: linear-gradient(
+      110deg,
+      var(--gl-color-brand-orange-02p),
+      var(--gl-color-brand-purple-01p),
+      var(--gl-color-brand-orange-01p)
+    );
+    mask:
+      linear-gradient(black, black) content-box exclude,
+      linear-gradient(black, black);
+    pointer-events: none;
+  }
+}

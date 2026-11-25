@@ -1,0 +1,6 @@
+# @feature_category: continuous_delivery
+mutation deleteEnvironment($environment: LocalEnvironment) {
+  deleteEnvironment(environment: $environment) @client {
+    errors
+  }
+}

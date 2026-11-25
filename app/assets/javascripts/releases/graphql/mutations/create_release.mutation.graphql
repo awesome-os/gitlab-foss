@@ -1,0 +1,12 @@
+mutation createRelease($input: ReleaseCreateInput!) {
+  releaseCreate(input: $input) {
+    release {
+      id
+      links {
+        selfUrl
+      }
+    }
+    warnings @gl_introduced(version: "19.6.0")
+    errors
+  }
+}

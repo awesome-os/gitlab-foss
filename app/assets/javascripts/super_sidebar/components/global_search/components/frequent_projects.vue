@@ -1,0 +1,66 @@
+<script>
+import { dashboardProjectsPath } from '~/lib/utils/path_helpers/dashboard';
+import { projectPath } from '~/lib/utils/path_helpers/project';
+import currentUserFrecentProjectsQuery from '~/super_sidebar/graphql/queries/current_user_frecent_projects.query.graphql';
+import { FREQUENTLY_VISITED_PROJECTS_HANDLE } from '~/super_sidebar/components/global_search/command_palette/constants';
+import FrequentItems from './frequent_items.vue';
+
+export default {
+  name: 'FrequentlyVisitedProjects',
+  components: {
+    FrequentItems,
+  },
+  emits: ['action', 'nothing-to-render'],
+  data() {
+    return {
+      frecentProjects: undefined,
+    };
+  },
+  apollo: {
+    frecentProjects: {
+      query: currentUserFrecentProjectsQuery,
+      skip() {
+        return !this.isLoggedIn;
+      },
+      context: {
+        featureCategory: 'navigation',
+      },
+    },
+  },
+  computed: {
+    isLoggedIn() {
+      return Boolean(gon.current_username);
+    },
+    items() {
+      return (this.frecentProjects || []).map((project) => ({
+        ...project,
+        webPath: projectPath(project.fullPath),
+      }));
+    },
+    viewAllItemsPath() {
+      return dashboardProjectsPath({ organizationPath: null });
+    },
+  },
+  created() {
+    if (!this.isLoggedIn) {
+      this.$emit('nothing-to-render');
+    }
+  },
+  FREQUENTLY_VISITED_PROJECTS_HANDLE,
+};
+</script>
+
+<template>
+  <frequent-items
+    v-if="isLoggedIn"
+    :loading="$apollo.queries.frecentProjects.loading"
+    :empty-state-text="s__('Navigation|Projects you visit often will appear here.')"
+    :group-name="s__('Navigation|Frequently visited projects')"
+    :items="items"
+    view-all-items-icon="project"
+    :view-all-items-text="s__('Navigation|View all my projects')"
+    :view-all-items-path="viewAllItemsPath"
+    v-bind="$attrs"
+    @action="$emit('action', $options.FREQUENTLY_VISITED_PROJECTS_HANDLE)"
+  />
+</template>

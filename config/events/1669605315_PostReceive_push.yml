@@ -1,0 +1,17 @@
+---
+description: Mirrored Redis source_code_pushes events sent to Snowplow
+category: PostReceive
+action: push
+identifiers:
+  - project
+  - user
+  - namespace
+product_group: repository_services
+product_categories:
+- repository_services
+milestone: "15.7"
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/104670
+tiers:
+  - free
+  - premium
+  - ultimate

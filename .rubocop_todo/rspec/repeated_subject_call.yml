@@ -1,0 +1,6 @@
+---
+RSpec/RepeatedSubjectCall:
+  Exclude:
+    - 'ee/spec/services/epics/tree_reorder_service_spec.rb'
+    - 'spec/requests/api/groups_spec.rb'
+    - 'spec/requests/api/projects_spec.rb'

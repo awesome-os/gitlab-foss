@@ -1,0 +1,9 @@
+.cover-status-tail {
+  position: absolute;
+  bottom: 100%;
+  left: $gl-spacing-scale-5;
+  overflow: visible;
+  fill: var(--gl-background-color-default);
+  stroke: var(--gl-border-color-default);
+  stroke-width: 1px;
+}

@@ -1,0 +1,10 @@
+---
+name: vsa_reduced_cron_limits
+description: Run the Value Stream Analytics aggregation crons with a quarter of their runtime and a fifth of their batch size
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/636175
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/272189
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/640990
+milestone: '19.7'
+type: ops
+group: group::optimize
+default_enabled: false

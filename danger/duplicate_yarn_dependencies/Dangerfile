@@ -1,0 +1,32 @@
+# frozen_string_literal: true
+
+return unless helper.all_changed_files.include?('yarn.lock')
+
+require 'json'
+
+# `--json` prints one object per descriptor that can be deduped.
+duplicate = `yarn dedupe --check --json`.each_line.filter_map do |line|
+  JSON.parse(line)['descriptor'] # rubocop:disable Gitlab/Json -- Danger runs without Rails, so Gitlab::Json isn't loaded
+rescue JSON::ParserError
+  nil
+end
+
+return if duplicate.empty?
+
+warn 'This merge request has introduced duplicated yarn dependencies.'
+
+if helper.ci?
+  markdown(<<~MARKDOWN)
+    ## Duplicate yarn dependencies
+
+    The following dependencies should be de-duplicated:
+
+    * #{duplicate.map { |path| "`#{path}`" }.join("\n* ")}
+
+    Please run the following command and commit the changes to `yarn.lock`:
+
+    ```
+    yarn dedupe
+    ```
+  MARKDOWN
+end

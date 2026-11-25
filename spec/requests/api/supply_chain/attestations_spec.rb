@@ -1,0 +1,394 @@
+# frozen_string_literal: true
+
+require 'spec_helper'
+
+RSpec.describe API::SupplyChain::Attestations, feature_category: :artifact_security do
+  include HttpBasicAuthHelpers
+  include DependencyProxyHelpers
+
+  include HttpIOHelpers
+
+  let_it_be_with_reload(:project) do
+    create(:project, :small_repo)
+  end
+
+  let_it_be_with_reload(:other_project) do
+    create(:project, :small_repo)
+  end
+
+  let_it_be_with_reload(:pipeline) do
+    create(:ci_pipeline, project: project, sha: project.commit.id, ref: project.default_branch)
+  end
+
+  let(:developer) { create(:user) }
+  let(:user) { developer }
+  let(:api_user) { user }
+  let(:reporter) { create(:project_member, :reporter, project: project).user }
+  let(:guest) { create(:project_member, :guest, project: project).user }
+
+  let!(:job) do
+    create(:ci_build, :success, :tags, pipeline: pipeline)
+  end
+
+  before do
+    project.add_developer(developer) # -- Does not work in before_all
+  end
+
+  shared_examples 'authorization checks' do
+    context 'when user is anonymous' do
+      let(:api_user) { nil }
+
+      context 'when project is public' do
+        before do
+          project.update_column(:visibility_level, Gitlab::VisibilityLevel::PUBLIC)
+          project.update_column(:public_builds, true)
+        end
+
+        it 'allows to access attestations' do
+          get_endpoint
+
+          expect(response).to have_gitlab_http_status(:ok)
+        end
+      end
+
+      context 'when project is private' do
+        it 'rejects access and hides existence of attestations' do
+          get_endpoint
+
+          expect(response).to have_gitlab_http_status(:not_found)
+        end
+      end
+    end
+
+    context 'when user is guest' do
+      let(:api_user) { guest }
+
+      it 'allows to access attestations if has access' do
+        get_endpoint
+
+        expect(response).to have_gitlab_http_status(:ok)
+      end
+
+      it 'disallows access if does not have access' do
+        get_endpoint_other_project
+
+        expect(response).to have_gitlab_http_status(:not_found)
+      end
+    end
+
+    context 'when user is developer' do
+      let(:api_user) { developer }
+
+      it 'allows to access attestations if has access' do
+        get_endpoint
+
+        expect(response).to have_gitlab_http_status(:ok)
+      end
+
+      it 'disallows access if does not have access' do
+        get_endpoint_other_project
+
+        expect(response).to have_gitlab_http_status(:not_found)
+      end
+    end
+
+    context 'when user is reporter' do
+      let(:api_user) { reporter }
+
+      it 'allows to access attestations if has access' do
+        get_endpoint
+
+        expect(response).to have_gitlab_http_status(:ok)
+      end
+
+      it 'disallows access if does not have access' do
+        get_endpoint_other_project
+
+        expect(response).to have_gitlab_http_status(:not_found)
+      end
+    end
+  end
+
+  describe 'GET /projects/:id/attestations/:subject_digest' do
+    let_it_be(:subject_digest) { "5db1fee4b5703808c48078a76768b155b421b210c0761cd6a5d223f4d99f1eaa" }
+    let_it_be(:other_subject_digest) { "fffffee4b5703808c48078a76768b155b421b210c0761cd6a5d223f4d99f1eaa" }
+    let_it_be(:attestation) { create(:supply_chain_attestation, project: project, subject_digest: subject_digest) }
+    let(:get_endpoint) { get_attestations }
+    let(:get_endpoint_other_project) { get_attestations_other_project }
+
+    let_it_be(:other_attestation) do
+      create(:supply_chain_attestation, project: other_project, subject_digest: subject_digest)
+    end
+
+    let(:get_attestations_other_project) do
+      url = "/projects/#{other_project.id}/attestations/#{subject_digest}"
+      get api(url, api_user)
+    end
+
+    subject(:get_attestations) do
+      url = target_url
+      get api(url, api_user)
+    end
+
+    it_behaves_like 'authorizing granular token permissions', :read_attestation do
+      let(:boundary_object) { project }
+      let(:user) { developer }
+      let(:request) do
+        get api("/projects/#{project.id}/attestations/#{subject_digest}", personal_access_token: pat)
+      end
+    end
+
+    shared_examples 'when an attestation exists' do
+      it 'returns the right attestations in the response' do
+        get_attestations
+
+        expect(json_response.length).to eq(1)
+        expect(json_response[0]).to include({
+          "id" => attestation.id,
+          "project_id" => attestation.project_id,
+          "expire_at" => attestation.expire_at,
+          "build_id" => attestation.build_id,
+          "status" => "success",
+          "predicate_kind" => "provenance",
+          "predicate_type" => "https://slsa.dev/provenance/v1",
+          "subject_digest" => subject_digest,
+          "signing_method" => "sigstore",
+          "iid" => attestation.iid,
+          "download_url" => end_with(api_v4_projects_attestations_download_path(id: attestation.project_id,
+            attestation_iid: attestation.iid))
+        })
+      end
+
+      context 'when slsa_provenance_statement is disabled' do
+        before do
+          stub_feature_flags(slsa_provenance_statement: false)
+        end
+
+        it 'returns 404' do
+          get_attestations
+
+          expect(response).to have_gitlab_http_status(:not_found)
+        end
+      end
+
+      include_examples "authorization checks"
+    end
+
+    context 'when accessing via the project id' do
+      let(:target_url) { "/projects/#{project.id}/attestations/#{subject_digest}" }
+
+      include_examples 'when an attestation exists'
+    end
+
+    context 'when accessing via the project full_path' do
+      let(:target_url) { "/projects/#{CGI.escape(project.full_path)}/attestations/#{subject_digest}" }
+
+      include_examples 'when an attestation exists'
+    end
+
+    context 'when the attestation was signed with the project certificate authority' do
+      let_it_be(:local_ca_attestation) do
+        create(:supply_chain_attestation, :with_signing_certificate, project: project,
+          subject_digest: other_subject_digest)
+      end
+
+      let(:target_url) { "/projects/#{project.id}/attestations/#{other_subject_digest}" }
+
+      it 'returns local_ca as the signing method' do
+        get_attestations
+
+        expect(json_response.length).to eq(1)
+        expect(json_response[0]).to include("iid" => local_ca_attestation.iid, "signing_method" => "local_ca")
+      end
+    end
+
+    context 'when an attestation does not exist' do
+      let(:target_url) do
+        "/projects/#{project.id}/attestations/cbe6fc257a1cd3032c3c4bff38653cd14502f213000745006337dee7dcfc4de4"
+      end
+
+      it 'returns an empty response' do
+        get_attestations
+
+        expect(json_response.length).to eq(0)
+      end
+    end
+  end
+
+  describe 'GET /projects/:id/attestations/:iid/download' do
+    let!(:attestation) { create(:supply_chain_attestation, project: project) }
+    let!(:other_attestation) do
+      create(:supply_chain_attestation, project: other_project)
+    end
+
+    let(:target_url) { "/projects/#{project.id}/attestations/#{other_attestation.iid}/download" }
+    let(:get_endpoint) { download_attestation }
+    let(:get_endpoint_other_project) { download_attestation_other_project }
+    let(:download_attestation_other_project) do
+      url = "/projects/#{other_project.id}/attestations/#{attestation.iid}/download"
+      get api(url, api_user)
+    end
+
+    subject(:download_attestation) do
+      url = target_url
+      get api(url, api_user)
+    end
+
+    it_behaves_like 'authorizing granular token permissions', :read_attestation do
+      let(:boundary_object) { project }
+      let(:user) { developer }
+      let(:request) do
+        get api("/projects/#{project.id}/attestations/#{attestation.iid}/download", personal_access_token: pat)
+      end
+    end
+
+    it "returns the contents of the attestation" do
+      status_code = download_attestation
+
+      expect(status_code).to eq(200)
+      expect(response.body).to eq(attestation.file.read)
+    end
+
+    context 'when slsa_provenance_statement is disabled' do
+      before do
+        stub_feature_flags(slsa_provenance_statement: false)
+      end
+
+      it 'returns 404' do
+        download_attestation
+
+        expect(response).to have_gitlab_http_status(:not_found)
+      end
+    end
+
+    context 'when an invalid iid is passed' do
+      let(:target_url) { "/projects/#{project.id}/attestations/1337/download" }
+
+      it 'returns 404' do
+        download_attestation
+
+        expect(response).to have_gitlab_http_status(:not_found)
+      end
+    end
+
+    include_examples "authorization checks"
+  end
+
+  describe 'GET /projects/:id/attestations/signing_certificates' do
+    let_it_be(:active_certificate) { create(:supply_chain_signing_certificate, project: project) }
+    let_it_be(:inactive_certificate) { create(:supply_chain_signing_certificate, :inactive, project: project) }
+    let_it_be(:expired_certificate) do
+      create(:supply_chain_signing_certificate, :inactive, project: project).tap do |certificate|
+        certificate.update_column(:expires_at, 1.day.ago)
+      end
+    end
+
+    let_it_be(:other_project_certificate) { create(:supply_chain_signing_certificate, project: other_project) }
+
+    let(:target_url) { "/projects/#{project.id}/attestations/signing_certificates" }
+    let(:get_endpoint) { list_signing_certificates }
+    let(:get_endpoint_other_project) do
+      get api("/projects/#{other_project.id}/attestations/signing_certificates", api_user)
+    end
+
+    subject(:list_signing_certificates) { get api(target_url, api_user) }
+
+    it_behaves_like 'authorizing granular token permissions', :read_attestation do
+      let(:boundary_object) { project }
+      let(:user) { developer }
+      let(:request) do
+        get api("/projects/#{project.id}/attestations/signing_certificates", personal_access_token: pat)
+      end
+    end
+
+    context 'when the project is public' do
+      before do
+        project.update_column(:visibility_level, Gitlab::VisibilityLevel::PUBLIC)
+      end
+
+      it_behaves_like 'authorizing granular token permissions', :read_attestation do
+        let(:boundary_object) { project }
+        let(:user) { developer }
+        let(:request) do
+          get api("/projects/#{project.id}/attestations/signing_certificates", personal_access_token: pat)
+        end
+      end
+    end
+
+    it 'returns the unexpired signing certificates of the project', :aggregate_failures do
+      list_signing_certificates
+
+      expect(response).to have_gitlab_http_status(:ok)
+      expect(response).to include_pagination_headers
+      expect(json_response).to contain_exactly(
+        {
+          'id' => active_certificate.id,
+          'certificate' => active_certificate.certificate,
+          'active' => true,
+          'expires_at' => active_certificate.expires_at.as_json,
+          'created_at' => active_certificate.created_at.as_json
+        },
+        a_hash_including('id' => inactive_certificate.id, 'active' => false)
+      )
+    end
+
+    it 'does not expose the private keys' do
+      list_signing_certificates
+
+      expect(response.body).not_to include('PRIVATE KEY')
+    end
+
+    it 'paginates the signing certificates', :aggregate_failures do
+      get api(target_url, api_user), params: { per_page: 1 }
+
+      expect(json_response.length).to eq(1)
+      expect(response.headers['X-Next-Page']).to eq('2')
+    end
+
+    it 'does not run additional queries for additional certificates' do
+      get api(target_url, developer)
+
+      control = ActiveRecord::QueryRecorder.new { get api(target_url, developer) }
+
+      create_list(:supply_chain_signing_certificate, 2, :inactive, project: project)
+
+      expect { get api(target_url, developer) }.not_to exceed_query_limit(control)
+    end
+
+    context 'when accessing via the project full_path' do
+      let(:target_url) { "/projects/#{CGI.escape(project.full_path)}/attestations/signing_certificates" }
+
+      it 'returns the unexpired signing certificates of the project' do
+        list_signing_certificates
+
+        expect(json_response.pluck('id')).to match_array([active_certificate.id, inactive_certificate.id])
+      end
+    end
+
+    context 'when the project has no signing certificates' do
+      let(:project_without_certificates) { create(:project, developers: developer) }
+      let(:target_url) { "/projects/#{project_without_certificates.id}/attestations/signing_certificates" }
+
+      it 'returns an empty list' do
+        list_signing_certificates
+
+        expect(response).to have_gitlab_http_status(:ok)
+        expect(json_response).to be_empty
+      end
+    end
+
+    context 'when slsa_provenance_statement is disabled' do
+      before do
+        stub_feature_flags(slsa_provenance_statement: false)
+      end
+
+      it 'returns 404' do
+        list_signing_certificates
+
+        expect(response).to have_gitlab_http_status(:not_found)
+      end
+    end
+
+    include_examples "authorization checks"
+  end
+end

@@ -1,0 +1,9 @@
+---
+name: read_security_configuration
+description: Grants the ability to read the SAST CI/CD configuration of a project
+boundaries:
+  - project
+available_for:
+  - granular_access_token
+permissions:
+  - read_security_configuration

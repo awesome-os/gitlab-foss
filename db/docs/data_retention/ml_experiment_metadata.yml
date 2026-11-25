@@ -1,0 +1,10 @@
+---
+exclude:
+  reason: transient_data
+# Deleted with its experiment, so the window matches ml_experiments.yml.
+retention_window: 730
+enforcement_strategy: none
+enforcing: false
+pause_mechanism:
+  type: none
+work_item: https://gitlab.com/gitlab-org/gitlab/-/work_items/636997

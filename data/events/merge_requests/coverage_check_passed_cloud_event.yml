@@ -1,0 +1,6 @@
+---
+event: MergeRequests::CoverageCheckPassedCloudEvent
+description: Published when a head pipeline's coverage clears the merge request's Coverage-Check
+  approval rule, so the rule no longer requires approval.
+feature_category: code_review_workflow
+ee_only: true

@@ -1,0 +1,4 @@
+---
+name: update_resource_access_token_setting
+description: Grants the ability to change the group setting that allows group and
+  project access tokens to be created in the group and its descendants.

@@ -1,0 +1,11 @@
+---
+name: api_memoize_declared_params
+description: Memoize API::Helpers#declared_params per request instead of rebuilding
+  the declared params hash on every call
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/issues/640053
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/271157
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/issues/640909
+milestone: '19.6'
+group: group::api platform
+type: gitlab_com_derisk
+default_enabled: false

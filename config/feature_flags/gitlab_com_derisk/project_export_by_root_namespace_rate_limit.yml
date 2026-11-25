@@ -1,0 +1,10 @@
+---
+name: project_export_by_root_namespace_rate_limit
+description: Enforces the per-top-level-namespace rate limit on project exports; while disabled, exports over the limit are only logged
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/599092
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/269619
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/640430
+milestone: '19.7'
+group: group::import
+type: gitlab_com_derisk
+default_enabled: false

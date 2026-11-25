@@ -1,0 +1,11 @@
+---
+name: update_merge_requests_worker_concurrency_limit_scope
+description: Caps each top-level group at a share of the Sidekiq concurrency limit
+  of UpdateMergeRequestsWorker.
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/635705
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/272164
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/640963
+milestone: '19.7'
+group: group::code review
+type: beta
+default_enabled: false

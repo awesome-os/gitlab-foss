@@ -1,0 +1,10 @@
+---
+name: read_security_setting
+description: Grants the ability to read security settings and the security configuration
+  of a project
+boundaries:
+  - project
+available_for:
+  - granular_access_token
+permissions:
+  - read_security_setting

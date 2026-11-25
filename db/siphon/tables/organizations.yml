@@ -1,0 +1,19 @@
+---
+table: organizations
+database: main
+replication_targets:
+  - name: clickhouse_main
+    target: siphon_organizations
+    priority: 1
+    consistency_checks:
+      - identifier: organizations
+        columns:
+          - id
+          - name
+          - path
+          - state
+          - updated_at
+          - visibility_level
+  - name: gcs_parquet_consumer
+    dedup_by:
+      - id

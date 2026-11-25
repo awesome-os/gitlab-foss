@@ -1,0 +1,10 @@
+---
+name: mergeability_check_skip_merge_head_diff_equal_to_regular
+description: Skip storing a merge-head diff when the merge ref shows the same changes as the latest regular diff.
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/637963
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/271215
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/640301
+milestone: '19.6'
+group: group::code review
+type: gitlab_com_derisk
+default_enabled: false

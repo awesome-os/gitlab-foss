@@ -1,0 +1,17 @@
+---
+# Cop supports --autocorrect.
+Rails/Presence:
+  Exclude:
+    - 'app/graphql/resolvers/base_resolver.rb'
+    - 'app/helpers/merge_requests_helper.rb'
+    - 'app/services/deployments/create_for_job_service.rb'
+    - 'app/services/projects/transfer_service.rb'
+    - 'ee/app/services/security/analyzers_status/diffs_service.rb'
+    - 'ee/app/services/vulnerabilities/security_finding/create_issue_service.rb'
+    - 'ee/app/services/vulnerabilities/security_finding/create_merge_request_service.rb'
+    - 'lib/api/helpers.rb'
+    - 'lib/api/ml/mlflow/api_helpers.rb'
+    - 'lib/gitlab/cache/import/caching.rb'
+    - 'lib/gitlab/database/async_indexes/postgres_async_index.rb'
+    - 'lib/gitlab/sanitizers/exif.rb'
+    - 'spec/models/concerns/with_uploads_spec.rb'

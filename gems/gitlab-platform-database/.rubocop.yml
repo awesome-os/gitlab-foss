@@ -1,0 +1,50 @@
+inherit_from:
+  - ../config/rubocop.yml
+
+Gemfile/MissingFeatureCategory:
+  Enabled: false
+
+# Mirrors the monolith's global settings, so that moving a file into this gem
+# does not change which cops apply to it. See the root `.rubocop.yml`.
+# The operands are the two columns of an `rspec-parameterized` `where` table.
+Lint/BinaryOperatorWithIdenticalOperands:
+  Exclude:
+    - spec/**/*_spec.rb
+
+Style/SafeNavigation:
+  Enabled: false
+
+Style/NumericPredicate:
+  EnforcedStyle: comparison
+
+# Debt inherited with the moved files, previously held in `.rubocop_todo/`.
+Layout/ClassStructure:
+  Exclude:
+    - lib/gitlab/database/sha_attribute.rb
+
+Style/EmptyElse:
+  Exclude:
+    - lib/gitlab/database/sha256_attribute.rb
+
+Style/SuperArguments:
+  Exclude:
+    - lib/gitlab/database/sha256_attribute.rb
+    - lib/gitlab/database/sha_attribute.rb
+    - lib/gitlab/database/x509_serial_number_attribute.rb
+
+Layout/LineLength:
+  Exclude:
+    - lib/gitlab/database/as_with_materialized.rb
+
+Lint/UnusedBlockArgument:
+  Exclude:
+    - lib/gitlab/database/read_only_relation.rb
+
+Lint/UnusedMethodArgument:
+  Exclude:
+    - lib/gitlab/database/date_time.rb
+    - lib/gitlab/database/rename_table_helpers.rb
+
+Style/IfUnlessModifier:
+  Exclude:
+    - lib/gitlab/database/as_with_materialized.rb

@@ -1,0 +1,3 @@
+---
+name: delete_devops_adoption_namespace
+description: Grants the ability to disable DevOps adoption for a namespace

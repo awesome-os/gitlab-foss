@@ -1,0 +1,17 @@
+---
+name: read_orbit_trial
+description: Grants the ability to read the Orbit trial of a top-level group, or of the instance on GitLab Self-Managed and GitLab Dedicated.
+boundaries:
+  - group
+  - instance
+available_for:
+  - granular_access_token
+assignable_when:
+  - condition: admin
+    boundaries:
+      - instance
+  - condition: self_managed
+    boundaries:
+      - instance
+permissions:
+  - read_orbit_trial

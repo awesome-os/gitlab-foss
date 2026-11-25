@@ -1,0 +1,6 @@
+# @feature_category: continuous_delivery
+query confirmRemoveKey {
+  deployKeyToRemove @client {
+    id
+  }
+}

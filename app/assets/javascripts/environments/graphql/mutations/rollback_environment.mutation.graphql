@@ -1,0 +1,6 @@
+# @feature_category: continuous_delivery
+mutation rollbackEnvironment($environment: LocalEnvironment) {
+  rollbackEnvironment(environment: $environment) @client {
+    errors
+  }
+}

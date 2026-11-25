@@ -1,0 +1,3 @@
+---
+name: read_google_cloud_artifact_registry
+description: Grants the ability to read Google Artifact Registry repositories and images

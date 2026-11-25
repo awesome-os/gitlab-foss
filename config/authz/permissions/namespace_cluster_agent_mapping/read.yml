@@ -1,0 +1,3 @@
+---
+name: read_namespace_cluster_agent_mapping
+description: Grants the ability to read the cluster agent mappings of a group.

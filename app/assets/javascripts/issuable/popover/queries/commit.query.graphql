@@ -1,0 +1,28 @@
+# @feature_category: source_code_management
+query commitPopover($projectPath: ID!, $sha: String!) {
+  project(fullPath: $projectPath) {
+    id
+    repository {
+      commit(ref: $sha) {
+        id
+        title
+        shortId
+        authoredDate
+        authorName
+        authorEmail
+        authorGravatar
+        committerName
+        committerEmail
+        committedDate
+        author {
+          id
+          name
+          avatarUrl
+          webPath
+          bot
+        }
+        webPath
+      }
+    }
+  }
+}

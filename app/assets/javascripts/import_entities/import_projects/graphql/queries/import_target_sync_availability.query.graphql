@@ -1,0 +1,10 @@
+#import "ee_else_ce/import_entities/import_projects/graphql/fragments/group_continuous_sync.fragment.graphql"
+# @feature_category: importers
+
+query importTargetSyncAvailability($fullPath: ID!, $includeContinuousSync: Boolean = false) {
+  group(fullPath: $fullPath) {
+    id
+    fullPath
+    ...ImportGroupContinuousSync @include(if: $includeContinuousSync)
+  }
+}

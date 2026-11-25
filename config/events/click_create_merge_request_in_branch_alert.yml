@@ -1,0 +1,20 @@
+---
+description: Clicked Create merge request in the branch created alert or the "You pushed to" banner.
+internal_events: true
+action: click_create_merge_request_in_branch_alert
+identifiers:
+- project
+- namespace
+- user
+additional_properties:
+  label:
+    description: Which alert the button was in, "branch_created" or "last_push".
+product_group: source_code
+product_categories:
+- source_code_management
+milestone: '19.7'
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/270550
+tiers:
+- free
+- premium
+- ultimate

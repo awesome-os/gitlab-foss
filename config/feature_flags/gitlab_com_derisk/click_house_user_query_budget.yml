@@ -1,0 +1,10 @@
+---
+name: click_house_user_query_budget
+description: Charge the ClickHouse usage of web requests to per-user budgets
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/635119
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/270802
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/640007
+milestone: '19.7'
+group: group::optimize
+type: gitlab_com_derisk
+default_enabled: false

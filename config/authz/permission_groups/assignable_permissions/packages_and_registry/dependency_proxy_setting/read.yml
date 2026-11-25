@@ -1,0 +1,9 @@
+---
+name: read_dependency_proxy_setting
+description: Grants the ability to read dependency proxy settings
+boundaries:
+  - group
+available_for:
+  - granular_access_token
+permissions:
+  - read_dependency_proxy_setting

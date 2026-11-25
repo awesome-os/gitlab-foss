@@ -1,0 +1,11 @@
+---
+name: rate_limit_issue_closing_from_commits
+description: Skip already closed issues and count issues closed by pushed commits
+  against the work item update rate limit
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/635840
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/271245
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/640300
+milestone: '19.7'
+group: group::work items
+type: gitlab_com_derisk
+default_enabled: false

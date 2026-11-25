@@ -1,0 +1,10 @@
+---
+name: log_db_write_bytes
+description: Add db_write_bytes, the approximate bytes sent to PostgreSQL in write statements, to request and Sidekiq logs
+feature_issue_url:
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/269663
+rollout_issue_url:
+milestone: '19.6'
+group: group::analytics instrumentation
+type: gitlab_com_derisk
+default_enabled: false

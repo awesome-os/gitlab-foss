@@ -1,0 +1,10 @@
+# @feature_category: continuous_delivery
+mutation updateEnvironment($input: EnvironmentUpdateInput!) {
+  environmentUpdate(input: $input) {
+    environment {
+      id
+      path
+    }
+    errors
+  }
+}

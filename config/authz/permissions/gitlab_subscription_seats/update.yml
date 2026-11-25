@@ -1,0 +1,3 @@
+---
+name: update_gitlab_subscription_seats
+description: Grants the ability to buy more seats for a namespace subscription

@@ -1,0 +1,11 @@
+---
+name: personal_access_token_request_memo
+description: Resolve the personal access token once per request instead of once per
+  authentication call site
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/issues/640053
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/270914
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/issues/640846
+milestone: '19.6'
+group: group::authentication
+type: gitlab_com_derisk
+default_enabled: false

@@ -1,0 +1,10 @@
+---
+name: verify_secret_detection_raw_token
+description: Grants the ability to verify whether raw token values are active. The project only determines
+  feature availability and rate limits; the tokens can belong to anyone on the instance.
+boundaries:
+  - project
+available_for:
+  - granular_access_token
+permissions:
+  - verify_secret_detection_raw_token

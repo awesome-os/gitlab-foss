@@ -1,0 +1,22 @@
+---
+InternalAffairs/ItblockHandler:
+  Exclude:
+    - 'rubocop/cop/api/deprecated_http_codes.rb'
+    - 'rubocop/cop/api/deprecated_in_description.rb'
+    - 'rubocop/cop/api/description_detail.rb'
+    - 'rubocop/cop/api/description_failure_response.rb'
+    - 'rubocop/cop/api/description_success_response.rb'
+    - 'rubocop/cop/api/description_summary.rb'
+    - 'rubocop/cop/api/lifecycle_in_description.rb'
+    - 'rubocop/cop/api/tier_in_description.rb'
+    - 'rubocop/cop/avoid_break_from_strong_memoize.rb'
+    - 'rubocop/cop/experiments_test_coverage.rb'
+    - 'rubocop/cop/gitlab/authz/role_check_in_rule.rb'
+    - 'rubocop/cop/gitlab/policy_rule_boolean.rb'
+    - 'rubocop/cop/gitlab/strong_memoize_attr.rb'
+    - 'rubocop/cop/migration/background_migration_missing_active_concern.rb'
+    - 'rubocop/cop/migration/with_lock_retries_disallowed_method.rb'
+    - 'rubocop/cop/qa/ambiguous_page_object_name.rb'
+    - 'rubocop/cop/rspec/feature_category.rb'
+    - 'rubocop/cop/rspec/missing_match_when_negated.rb'
+    - 'rubocop/cop/rspec/redundant_metatag_type.rb'

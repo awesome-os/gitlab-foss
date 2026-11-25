@@ -1,0 +1,21 @@
+@import 'mixins_and_variables_and_functions';
+
+.event-item > .system-note-image {
+  @apply gl-bg-transparent;
+  top: calc(#{$gl-padding} + #{$gl-line-height-20} * 0.5);
+  transform: translateY(-50%);
+}
+
+.event-item > .system-note-image > svg {
+  @apply gl-fill-icon-subtle #{!important};
+}
+
+// .gl-tabs-nav is a flex-grow item, so min-width must be 0 for it to shrink below
+// its content; without that, overflow-x has nothing to scroll and the wrapper wraps.
+.homepage-todos-widget [role='tablist'],
+.homepage-merge-requests-widget [role='tablist'] {
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+}

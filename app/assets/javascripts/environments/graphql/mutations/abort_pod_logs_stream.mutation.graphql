@@ -1,0 +1,16 @@
+# @feature_category: continuous_delivery
+mutation abortK8sPodLogsStream(
+  $configuration: LocalConfiguration
+  $namespace: String
+  $podName: String
+  $containerName: String
+) {
+  abortK8sPodLogsStream(
+    configuration: $configuration
+    namespace: $namespace
+    podName: $podName
+    containerName: $containerName
+  ) @client {
+    errors
+  }
+}

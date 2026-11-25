@@ -1,0 +1,4 @@
+# @feature_category: continuous_delivery
+mutation enableKey($id: ID!) {
+  enableKey(id: $id) @client
+}

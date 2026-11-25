@@ -1,0 +1,18 @@
+---
+# Cop supports --autocorrect.
+GraphQL/OrderedFields:
+  Exclude:
+    - 'app/graphql/types/analytics/cycle_analytics/flow_metrics.rb'
+    - 'app/graphql/types/ci/job_interface.rb'
+    - 'app/graphql/types/ci/pipeline_interface.rb'
+    - 'app/graphql/types/design_management/design_fields.rb'
+    - 'app/graphql/types/namespaces/group_interface.rb'
+    - 'app/graphql/types/notes/noteable_interface.rb'
+    - 'app/graphql/types/projects/service_type.rb'
+    - 'app/graphql/types/tree/entry_type.rb'
+    - 'app/graphql/types/user_interface.rb'
+    - 'ee/app/graphql/ee/types/ci/ci_cd_setting_type.rb'
+    - 'ee/app/graphql/ee/types/description_version_type.rb'
+    - 'ee/app/graphql/ee/types/query_type.rb'
+    - 'ee/app/graphql/types/ai/catalog/item_interface.rb'
+    - 'ee/app/graphql/types/ai/catalog/version_interface.rb'

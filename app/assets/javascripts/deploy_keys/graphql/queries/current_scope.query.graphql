@@ -1,0 +1,4 @@
+# @feature_category: continuous_delivery
+query getCurrentScope {
+  currentScope @client
+}

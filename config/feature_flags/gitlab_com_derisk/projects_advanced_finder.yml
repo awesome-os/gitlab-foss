@@ -1,0 +1,10 @@
+---
+name: projects_advanced_finder
+description: Serve project listings and searches from Elasticsearch instead of PostgreSQL
+feature_issue_url: https://gitlab.com/groups/gitlab-org/-/epics/17210
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/270828
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/issues/640027
+milestone: '19.6'
+group: group::global search
+type: gitlab_com_derisk
+default_enabled: false

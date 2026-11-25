@@ -1,0 +1,83 @@
+inherit_from:
+  - ../config/rubocop.yml
+
+Gemfile/MissingFeatureCategory:
+  Enabled: false
+
+# Mirrors the monolith's global settings, so that moving a file into this gem
+# does not change which cops apply to it. See the root `.rubocop.yml`.
+RSpec/ImplicitSubject:
+  Enabled: false
+
+Lint/BinaryOperatorWithIdenticalOperands:
+  Exclude:
+    - spec/**/*_spec.rb
+
+Style/NumericPredicate:
+  EnforcedStyle: comparison
+
+Style/RegexpLiteral:
+  Enabled: false
+
+# Debt inherited with the moved files, previously held in `.rubocop_todo/`.
+Gitlab/StrongMemoizeAttr:
+  Exclude:
+    - lib/gitlab/ci/pipeline/expression/lexer.rb
+
+Layout/ClassStructure:
+  Exclude:
+    - lib/gitlab/ci/pipeline/expression/lexeme/and.rb
+    - lib/gitlab/ci/pipeline/expression/lexeme/base.rb
+    - lib/gitlab/ci/pipeline/expression/lexeme/equals.rb
+    - lib/gitlab/ci/pipeline/expression/lexeme/logical_operator.rb
+    - lib/gitlab/ci/pipeline/expression/lexeme/matches.rb
+    - lib/gitlab/ci/pipeline/expression/lexeme/not_equals.rb
+    - lib/gitlab/ci/pipeline/expression/lexeme/not_matches.rb
+    - lib/gitlab/ci/pipeline/expression/lexeme/null.rb
+    - lib/gitlab/ci/pipeline/expression/lexeme/or.rb
+    - lib/gitlab/ci/pipeline/expression/lexeme/pattern.rb
+    - lib/gitlab/ci/pipeline/expression/lexeme/string.rb
+    - lib/gitlab/ci/pipeline/expression/lexeme/variable.rb
+    - lib/gitlab/ci/pipeline/expression/lexer.rb
+
+Layout/LineLength:
+  Exclude:
+    - spec/gitlab/ci/pipeline/expression/lexer_spec.rb
+
+Lint/UnusedMethodArgument:
+  Exclude:
+    - lib/gitlab/ci/pipeline/expression/lexeme/null.rb
+    - lib/gitlab/ci/pipeline/expression/lexeme/pattern.rb
+    - lib/gitlab/ci/pipeline/expression/lexeme/string.rb
+
+RSpec/NamedSubject:
+  Exclude:
+    - spec/gitlab/ci/pipeline/expression/lexeme/pattern/regular_expression_spec.rb
+    - spec/gitlab/ci/pipeline/expression/token_spec.rb
+
+RSpec/VerifiedDoubles:
+  Exclude:
+    - spec/gitlab/ci/pipeline/expression/lexeme/and_spec.rb
+    - spec/gitlab/ci/pipeline/expression/lexeme/equals_spec.rb
+    - spec/gitlab/ci/pipeline/expression/lexeme/matches_spec.rb
+    - spec/gitlab/ci/pipeline/expression/lexeme/not_equals_spec.rb
+    - spec/gitlab/ci/pipeline/expression/lexeme/not_matches_spec.rb
+    - spec/gitlab/ci/pipeline/expression/lexeme/or_spec.rb
+
+Style/GuardClause:
+  Exclude:
+    - lib/gitlab/ci/pipeline/expression/lexeme/base.rb
+
+Style/IfUnlessModifier:
+  Exclude:
+    - lib/gitlab/ci/pipeline/expression/lexeme/base.rb
+    - lib/gitlab/ci/pipeline/expression/lexer.rb
+
+Style/RedundantRegexpEscape:
+  Exclude:
+    - lib/gitlab/ci/pipeline/expression/lexeme/not_matches.rb
+    - lib/gitlab/ci/pipeline/expression/lexeme/pattern.rb
+
+Style/RedundantSelf:
+  Exclude:
+    - lib/gitlab/ci/pipeline/expression/lexeme/null.rb

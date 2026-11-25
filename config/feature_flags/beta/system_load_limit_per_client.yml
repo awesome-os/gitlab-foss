@@ -1,0 +1,10 @@
+---
+name: system_load_limit_per_client
+description: Charge each request's system load to its client in the cost_budget Labkit limiter, without blocking.
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/419654
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/269840
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/639758
+milestone: '19.7'
+group: group::pipeline execution
+type: beta
+default_enabled: false

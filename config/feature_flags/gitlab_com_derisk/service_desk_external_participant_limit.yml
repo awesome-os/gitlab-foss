@@ -1,0 +1,11 @@
+---
+name: service_desk_external_participant_limit
+description: Caps the distinct external participants a top-level namespace can add
+  to Service Desk tickets per day
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/632306
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/268802
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/641259
+milestone: '19.7'
+group: group::work items
+type: gitlab_com_derisk
+default_enabled: false

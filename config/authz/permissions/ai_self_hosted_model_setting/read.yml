@@ -1,0 +1,3 @@
+---
+name: read_ai_self_hosted_model_setting
+description: Grants the ability to read instance settings for self-hosted models, such as the AI gateway URL

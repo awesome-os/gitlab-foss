@@ -1,0 +1,4 @@
+# @feature_category: continuous_delivery
+mutation SetEnvironmentToDelete($environment: Environment) {
+  setEnvironmentToDelete(environment: $environment) @client
+}

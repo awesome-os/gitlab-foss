@@ -1,0 +1,10 @@
+---
+name: batch_delete_label_links_on_project_destroy
+description: Batch delete label links during project destroy
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/640081
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/271016
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/641588
+milestone: '19.7'
+group: group::change record
+type: gitlab_com_derisk
+default_enabled: false

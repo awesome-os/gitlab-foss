@@ -1,0 +1,9 @@
+---
+Rails/HasAndBelongsToMany:
+  Exclude:
+    - 'ee/app/models/approval_merge_request_rule.rb'
+    - 'ee/app/models/approval_project_rule.rb'
+    - 'ee/app/models/approval_rules/approval_group_rule.rb'
+    - 'ee/app/models/concerns/approval_rule_like.rb'
+    - 'ee/app/models/ee/protected_branch.rb'
+    - 'ee/app/models/merge_requests/external_status_check.rb'

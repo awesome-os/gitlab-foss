@@ -1,0 +1,10 @@
+---
+name: git_http_skip_gon_variables
+description: Skip building gon variables in the git-HTTP and LFS controllers, which answer Workhorse
+  with JSON or plain text
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/273761
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/issues/642206
+milestone: '19.7'
+group: group::source code
+type: gitlab_com_derisk
+default_enabled: false

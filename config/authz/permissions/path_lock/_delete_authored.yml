@@ -1,0 +1,6 @@
+---
+name: _delete_authored_path_lock
+description: Private permission that gates delete access to path locks authored
+  by the current user. The path lock policy combines this permission with an
+  authorship check to enable the public delete_path_lock permission.
+conditionally_enables: delete_path_lock

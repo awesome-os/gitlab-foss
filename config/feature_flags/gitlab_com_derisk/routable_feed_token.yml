@@ -1,0 +1,10 @@
+---
+name: routable_feed_token
+description: Makes feed tokens routable based on the organization and the user.
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/597457
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/269543
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/640643
+milestone: '19.7'
+group: group::cells infrastructure
+type: gitlab_com_derisk
+default_enabled: false

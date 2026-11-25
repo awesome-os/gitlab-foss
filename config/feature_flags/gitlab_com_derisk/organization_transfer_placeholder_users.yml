@@ -1,0 +1,9 @@
+---
+name: organization_transfer_placeholder_users
+description: Moves import placeholder users and their details when a group is transferred to a new organization.
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/268029
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/641007
+milestone: '19.6'
+group: group::organizations
+type: gitlab_com_derisk
+default_enabled: false

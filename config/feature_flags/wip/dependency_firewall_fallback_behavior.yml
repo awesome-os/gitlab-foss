@@ -1,0 +1,9 @@
+---
+name: dependency_firewall_fallback_behavior
+description: Gates work in progress on fallback behavior for dependency firewall policies until it is complete
+feature_issue_url: https://gitlab.com/groups/gitlab-org/-/work_items/24808
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/272145
+milestone: '19.7'
+group: group::dependency firewall
+type: wip
+default_enabled: false

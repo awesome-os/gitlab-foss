@@ -1,0 +1,9 @@
+---
+name: read_cluster_agent_mapping
+description: Grants the ability to read a cluster agent mapping.
+boundaries:
+  - group
+available_for:
+  - granular_access_token
+permissions:
+  - read_namespace_cluster_agent_mapping

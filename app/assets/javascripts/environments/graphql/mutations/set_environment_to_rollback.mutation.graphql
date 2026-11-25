@@ -1,0 +1,4 @@
+# @feature_category: continuous_delivery
+mutation SetEnvironmentToRollback($environment: Environment) {
+  setEnvironmentToRollback(environment: $environment) @client
+}

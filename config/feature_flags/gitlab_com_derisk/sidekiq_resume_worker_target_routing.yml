@@ -1,0 +1,11 @@
+---
+name: sidekiq_resume_worker_target_routing
+description: Route delayed concurrency-limit resume jobs to the target worker queue
+  and Redis store
+feature_issue_url: https://gitlab.com/gitlab-com/gl-infra/tenant-scale/tenant-services/team/-/work_items/552
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/270947
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/640916
+milestone: '19.6'
+group: group::tenant services
+type: gitlab_com_derisk
+default_enabled: false

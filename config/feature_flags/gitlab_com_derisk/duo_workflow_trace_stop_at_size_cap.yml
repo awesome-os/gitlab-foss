@@ -1,0 +1,10 @@
+---
+name: duo_workflow_trace_stop_at_size_cap
+description: Stops building the session trace download once it passes the size limit.
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/635199
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/272604
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/641230
+milestone: '19.7'
+group: group::agent execution
+type: gitlab_com_derisk
+default_enabled: false

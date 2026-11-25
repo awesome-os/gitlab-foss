@@ -1,0 +1,16 @@
+# Rate limit contract for the AI limiters.
+# Loaded at boot by Gitlab::RateLimit::RuleDocument and checked in CI by
+# `bundle exec rake gitlab:rate_limits:validate`.
+# Schema: gitlab.ratelimit.config.v1 AvailableLimiters, from gitlab-org/protos.
+#
+# A limiter is declared with its description in exactly one file. A later file
+# may list it again with available_properties only.
+available_limiters:
+  applimiter_ai_action:
+    description: Gitlab::ApplicationRateLimiter key ai_action. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_code_suggestions_api_endpoint:
+    description: Gitlab::ApplicationRateLimiter key code_suggestions_api_endpoint. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user

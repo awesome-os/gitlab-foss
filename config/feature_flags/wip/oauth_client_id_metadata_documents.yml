@@ -1,0 +1,12 @@
+---
+name: oauth_client_id_metadata_documents
+description: Lets OAuth clients use a Client ID Metadata Document URL as their client_id
+  in the authorize and token endpoints, resolving it to the OAuth application registered
+  for that URL.
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/585069
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/268912
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/638925
+milestone: '19.7'
+group: group::agent execution
+type: wip
+default_enabled: false

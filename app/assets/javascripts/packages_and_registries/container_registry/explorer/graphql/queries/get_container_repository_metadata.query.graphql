@@ -1,0 +1,13 @@
+# @feature_category: container_registry
+query getContainerRepositoryMetadata(
+  $id: ContainerRepositoryID!
+  $metadataDatabaseEnabled: Boolean!
+) {
+  containerRepository(id: $id) {
+    id
+    tagsCount
+    size @include(if: $metadataDatabaseEnabled)
+    lastPublishedAt @include(if: $metadataDatabaseEnabled)
+    protectionRuleExists
+  }
+}

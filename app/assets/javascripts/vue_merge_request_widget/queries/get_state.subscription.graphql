@@ -1,0 +1,29 @@
+subscription getStateSubscription($issuableId: IssuableID!) {
+  mergeRequestMergeStatusUpdated(issuableId: $issuableId) {
+    ... on MergeRequest {
+      id
+      project {
+        id
+        archived
+        onlyAllowMergeIfPipelineSucceeds
+      }
+      commitCount
+      preparing @gl_introduced(version: "19.6.0")
+      availableAutoMergeStrategies
+      autoMergeEnabled
+      mergeError
+      state
+      draft
+      userPermissions {
+        canMerge
+      }
+      mergeabilityChecks {
+        identifier
+        status
+      }
+      headPipeline {
+        id
+      }
+    }
+  }
+}

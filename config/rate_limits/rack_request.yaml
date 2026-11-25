@@ -1,0 +1,221 @@
+# Rate limit contract for the Rack::Attack request throttles.
+# Loaded at boot by Gitlab::RateLimit::RuleDocument and checked in CI by
+# `bundle exec rake gitlab:rate_limits:validate`.
+# Schema: gitlab.ratelimit.config.v1 AvailableLimiters, from gitlab-org/protos.
+#
+# A limiter is declared with its description in exactly one file. A later file
+# may list it again with available_properties only.
+available_limiters:
+  rack_request:
+    description: >-
+      The general Rack::Attack request throttles: API, web, packages, files, deprecated API, git HTTP,
+      git LFS and dependency proxy, per IP or per requester. Rules match the facts
+      Gitlab::RackAttack::LabkitRateLimit::ClassifiedRequest exposes.
+    available_properties:
+      - ip
+      - remote_ip
+      - requester_id
+      - requester_type
+      - runner_id
+      - aid
+      - path
+      - method
+      - unauthenticated_git_http_project
+      - authenticated_git_http_project
+      - authenticated_git_lfs_project
+      - web_or_frontend
+      - frontend
+      - protected_path
+      - deprecated
+      - runner_jobs
+      - dependency_proxy
+      - packages_api
+      - git_http_non_lfs
+      - bypass
+      - setting_unauthenticated_api
+      - setting_authenticated_api
+      - setting_unauthenticated_web
+      - setting_authenticated_web
+      - setting_unauthenticated_packages
+      - setting_authenticated_packages
+      - setting_unauthenticated_files
+      - setting_authenticated_files
+      - enforce_files_api_rate_limit
+      - setting_unauthenticated_deprecated
+      - setting_authenticated_deprecated
+      - setting_unauthenticated_git_http
+      - setting_authenticated_git_http
+      - setting_authenticated_git_lfs
+      - setting_authenticated_dependency_proxy
+      - setting_authenticated_mcp
+      - setting_protected_paths
+  rack_request_protected_paths:
+    description: >-
+      The protected-path throttles. They overlap the general throttles, so they count in their own
+      limiter.
+    available_properties:
+      - ip
+      - remote_ip
+      - requester_id
+      - requester_type
+      - runner_id
+      - aid
+      - path
+      - method
+      - unauthenticated_git_http_project
+      - authenticated_git_http_project
+      - authenticated_git_lfs_project
+      - web_or_frontend
+      - frontend
+      - protected_path
+      - deprecated
+      - runner_jobs
+      - dependency_proxy
+      - packages_api
+      - git_http_non_lfs
+      - bypass
+      - setting_unauthenticated_api
+      - setting_authenticated_api
+      - setting_unauthenticated_web
+      - setting_authenticated_web
+      - setting_unauthenticated_packages
+      - setting_authenticated_packages
+      - setting_unauthenticated_files
+      - setting_authenticated_files
+      - enforce_files_api_rate_limit
+      - setting_unauthenticated_deprecated
+      - setting_authenticated_deprecated
+      - setting_unauthenticated_git_http
+      - setting_authenticated_git_http
+      - setting_authenticated_git_lfs
+      - setting_authenticated_dependency_proxy
+      - setting_authenticated_mcp
+      - setting_protected_paths
+  rack_request_mcp:
+    description: >-
+      The authenticated MCP throttle. It overlaps the authenticated API throttle, so it counts in its
+      own limiter.
+    available_properties:
+      - ip
+      - remote_ip
+      - requester_id
+      - requester_type
+      - runner_id
+      - aid
+      - path
+      - method
+      - unauthenticated_git_http_project
+      - authenticated_git_http_project
+      - authenticated_git_lfs_project
+      - web_or_frontend
+      - frontend
+      - protected_path
+      - deprecated
+      - runner_jobs
+      - dependency_proxy
+      - packages_api
+      - git_http_non_lfs
+      - bypass
+      - setting_unauthenticated_api
+      - setting_authenticated_api
+      - setting_unauthenticated_web
+      - setting_authenticated_web
+      - setting_unauthenticated_packages
+      - setting_authenticated_packages
+      - setting_unauthenticated_files
+      - setting_authenticated_files
+      - enforce_files_api_rate_limit
+      - setting_unauthenticated_deprecated
+      - setting_authenticated_deprecated
+      - setting_unauthenticated_git_http
+      - setting_authenticated_git_http
+      - setting_authenticated_git_lfs
+      - setting_authenticated_dependency_proxy
+      - setting_authenticated_mcp
+      - setting_protected_paths
+  rack_request_git_project:
+    description: >-
+      The per-project git HTTP and git LFS overrides. They run alongside the instance-wide git rules
+      of rack_request and count by the project override fact.
+    available_properties:
+      - ip
+      - remote_ip
+      - requester_id
+      - requester_type
+      - runner_id
+      - aid
+      - path
+      - method
+      - unauthenticated_git_http_project
+      - authenticated_git_http_project
+      - authenticated_git_lfs_project
+      - web_or_frontend
+      - frontend
+      - protected_path
+      - deprecated
+      - runner_jobs
+      - dependency_proxy
+      - packages_api
+      - git_http_non_lfs
+      - bypass
+      - setting_unauthenticated_api
+      - setting_authenticated_api
+      - setting_unauthenticated_web
+      - setting_authenticated_web
+      - setting_unauthenticated_packages
+      - setting_authenticated_packages
+      - setting_unauthenticated_files
+      - setting_authenticated_files
+      - enforce_files_api_rate_limit
+      - setting_unauthenticated_deprecated
+      - setting_authenticated_deprecated
+      - setting_unauthenticated_git_http
+      - setting_authenticated_git_http
+      - setting_authenticated_git_lfs
+      - setting_authenticated_dependency_proxy
+      - setting_authenticated_mcp
+      - setting_protected_paths
+  cost_budget:
+    description: >-
+      The per-client cost budget: a cost-mode limiter that is charged the duration of each
+      request once it finishes, instead of counting requests. One limiter until labkit has
+      per-rule cost. Its rules live in Gitlab::RateLimit::CostRules and match the same facts
+      as rack_request.
+    available_properties:
+      - ip
+      - remote_ip
+      - requester_id
+      - requester_type
+      - runner_id
+      - aid
+      - path
+      - method
+      - unauthenticated_git_http_project
+      - authenticated_git_http_project
+      - authenticated_git_lfs_project
+      - web_or_frontend
+      - frontend
+      - protected_path
+      - deprecated
+      - runner_jobs
+      - dependency_proxy
+      - packages_api
+      - git_http_non_lfs
+      - bypass
+      - setting_unauthenticated_api
+      - setting_authenticated_api
+      - setting_unauthenticated_web
+      - setting_authenticated_web
+      - setting_unauthenticated_packages
+      - setting_authenticated_packages
+      - setting_unauthenticated_files
+      - setting_authenticated_files
+      - enforce_files_api_rate_limit
+      - setting_unauthenticated_deprecated
+      - setting_authenticated_deprecated
+      - setting_unauthenticated_git_http
+      - setting_authenticated_git_http
+      - setting_authenticated_git_lfs
+      - setting_authenticated_dependency_proxy
+      - setting_authenticated_mcp
+      - setting_protected_paths

@@ -1,0 +1,10 @@
+---
+migration_job_name: RenameStartExportPermissionInGranularScopes
+description: Renames the undefined start_export assignable permission, and the deprecated
+  start_group_export, to create_export in granular scopes.
+feature_category: permissions
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/271490
+milestone: '19.7'
+queued_migration_version: 20261116124733
+gitlab_schema: gitlab_main_org
+finalized_by: # version of the migration that finalized this BBM

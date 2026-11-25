@@ -1,0 +1,5 @@
+---
+# Cop supports --autocorrect.
+Layout/SpaceInsideReferenceBrackets:
+  Exclude:
+    - 'ee/lib/gem_extensions/elasticsearch/model/adapter/multiple/records.rb'

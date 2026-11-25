@@ -1,0 +1,15 @@
+# @feature_category: continuous_delivery
+query getEnvironmentFolder(
+  $environment: NestedLocalEnvironment
+  $scope: String
+  $search: String
+  $perPage: Int
+  $page: Int
+) {
+  folder(environment: $environment, scope: $scope, search: $search, perPage: $perPage, page: $page)
+    @client {
+    activeCount
+    environments
+    stoppedCount
+  }
+}

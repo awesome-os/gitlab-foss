@@ -1,0 +1,6 @@
+---
+# Cop supports --autocorrect.
+Rails/RedundantAllowNil:
+  Exclude:
+    - 'ee/app/models/ee/list.rb'
+    - 'ee/app/models/geo_node.rb'

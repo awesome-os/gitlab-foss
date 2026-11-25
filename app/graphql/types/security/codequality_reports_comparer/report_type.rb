@@ -1,0 +1,42 @@
+# frozen_string_literal: true
+
+module Types
+  module Security
+    module CodequalityReportsComparer
+      # rubocop: disable Graphql/AuthorizeTypes -- Parent node applies authorization
+      class ReportType < BaseObject
+        graphql_name 'CodequalityReportsComparerReport'
+
+        description 'Represents compared code quality report.'
+
+        authorize_granular_token parent_authorizes: :read_job
+
+        field :status,
+          type: CodequalityReportsComparer::StatusEnum,
+          null: false,
+          description: 'Status of report.'
+
+        field :new_errors,
+          type: [CodequalityReportsComparer::DegradationType],
+          null: false,
+          description: 'New code quality degradations.'
+
+        field :resolved_errors,
+          type: [CodequalityReportsComparer::DegradationType],
+          null: true,
+          description: 'Resolved code quality degradations.'
+
+        field :existing_errors,
+          type: [CodequalityReportsComparer::DegradationType],
+          null: true,
+          description: 'Code quality degradations found in both the base and head reports.'
+
+        field :summary,
+          type: CodequalityReportsComparer::SummaryType,
+          null: false,
+          description: 'Codequality report summary.'
+      end
+      # rubocop: enable Graphql/AuthorizeTypes
+    end
+  end
+end

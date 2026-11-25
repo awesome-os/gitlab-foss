@@ -1,0 +1,10 @@
+---
+name: group_child_serializer_preload_group_policies
+description: Preload group policy data for the group rows rendered by GroupChildSerializer
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/issues/640053
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/271773
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/issues/640716
+milestone: '19.7'
+group: group::organizations
+type: gitlab_com_derisk
+default_enabled: false

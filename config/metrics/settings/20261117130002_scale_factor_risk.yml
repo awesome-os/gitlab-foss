@@ -1,0 +1,22 @@
+---
+key_path: settings.database.scale_factor_risk
+description: Whether, with a global vacuum scale factor of 0.1 or more, one of the largest tables (10 GiB or more including indexes) still runs with a scale factor of 0.1 or more, which delays autovacuum until many dead tuples accumulate.
+product_group: self_managed_database
+product_categories:
+- database
+value_type: boolean
+status: active
+milestone: "19.7"
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/271933
+time_frame: none
+data_source: system
+data_category: optional
+instrumentation_class: DatabaseDiagnosticsFindingMetric
+options:
+  check: autovacuum_settings
+  finding_code: scale_factor_risk
+performance_indicator_type: []
+tiers:
+- free
+- premium
+- ultimate

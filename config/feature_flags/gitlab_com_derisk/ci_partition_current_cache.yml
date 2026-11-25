@@ -1,0 +1,10 @@
+---
+name: ci_partition_current_cache
+description: Cache the current CI partition id in process memory for a minute in Ci::PartitionableFinder.find_by_id
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/640053
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/272748
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/641290
+milestone: '19.7'
+group: group::ci platform
+type: gitlab_com_derisk
+default_enabled: false

@@ -1,0 +1,5 @@
+---
+# Cop supports --autocorrect.
+Rails/HttpPositionalArguments:
+  Exclude:
+    - 'ee/spec/lib/omni_auth/strategies/group_saml_spec.rb'

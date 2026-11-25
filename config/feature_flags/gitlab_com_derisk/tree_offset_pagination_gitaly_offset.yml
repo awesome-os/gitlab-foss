@@ -1,0 +1,10 @@
+---
+name: tree_offset_pagination_gitaly_offset
+description: Read later pages of repository trees with a Gitaly offset instead of fetching the whole tree
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/634420
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/263983
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/634395
+milestone: '19.7'
+group: group::change record
+type: gitlab_com_derisk
+default_enabled: false

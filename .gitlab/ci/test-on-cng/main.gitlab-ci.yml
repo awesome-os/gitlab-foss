@@ -1,0 +1,206 @@
+# This pipeline runs E2E tests against CNG build which is deployed with Caproni on a job local k3d Kubernetes cluster
+
+include:
+  - local: .gitlab/ci/cng/main.gitlab-ci.yml
+  - local: .gitlab/ci/qa-common/main.gitlab-ci.yml
+  - local: .gitlab/ci/qa-common/variables.gitlab-ci.yml
+  - local: .gitlab/ci/qa-common/rules.gitlab-ci.yml
+  - local: .gitlab/ci/test-on-cng/caproni.gitlab-ci.yml
+
+# ==========================================
+# Pre stage
+# ==========================================
+build-cng-env:
+  stage: .pre
+  extends: .build-cng-env
+  needs:
+    - pipeline: $PARENT_PIPELINE_ID
+      job: clone-gitlab-repo
+  variables:
+    CNG_COMMIT_SHA: $GITLAB_CNG_MIRROR_REF
+    CNG_ACCESS_TOKEN: $CNG_MIRROR_ACCESS_TOKEN
+    CNG_SKIP_REDUNDANT_JOBS: "true"
+    GIT_STRATEGY: none
+  before_script:
+    # dotenv from needs outranks job variables, so pick the tag here
+    - |
+      if [[ "$BABEL_ENV" == "istanbul" ]]; then
+        export GLCI_ASSETS_IMAGE_TAG="$GLCI_ISTANBUL_ASSETS_IMAGE_TAG"
+        # image tags ignore which assets are inside, so keep these images separate
+        export CONTAINER_VERSION_SUFFIX="${CI_PROJECT_PATH_SLUG}-istanbul"
+      fi
+    - |
+      if [[ -n "$GLCI_RAILS_IMAGE_TAG_SUFFIX" ]]; then
+        # image tags ignore the Gemfile too, so keep non-default Gemfile images separate
+        export CONTAINER_VERSION_SUFFIX="${CONTAINER_VERSION_SUFFIX:-$CI_PROJECT_PATH_SLUG}${GLCI_RAILS_IMAGE_TAG_SUFFIX}"
+      fi
+    - !reference [.build-cng-env, before_script]
+  # when running in backport, override CNG_COMMIT so it defaults to release branch instead
+  # this ensures images are built using same stable release branch in CNG repository
+  # this is needed in case CNG repository backports some fixes related to specific release
+  rules:
+    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME =~ /^[\d-]+-stable(-ee|-jh)?$/
+      variables:
+        CNG_COMMIT_SHA: ''
+    - when: always
+
+build-cng:
+  stage: .pre
+  extends: .build-cng
+  needs: [build-cng-env]
+  variables:
+    # use larger runner for complex rails build jobs
+    HIGH_CAPACITY_RUNNER_TAG: e2e
+    RAILS_SPLIT_ASSETS_BUILD: "true"
+    # MRs on the next Ruby can't reuse the -master cache's layers, but the ruby-next schedule's cache has them
+    EXTRA_FALLBACK_CACHE_REF_SLUG: ruby-next
+  # CNG treats any set GITLAB_BUNDLE_GEMFILE (even empty) as a custom Gemfile, so only pass it when needed.
+  # MR builds don't write a per-branch build cache: exporting it costs more than later builds of the branch gain.
+  # They still read the -master and ruby-next caches, which the schedules write.
+  rules:
+    - if: '$PARENT_PIPELINE_SOURCE == "merge_request_event" && $GLCI_RAILS_BUNDLE_GEMFILE && $GLCI_RAILS_BUNDLE_GEMFILE != "Gemfile"'
+      variables:
+        GITLAB_BUNDLE_GEMFILE: $GLCI_RAILS_BUNDLE_GEMFILE
+        CACHE_DOCKER_BUILD: "false"
+    - if: '$PARENT_PIPELINE_SOURCE == "merge_request_event"'
+      variables:
+        CACHE_DOCKER_BUILD: "false"
+    - if: '$GLCI_RAILS_BUNDLE_GEMFILE && $GLCI_RAILS_BUNDLE_GEMFILE != "Gemfile"'
+      variables:
+        GITLAB_BUNDLE_GEMFILE: $GLCI_RAILS_BUNDLE_GEMFILE
+    - when: on_success
+
+# ==========================================
+# Test stage
+# ==========================================
+# No QA_SCENARIO: run_e2e_specs defaults to Test::Instance::All
+cng-instance:
+  extends: .caproni-test
+  allow_failure: false
+  parallel: 10
+  variables:
+    QA_RUN_IN_PARALLEL: "true"
+    QA_PARALLEL_PROCESSES: 4
+    E2E_CODE_PATHS_MAPPING: "true"
+
+cng-instance-ff-inverse:
+  extends: .caproni-test
+  allow_failure: false
+  variables:
+    QA_RUN_IN_PARALLEL: "true"
+    QA_PARALLEL_PROCESSES: 4
+    QA_FEATURE_FLAGS: $FEATURE_FLAGS
+  rules:
+    - !reference [.rules:test:feature-flags-set, rules]
+
+cng-registry:
+  extends: .caproni-test
+  allow_failure: false
+  variables:
+    QA_SCENARIO: Test::Integration::Registry
+    QA_RUN_IN_PARALLEL: "false"
+    E2E_CODE_PATHS_MAPPING: "true"
+
+cng-secrets-manager:
+  extends: .caproni-test
+  allow_failure: false
+  variables:
+    QA_SCENARIO: Test::Integration::SecretsManager
+    QA_RSPEC_TAGS: --tag secrets_manager
+    QA_RUN_IN_PARALLEL: "true"
+    QA_PARALLEL_PROCESSES: 4
+    QA_FEATURE_FLAGS: "secrets_manager_api_access=enabled"
+    E2E_CODE_PATHS_MAPPING: "true"
+  before_script:
+    - !reference [.caproni-test, before_script]
+    # The *_ci_access_failure specs pass with OpenBao unreachable, so the route is asserted here
+    - curl --fail --silent --show-error --retry 5 --retry-all-errors --retry-delay 5 "http://openbao.${GITLAB_DOMAIN}/v1/sys/health"
+
+cng-relative-url:
+  extends: .caproni-test
+  allow_failure: false
+  variables:
+    QA_SCENARIO: Test::Instance::Smoke
+    QA_RUN_IN_PARALLEL: "true"
+    QA_PARALLEL_PROCESSES: 4
+    QA_RELATIVE_URL_ROOT: "/relative"
+
+# Runs login_via_oauth_and_oidc_with_gitlab_as_idp_spec.rb against the CNG consumer that
+# caproni.oidc-consumer.yaml deploys next to the instance under test
+# Left out of pipeline_mappings: selection reports its only spec as pending
+cng-oauth:
+  extends: .caproni-test
+  variables:
+    QA_TESTS: ""
+    QA_SCENARIO: Test::Integration::OAuth
+    QA_RSPEC_TAGS: --tag oauth
+    QA_RUN_IN_PARALLEL: "false"
+    QA_GITHUB_OAUTH_APP_ID: $QA_GITHUB_OAUTH_APP_ID
+    QA_GITHUB_OAUTH_APP_SECRET: $QA_GITHUB_OAUTH_APP_SECRET
+
+# Runs the Duo Agent Platform flows against the AI Gateway and agentic-mock Duo Workflow
+# Service that caproni.duo-agent-platform.yaml deploys. Not a shadow: the omnibus
+# duo-agent-platform job runs the same scenario, but is manual in most merge requests.
+cng-duo-agent-platform:
+  extends:
+    - .caproni-test
+    - .rules:test:duo-agent-platform
+  allow_failure: false
+  variables:
+    QA_SCENARIO: QA::EE::Scenario::Test::Integration::DuoAgentPlatform
+    QA_RSPEC_TAGS: --tag duo_agent_platform
+    QA_RUN_IN_PARALLEL: "false"
+    # On the host network, GitLab's address is the job container's own, and the flow
+    # sandbox refuses to connect to its own addresses
+    QA_DOCKER_NETWORK: bridge
+
+# ==========================================
+# Post test stage
+# ==========================================
+e2e-test-report:
+  extends: .rules:report:allure-report
+  variables:
+    ALLURE_REPORT_RESULTS_GLOB: "qa/tmp/allure-results"
+
+notify-slack:
+  extends:
+    - .notify-slack
+    - .rules:report:process-results
+
+upload-test-runtime-data:
+  extends:
+    - .upload-test-runtime-data
+    - .rules:report:upload-test-runtime-data
+
+export-code-paths-mapping:
+  extends:
+    - .export-code-paths-mapping
+  needs:
+    - job: cng-instance
+      optional: true
+    - job: cng-registry
+      optional: true
+    - job: cng-secrets-manager
+      optional: true
+
+export-frontend-code-paths-mapping:
+  extends:
+    - .export-frontend-code-paths-mapping
+  needs:
+    - job: cng-instance
+      optional: true
+    - job: cng-registry
+      optional: true
+    - job: cng-secrets-manager
+      optional: true
+
+process-e2e-coverage:
+  extends:
+    - .process-e2e-coverage
+  needs:
+    - job: cng-instance
+      optional: true
+    - job: cng-registry
+      optional: true
+    - job: cng-secrets-manager
+      optional: true

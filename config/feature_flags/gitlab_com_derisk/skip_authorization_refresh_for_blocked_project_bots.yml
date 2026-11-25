@@ -1,0 +1,11 @@
+---
+name: skip_authorization_refresh_for_blocked_project_bots
+description: Skip project_authorizations refreshes for blocked project and group bot
+  users, the way they are skipped for blocked humans
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/639760
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/270275
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/639762
+milestone: '19.6'
+group: group::authorization
+type: gitlab_com_derisk
+default_enabled: false

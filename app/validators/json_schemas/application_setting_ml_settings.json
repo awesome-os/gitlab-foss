@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "Application settings for the ml_settings JsonB column",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "ml_experiment_tracking_run_retention_days": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 36500,
+      "description": "Number of days to keep experiment tracking runs that no model version uses. 0 keeps all runs"
+    },
+    "ml_experiment_tracking_run_retention_enabled_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Time the retention period last changed from 0 to a positive value. Set by the application, not exposed"
+    }
+  }
+}

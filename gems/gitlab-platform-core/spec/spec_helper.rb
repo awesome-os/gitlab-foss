@@ -1,0 +1,23 @@
+# frozen_string_literal: true
+
+require 'rspec-parameterized'
+
+require 'gitlab/platform/core/all'
+
+RSpec.configure do |config|
+  # Matches the monolith (spec/support/rspec.rb). RSpec defaults this to true,
+  # which locks a mutex on every `let` read; the popen streaming specs read a
+  # `let` once per output line from a reader thread, which makes that pathological.
+  # See https://gitlab.com/gitlab-org/gitlab/-/issues/379686
+  config.threadsafe = false
+
+  # Enable flags like --only-failures and --next-failure
+  config.example_status_persistence_file_path = ".rspec_status"
+
+  # Disable RSpec exposing methods globally on `Module` and `main`
+  config.disable_monkey_patching!
+
+  config.expect_with :rspec do |c|
+    c.syntax = :expect
+  end
+end

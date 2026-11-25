@@ -1,0 +1,22 @@
+---
+key_path: settings.database.tables_autovacuum_disabled
+description: Whether a table disables autovacuum through its storage parameters, so its dead tuples are never reclaimed automatically.
+product_group: self_managed_database
+product_categories:
+- database
+value_type: boolean
+status: active
+milestone: "19.7"
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/271933
+time_frame: none
+data_source: system
+data_category: optional
+instrumentation_class: DatabaseDiagnosticsFindingMetric
+options:
+  check: autovacuum_settings
+  finding_code: tables_autovacuum_disabled
+performance_indicator_type: []
+tiers:
+- free
+- premium
+- ultimate

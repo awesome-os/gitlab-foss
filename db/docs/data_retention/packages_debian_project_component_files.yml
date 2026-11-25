@@ -1,0 +1,11 @@
+---
+# Generated index files; Packages::Debian::GenerateDistributionService destroys outdated
+# ones on each regeneration. Also removed with the project.
+exclude:
+  reason: transient_data
+retention_window: -1
+enforcement_strategy: none
+enforcing: false
+pause_mechanism:
+  type: none
+work_item: https://gitlab.com/gitlab-org/gitlab/-/work_items/629753

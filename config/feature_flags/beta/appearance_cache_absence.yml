@@ -1,0 +1,11 @@
+---
+name: appearance_cache_absence
+description: Cache the absence of an appearances row so that Appearance.current stops
+  querying the table on every call. Disable to restore the uncached lookup.
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/issues/640053
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/271223
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/640713
+milestone: '19.7'
+group: group::engagement
+type: beta
+default_enabled: true

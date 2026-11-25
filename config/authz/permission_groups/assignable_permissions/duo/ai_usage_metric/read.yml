@@ -1,0 +1,11 @@
+---
+name: read_ai_usage_metric
+description: Grants the ability to read GitLab Duo usage metrics
+available_for:
+  - granular_access_token
+permissions:
+  - read_enterprise_ai_analytics
+  - read_pro_ai_analytics
+boundaries:
+  - group
+  - project

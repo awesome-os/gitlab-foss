@@ -1,0 +1,10 @@
+---
+name: pipeline_name_filter
+description: Filter project pipelines by exact name. Disabling restores the previous REST query and makes GraphQL (!261346) ignore `name`.
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/issues/376097
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/262458
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/633306
+milestone: '19.6'
+group: group::pipeline execution
+type: gitlab_com_derisk
+default_enabled: false

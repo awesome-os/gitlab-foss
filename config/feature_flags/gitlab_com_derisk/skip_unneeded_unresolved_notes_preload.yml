@@ -1,0 +1,11 @@
+---
+name: skip_unneeded_unresolved_notes_preload
+description: Preload unresolved notes on REST merge request lists only for projects
+  that require resolved threads
+feature_issue_url:
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/272224
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/642279
+milestone: '19.7'
+group: group::code review
+type: gitlab_com_derisk
+default_enabled: false

@@ -1,0 +1,1077 @@
+# Rate limit contract for the Gitlab::ApplicationRateLimiter keys no group has claimed yet.
+# Loaded at boot by Gitlab::RateLimit::RuleDocument and checked in CI by
+# `bundle exec rake gitlab:rate_limits:validate`.
+# Schema: gitlab.ratelimit.config.v1 AvailableLimiters, from gitlab-org/protos.
+#
+# A limiter is declared with its description in exactly one file. A later file
+# may list it again with available_properties only.
+# Move a limiter to its group's file when that group claims it.
+available_limiters:
+  applimiter_auto_rollback_deployment:
+    description: Gitlab::ApplicationRateLimiter key auto_rollback_deployment. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - environment
+  applimiter_autocomplete_users:
+    description: Gitlab::ApplicationRateLimiter key autocomplete_users. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_autocomplete_users_unauthenticated:
+    description: Gitlab::ApplicationRateLimiter key autocomplete_users_unauthenticated. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - ip
+  applimiter_bitbucket_server_import:
+    description: Gitlab::ApplicationRateLimiter key bitbucket_server_import. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_bulk_delete_todos:
+    description: Gitlab::ApplicationRateLimiter key bulk_delete_todos. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_bulk_import:
+    description: Gitlab::ApplicationRateLimiter key bulk_import. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_ci_config_cache_entries_per_user:
+    description: Gitlab::ApplicationRateLimiter key ci_config_cache_entries_per_user. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - rate_limit_enforced
+  applimiter_ci_job_processed_subscription:
+    description: Gitlab::ApplicationRateLimiter key ci_job_processed_subscription. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - project
+  applimiter_ci_lint:
+    description: Gitlab::ApplicationRateLimiter key ci_lint. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_ci_minutes_usage_projects_per_hour:
+    description: Gitlab::ApplicationRateLimiter key ci_minutes_usage_projects_per_hour. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_ci_minutes_usage_projects_per_minute:
+    description: Gitlab::ApplicationRateLimiter key ci_minutes_usage_projects_per_minute. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_ci_pipeline_statuses_subscription:
+    description: Gitlab::ApplicationRateLimiter key ci_pipeline_statuses_subscription. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - project
+  applimiter_click_house_read_bytes_by_user:
+    description: Gitlab::ApplicationRateLimiter key click_house_read_bytes_by_user. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - rate_limit_enforced
+  applimiter_click_house_read_rows_by_user:
+    description: Gitlab::ApplicationRateLimiter key click_house_read_rows_by_user. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - rate_limit_enforced
+  applimiter_click_house_duration_s_by_user:
+    description: Gitlab::ApplicationRateLimiter key click_house_duration_s_by_user. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - rate_limit_enforced
+  applimiter_collaborative_editing_update:
+    description: Gitlab::ApplicationRateLimiter key collaborative_editing_update. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - document_key
+  applimiter_context_commits_write:
+    description: Gitlab::ApplicationRateLimiter key context_commits_write. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_collaborative_editing_update_by_user:
+    description: Gitlab::ApplicationRateLimiter key collaborative_editing_update_by_user. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_collaborative_editing_bytes_by_user:
+    description: Gitlab::ApplicationRateLimiter key collaborative_editing_bytes_by_user. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_create_organization_api:
+    description: Gitlab::ApplicationRateLimiter key create_organization_api. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_cross_reference_checks:
+    description: Gitlab::ApplicationRateLimiter key cross_reference_checks. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - namespace
+      - rate_limit_enforced
+  applimiter_delete_all_todos:
+    description: Gitlab::ApplicationRateLimiter key delete_all_todos. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_delete_merged_branches:
+    description: Gitlab::ApplicationRateLimiter key delete_merged_branches. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - rate_limit_enforced
+  applimiter_deployment_delete:
+    description: Gitlab::ApplicationRateLimiter key deployment_delete. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_discussions_resolve:
+    description: Gitlab::ApplicationRateLimiter key discussions_resolve. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_draft_notes_create:
+    description: Gitlab::ApplicationRateLimiter key draft_notes_create. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_downstream_pipeline_trigger:
+    description: Gitlab::ApplicationRateLimiter key downstream_pipeline_trigger. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - project
+      - user
+      - sha
+  applimiter_environment_delete_rows:
+    description: Gitlab::ApplicationRateLimiter key environment_delete_rows. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - rate_limit_enforced
+  applimiter_error_tracking_sentry_cache_entries_per_project:
+    description: Gitlab::ApplicationRateLimiter key error_tracking_sentry_cache_entries_per_project. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - project
+      - rate_limit_enforced
+  applimiter_error_tracking_sentry_cache_entries_per_user:
+    description: Gitlab::ApplicationRateLimiter key error_tracking_sentry_cache_entries_per_user. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - project
+      - rate_limit_enforced
+  applimiter_feature_flag_user_list_write_bytes:
+    description: Gitlab::ApplicationRateLimiter key feature_flag_user_list_write_bytes. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - rate_limit_enforced
+  applimiter_feature_library_search:
+    description: Gitlab::ApplicationRateLimiter key feature_library_search. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_feature_library_catalog:
+    description: Gitlab::ApplicationRateLimiter key feature_library_catalog. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_fetch_google_ip_list:
+    description: Gitlab::ApplicationRateLimiter key fetch_google_ip_list. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - scope
+  applimiter_fogbugz_import:
+    description: Gitlab::ApplicationRateLimiter key fogbugz_import. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_geo_proxy:
+    description: Gitlab::ApplicationRateLimiter key geo_proxy. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - ip
+  applimiter_git_push_per_project:
+    description: Gitlab::ApplicationRateLimiter key git_push_per_project. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - project
+  applimiter_gitea_import:
+    description: Gitlab::ApplicationRateLimiter key gitea_import. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_github_gists_import:
+    description: Gitlab::ApplicationRateLimiter key github_gists_import. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_gitlab_shell_operation:
+    description: Gitlab::ApplicationRateLimiter key gitlab_shell_operation. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - action
+      - repo_path
+      - user
+      - key
+      - ip
+  applimiter_gitlab_shell_operation_per_actor:
+    description: Gitlab::ApplicationRateLimiter key gitlab_shell_operation_per_actor. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - deploy_key
+      - deploy_token
+  applimiter_glql:
+    description: Gitlab::ApplicationRateLimiter key glql. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - query_sha
+  applimiter_glql_db_seconds_by_query_sha:
+    description: Gitlab::ApplicationRateLimiter key glql_db_seconds_by_query_sha. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - query_sha
+  applimiter_glql_db_seconds_by_user:
+    description: Gitlab::ApplicationRateLimiter key glql_db_seconds_by_user. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_glql_db_seconds_by_ip:
+    description: Gitlab::ApplicationRateLimiter key glql_db_seconds_by_ip. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - ip
+  applimiter_glql_duo_db_seconds_by_user:
+    description: Gitlab::ApplicationRateLimiter key glql_duo_db_seconds_by_user. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_graphql_participant_fields:
+    description: Gitlab::ApplicationRateLimiter key graphql_participant_fields. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - ip
+      - rate_limit_enforced
+  applimiter_group_api:
+    description: Gitlab::ApplicationRateLimiter key group_api. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - ip
+  applimiter_group_archive_unarchive_api:
+    description: Gitlab::ApplicationRateLimiter key group_archive_unarchive_api. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - ip
+  applimiter_group_delete_api:
+    description: Gitlab::ApplicationRateLimiter key group_delete_api. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_group_download_export:
+    description: Gitlab::ApplicationRateLimiter key group_download_export. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - group
+  applimiter_group_export:
+    description: Gitlab::ApplicationRateLimiter key group_export. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_group_hooks_create:
+    description: Gitlab::ApplicationRateLimiter key group_hooks_create. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - group
+      - user
+  applimiter_group_import:
+    description: Gitlab::ApplicationRateLimiter key group_import. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_group_invited_groups_api:
+    description: Gitlab::ApplicationRateLimiter key group_invited_groups_api. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - ip
+  applimiter_group_permanent_delete_api:
+    description: Gitlab::ApplicationRateLimiter key group_permanent_delete_api. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_group_projects_api:
+    description: Gitlab::ApplicationRateLimiter key group_projects_api. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - ip
+  applimiter_group_relations_export:
+    description: Gitlab::ApplicationRateLimiter key group_relations_export. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - group
+  applimiter_group_relations_export_download:
+    description: Gitlab::ApplicationRateLimiter key group_relations_export_download. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - group
+  applimiter_group_shared_groups_api:
+    description: Gitlab::ApplicationRateLimiter key group_shared_groups_api. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - ip
+  applimiter_groups_api:
+    description: Gitlab::ApplicationRateLimiter key groups_api. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - ip
+  applimiter_groups_create:
+    description: Gitlab::ApplicationRateLimiter key groups_create. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_import_source_user_notification:
+    description: Gitlab::ApplicationRateLimiter key import_source_user_notification. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - import_source_user
+  applimiter_issuable_csv_export:
+    description: Gitlab::ApplicationRateLimiter key issuable_csv_export. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_issuable_csv_import:
+    description: Gitlab::ApplicationRateLimiter key issuable_csv_import. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_issues_create:
+    description: Gitlab::ApplicationRateLimiter key issues_create. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - project
+      - user
+      - external_author
+  applimiter_work_item_move:
+    description: Gitlab::ApplicationRateLimiter key work_item_move. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - rate_limit_enforced
+  applimiter_jobs_index:
+    description: Gitlab::ApplicationRateLimiter key jobs_index. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_label_delete:
+    description: Gitlab::ApplicationRateLimiter key label_delete. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - rate_limit_enforced
+  applimiter_large_blob_download:
+    description: Gitlab::ApplicationRateLimiter key large_blob_download. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - project
+  applimiter_markdown_upload_bytes:
+    description: Gitlab::ApplicationRateLimiter key markdown_upload_bytes. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - ip
+      - rate_limit_enforced
+  applimiter_members_delete:
+    description: Gitlab::ApplicationRateLimiter key members_delete. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - project
+      - group
+      - user
+  applimiter_merge_request_diff_download:
+    description: Gitlab::ApplicationRateLimiter key merge_request_diff_download. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - ip
+      - rate_limit_enforced
+  applimiter_merge_request_diffs_page:
+    description: Gitlab::ApplicationRateLimiter key merge_request_diffs_page. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - ip
+      - rate_limit_enforced
+  applimiter_merge_request_diff_resources:
+    description: Gitlab::ApplicationRateLimiter key merge_request_diff_resources. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - ip
+      - rate_limit_enforced
+  applimiter_merge_request_notes_index_unauthenticated:
+    description: Gitlab::ApplicationRateLimiter key merge_request_notes_index_unauthenticated. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - ip
+      - rate_limit_enforced
+  applimiter_merge_requests_create:
+    description: Gitlab::ApplicationRateLimiter key merge_requests_create. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_merge_requests_merge_ref:
+    description: Gitlab::ApplicationRateLimiter key merge_requests_merge_ref. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - ip
+  applimiter_merge_requests_read_diffs:
+    description: Gitlab::ApplicationRateLimiter key merge_requests_read_diffs. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - ip
+      - rate_limit_enforced
+  applimiter_merge_requests_rebase:
+    description: Gitlab::ApplicationRateLimiter key merge_requests_rebase. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_merge_requests_update:
+    description: Gitlab::ApplicationRateLimiter key merge_requests_update. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - rate_limit_enforced
+  applimiter_metric_definitions_download:
+    description: Gitlab::ApplicationRateLimiter key metric_definitions_download. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - ip
+      - rate_limit_enforced
+  applimiter_milestone_destroy:
+    description: Gitlab::ApplicationRateLimiter key milestone_destroy. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - rate_limit_enforced
+  applimiter_mobile_push_notifications:
+    description: Gitlab::ApplicationRateLimiter key mobile_push_notifications. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_namespace_exists:
+    description: Gitlab::ApplicationRateLimiter key namespace_exists. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_namespace_work_item_changes_broadcast:
+    description: Gitlab::ApplicationRateLimiter key namespace_work_item_changes_broadcast. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - namespace
+  applimiter_notes_create:
+    description: Gitlab::ApplicationRateLimiter key notes_create. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_notes_create_by_external_author:
+    description: Gitlab::ApplicationRateLimiter key notes_create_by_external_author. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - project
+      - external_author
+  applimiter_notes_update:
+    description: Gitlab::ApplicationRateLimiter key notes_update. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_notification_emails:
+    description: Gitlab::ApplicationRateLimiter key notification_emails. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - project
+      - group
+      - user
+  applimiter_observability_bff_session:
+    description: Gitlab::ApplicationRateLimiter key observability_bff_session. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_offline_export:
+    description: Gitlab::ApplicationRateLimiter key offline_export. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_offline_import:
+    description: Gitlab::ApplicationRateLimiter key offline_import. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_offset_pagination_count_cache_write:
+    description: Gitlab::ApplicationRateLimiter key offset_pagination_count_cache_write. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - scope
+  applimiter_organization_user_create:
+    description: Gitlab::ApplicationRateLimiter key organization_user_create. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_package_final_store_path_authorize:
+    description: Gitlab::ApplicationRateLimiter key package_final_store_path_authorize. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - deploy_token
+      - rate_limit_enforced
+  applimiter_pages_domain_create:
+    description: Gitlab::ApplicationRateLimiter key pages_domain_create. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - rate_limit_enforced
+  applimiter_pages_domain_verify:
+    description: Gitlab::ApplicationRateLimiter key pages_domain_verify. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - rate_limit_enforced
+  applimiter_organization_user_delete:
+    description: Gitlab::ApplicationRateLimiter key organization_user_delete. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_organization_user_list:
+    description: Gitlab::ApplicationRateLimiter key organization_user_list. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_organization_user_update:
+    description: Gitlab::ApplicationRateLimiter key organization_user_update. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_permanent_email_failure:
+    description: Gitlab::ApplicationRateLimiter key permanent_email_failure. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - email
+  applimiter_phone_verification_send_code:
+    description: Gitlab::ApplicationRateLimiter key phone_verification_send_code. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_phone_verification_verify_code:
+    description: Gitlab::ApplicationRateLimiter key phone_verification_verify_code. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_pipeline_cancel:
+    description: Gitlab::ApplicationRateLimiter key pipeline_cancel. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - ci_pipeline
+  applimiter_pipeline_delete:
+    description: Gitlab::ApplicationRateLimiter key pipeline_delete. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - ci_pipeline
+  applimiter_pipeline_cancel_per_project:
+    description: Gitlab::ApplicationRateLimiter key pipeline_cancel_per_project. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - project
+  applimiter_pipeline_retry:
+    description: Gitlab::ApplicationRateLimiter key pipeline_retry. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - ci_pipeline
+  applimiter_pipeline_retry_per_project:
+    description: Gitlab::ApplicationRateLimiter key pipeline_retry_per_project. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - project
+  applimiter_job_retry:
+    description: Gitlab::ApplicationRateLimiter key job_retry. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - ci_build
+  applimiter_job_retry_per_project:
+    description: Gitlab::ApplicationRateLimiter key job_retry_per_project. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - project
+  applimiter_job_play:
+    description: Gitlab::ApplicationRateLimiter key job_play. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - ci_build
+  applimiter_job_play_per_project:
+    description: Gitlab::ApplicationRateLimiter key job_play_per_project. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - project
+  applimiter_pipeline_delete_per_project:
+    description: Gitlab::ApplicationRateLimiter key pipeline_delete_per_project. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - project
+  applimiter_job_erase:
+    description: Gitlab::ApplicationRateLimiter key job_erase. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - ci_build
+  applimiter_job_erase_per_project:
+    description: Gitlab::ApplicationRateLimiter key job_erase_per_project. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - project
+  applimiter_job_cancel:
+    description: Gitlab::ApplicationRateLimiter key job_cancel. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - ci_build
+  applimiter_job_cancel_per_project:
+    description: Gitlab::ApplicationRateLimiter key job_cancel_per_project. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - project
+  applimiter_pages_deployments_api:
+    description: Gitlab::ApplicationRateLimiter key pages_deployments_api. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - rate_limit_enforced
+  applimiter_pages_deployments_api_unauthenticated:
+    description: Gitlab::ApplicationRateLimiter key pages_deployments_api_unauthenticated. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - ip
+      - rate_limit_enforced
+  applimiter_pipelines_create:
+    description: Gitlab::ApplicationRateLimiter key pipelines_create. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - project
+      - user
+      - sha
+  applimiter_pipelines_created_per_user:
+    description: Gitlab::ApplicationRateLimiter key pipelines_created_per_user. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_placeholder_reassignment:
+    description: Gitlab::ApplicationRateLimiter key placeholder_reassignment. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_play_pipeline_schedule:
+    description: Gitlab::ApplicationRateLimiter key play_pipeline_schedule. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - ci_pipeline_schedule
+  applimiter_pipeline_schedule_management:
+    description: Gitlab::ApplicationRateLimiter key pipeline_schedule_management. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_pipeline_trigger_management:
+    description: Gitlab::ApplicationRateLimiter key pipeline_trigger_management. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_project_api:
+    description: Gitlab::ApplicationRateLimiter key project_api. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - ip
+  applimiter_project_delete_api:
+    description: Gitlab::ApplicationRateLimiter key project_delete_api. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_project_download_export:
+    description: Gitlab::ApplicationRateLimiter key project_download_export. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - project
+  applimiter_project_export:
+    description: Gitlab::ApplicationRateLimiter key project_export. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_project_export_by_root_namespace:
+    description: Gitlab::ApplicationRateLimiter key project_export_by_root_namespace. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - namespace
+      - rate_limit_enforced
+  applimiter_project_fork_sync:
+    description: Gitlab::ApplicationRateLimiter key project_fork_sync. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - project
+      - user
+  applimiter_project_generate_new_export:
+    description: Gitlab::ApplicationRateLimiter key project_generate_new_export. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_project_hooks_create:
+    description: Gitlab::ApplicationRateLimiter key project_hooks_create. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - project
+      - user
+  applimiter_project_import:
+    description: Gitlab::ApplicationRateLimiter key project_import. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - action
+  applimiter_project_invited_groups_api:
+    description: Gitlab::ApplicationRateLimiter key project_invited_groups_api. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - ip
+  applimiter_project_members_api:
+    description: Gitlab::ApplicationRateLimiter key project_members_api. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - ip
+  applimiter_project_permanent_delete_api:
+    description: Gitlab::ApplicationRateLimiter key project_permanent_delete_api. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_project_relations_export:
+    description: Gitlab::ApplicationRateLimiter key project_relations_export. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - project
+  applimiter_project_relations_export_download:
+    description: Gitlab::ApplicationRateLimiter key project_relations_export_download. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - project
+  applimiter_project_repositories_archive:
+    description: Gitlab::ApplicationRateLimiter key project_repositories_archive. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - project
+      - user
+  applimiter_repositories_archive:
+    description: Gitlab::ApplicationRateLimiter key repositories_archive. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - rate_limit_enforced
+  applimiter_repositories_archive_unauthenticated:
+    description: Gitlab::ApplicationRateLimiter key repositories_archive_unauthenticated. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - ip
+      - rate_limit_enforced
+  applimiter_project_repositories_blame:
+    description: Gitlab::ApplicationRateLimiter key project_repositories_blame. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - project
+  applimiter_project_repositories_blame_unauthenticated:
+    description: Gitlab::ApplicationRateLimiter key project_repositories_blame_unauthenticated. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - ip
+  applimiter_project_repositories_blobs_batch:
+    description: Gitlab::ApplicationRateLimiter key project_repositories_blobs_batch. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - project
+      - user
+  applimiter_project_repositories_compare:
+    description: Gitlab::ApplicationRateLimiter key project_repositories_compare. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_project_repositories_compare_unauthenticated:
+    description: Gitlab::ApplicationRateLimiter key project_repositories_compare_unauthenticated. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - ip
+  applimiter_project_repositories_changelog:
+    description: Gitlab::ApplicationRateLimiter key project_repositories_changelog. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - project
+  applimiter_project_repositories_changed_paths:
+    description: Gitlab::ApplicationRateLimiter key project_repositories_changed_paths. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - project
+  applimiter_project_repositories_diff_stats:
+    description: Gitlab::ApplicationRateLimiter key project_repositories_diff_stats. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - project
+  applimiter_project_repositories_diverging_commits:
+    description: Gitlab::ApplicationRateLimiter key project_repositories_diverging_commits. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - project
+  applimiter_project_repositories_health:
+    description: Gitlab::ApplicationRateLimiter key project_repositories_health. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - project
+  applimiter_project_repository_commits_api:
+    description: Gitlab::ApplicationRateLimiter key project_repository_commits_api. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - ip
+  applimiter_project_testing_integration:
+    description: Gitlab::ApplicationRateLimiter key project_testing_integration. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - project
+      - user
+  applimiter_project_value_stream_analytics:
+    description: Gitlab::ApplicationRateLimiter key project_value_stream_analytics. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - project
+      - user
+      - ip
+      - rate_limit_enforced
+  applimiter_projects_api:
+    description: Gitlab::ApplicationRateLimiter key projects_api. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - ip
+  applimiter_projects_api_rate_limit_unauthenticated:
+    description: Gitlab::ApplicationRateLimiter key projects_api_rate_limit_unauthenticated. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - ip
+  applimiter_projects_create:
+    description: Gitlab::ApplicationRateLimiter key projects_create. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_protected_branch_write:
+    description: Gitlab::ApplicationRateLimiter key protected_branch_write. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - namespace
+      - rate_limit_enforced
+  applimiter_raw_blob:
+    description: Gitlab::ApplicationRateLimiter key raw_blob. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - project
+      - path
+  applimiter_raw_blob_unauthenticated:
+    description: Gitlab::ApplicationRateLimiter key raw_blob_unauthenticated. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - project
+  applimiter_release_evidence_collections_per_user:
+    description: Gitlab::ApplicationRateLimiter key release_evidence_collections_per_user. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - rate_limit_enforced
+  applimiter_release_writes_per_project:
+    description: Gitlab::ApplicationRateLimiter key release_writes_per_project. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - project
+      - rate_limit_enforced
+  applimiter_release_writes_per_user:
+    description: Gitlab::ApplicationRateLimiter key release_writes_per_user. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - rate_limit_enforced
+  applimiter_runner_jobs_api:
+    description: Gitlab::ApplicationRateLimiter key runner_jobs_api. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - job_token_sha
+  applimiter_runner_job_list_completed_statuses:
+    description: Gitlab::ApplicationRateLimiter key runner_job_list_completed_statuses. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - rate_limit_enforced
+  applimiter_runner_job_list_project_filtered:
+    description: Gitlab::ApplicationRateLimiter key runner_job_list_project_filtered. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - rate_limit_enforced
+  applimiter_runner_jobs_patch_trace_api:
+    description: Gitlab::ApplicationRateLimiter key runner_jobs_patch_trace_api. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - job_token_sha
+  applimiter_runner_jobs_request_api:
+    description: Gitlab::ApplicationRateLimiter key runner_jobs_request_api. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - runner_token_sha
+  applimiter_runner_manager_creation:
+    description: Gitlab::ApplicationRateLimiter key runner_manager_creation. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - ci_runner
+  applimiter_runner_manager_list:
+    description: Gitlab::ApplicationRateLimiter key runner_manager_list. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - rate_limit_enforced
+  applimiter_search_index_blob_repair:
+    description: Gitlab::ApplicationRateLimiter key search_index_blob_repair. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - project
+  applimiter_search_index_integrity:
+    description: Gitlab::ApplicationRateLimiter key search_index_integrity. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - project
+      - group
+  applimiter_search_rate_limit:
+    description: Gitlab::ApplicationRateLimiter key search_rate_limit. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - search_scope
+  applimiter_search_rate_limit_unauthenticated:
+    description: Gitlab::ApplicationRateLimiter key search_rate_limit_unauthenticated. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - ip
+  applimiter_service_desk_outbound_emails_per_hour:
+    description: Gitlab::ApplicationRateLimiter key service_desk_outbound_emails_per_hour. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - namespace
+  applimiter_service_desk_outbound_emails_per_day:
+    description: Gitlab::ApplicationRateLimiter key service_desk_outbound_emails_per_day. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - namespace
+  applimiter_emails_on_push_outbound_emails_per_hour:
+    description: Gitlab::ApplicationRateLimiter key emails_on_push_outbound_emails_per_hour. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - namespace
+  applimiter_emails_on_push_outbound_emails_per_day:
+    description: Gitlab::ApplicationRateLimiter key emails_on_push_outbound_emails_per_day. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - namespace
+  applimiter_pipelines_email_outbound_emails_per_hour:
+    description: Gitlab::ApplicationRateLimiter key pipelines_email_outbound_emails_per_hour. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - namespace
+  applimiter_pipelines_email_outbound_emails_per_day:
+    description: Gitlab::ApplicationRateLimiter key pipelines_email_outbound_emails_per_day. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - namespace
+  applimiter_service_desk_suppression_notice:
+    description: Gitlab::ApplicationRateLimiter key service_desk_suppression_notice. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - work_item
+  applimiter_service_desk_external_participants_per_day:
+    description: Gitlab::ApplicationRateLimiter key service_desk_external_participants_per_day. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - namespace
+      - email_digest
+  applimiter_service_desk_external_participant_limit_notice:
+    description: Gitlab::ApplicationRateLimiter key service_desk_external_participant_limit_notice. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - work_item
+  applimiter_slack_app_commands:
+    description: Gitlab::ApplicationRateLimiter key slack_app_commands. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - slack_workspace
+  applimiter_slack_app_events:
+    description: Gitlab::ApplicationRateLimiter key slack_app_events. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - slack_workspace
+  applimiter_slack_app_interactions:
+    description: Gitlab::ApplicationRateLimiter key slack_app_interactions. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - slack_workspace
+  applimiter_snippets_create:
+    description: Gitlab::ApplicationRateLimiter key snippets_create. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_spam_check:
+    description: Gitlab::ApplicationRateLimiter key spam_check. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - rate_limit_enforced
+  applimiter_system_hooks_create:
+    description: Gitlab::ApplicationRateLimiter key system_hooks_create. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_tags_create:
+    description: Gitlab::ApplicationRateLimiter key tags_create. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - project
+  applimiter_temporary_email_failure:
+    description: Gitlab::ApplicationRateLimiter key temporary_email_failure. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - email
+  applimiter_test_report_show:
+    description: Gitlab::ApplicationRateLimiter key test_report_show. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_test_report_show_unauthenticated:
+    description: Gitlab::ApplicationRateLimiter key test_report_show_unauthenticated. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - ip
+  applimiter_todos_list_api:
+    description: Gitlab::ApplicationRateLimiter key todos_list_api. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_track_internal_events:
+    description: Gitlab::ApplicationRateLimiter key track_internal_events. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_track_namespace_visits:
+    description: Gitlab::ApplicationRateLimiter key track_namespace_visits. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - rate_limit_enforced
+  applimiter_update_environment_canary_ingress:
+    description: Gitlab::ApplicationRateLimiter key update_environment_canary_ingress. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - environment
+  applimiter_update_namespace_name:
+    description: Gitlab::ApplicationRateLimiter key update_namespace_name. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - namespace
+  applimiter_user_contributed_projects_api:
+    description: Gitlab::ApplicationRateLimiter key user_contributed_projects_api. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - ip
+  applimiter_user_followers:
+    description: Gitlab::ApplicationRateLimiter key user_followers. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - ip
+  applimiter_user_following:
+    description: Gitlab::ApplicationRateLimiter key user_following. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - ip
+  applimiter_user_gpg_key:
+    description: Gitlab::ApplicationRateLimiter key user_gpg_key. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - ip
+  applimiter_user_gpg_keys:
+    description: Gitlab::ApplicationRateLimiter key user_gpg_keys. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - ip
+  applimiter_user_large_commit_request:
+    description: Gitlab::ApplicationRateLimiter key user_large_commit_request. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_user_projects_api:
+    description: Gitlab::ApplicationRateLimiter key user_projects_api. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - ip
+  applimiter_user_ssh_key:
+    description: Gitlab::ApplicationRateLimiter key user_ssh_key. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - ip
+  applimiter_user_ssh_keys:
+    description: Gitlab::ApplicationRateLimiter key user_ssh_keys. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - ip
+  applimiter_user_starred_projects_api:
+    description: Gitlab::ApplicationRateLimiter key user_starred_projects_api. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - ip
+  applimiter_user_status:
+    description: Gitlab::ApplicationRateLimiter key user_status. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - ip
+  applimiter_username_exists:
+    description: Gitlab::ApplicationRateLimiter key username_exists. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - ip
+  applimiter_users_get_by_id:
+    description: Gitlab::ApplicationRateLimiter key users_get_by_id. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_value_stream_stage_metrics:
+    description: Gitlab::ApplicationRateLimiter key value_stream_stage_metrics. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - ip
+      - rate_limit_enforced
+  applimiter_web_hook_calls:
+    description: Gitlab::ApplicationRateLimiter key web_hook_calls. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - namespace
+  applimiter_web_hook_calls_low:
+    description: Gitlab::ApplicationRateLimiter key web_hook_calls_low. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - namespace
+  applimiter_web_hook_calls_mid:
+    description: Gitlab::ApplicationRateLimiter key web_hook_calls_mid. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - namespace
+  applimiter_integration_executions:
+    description: Gitlab::ApplicationRateLimiter key integration_executions. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - namespace
+  applimiter_integration_executions_datadog:
+    description: Gitlab::ApplicationRateLimiter key integration_executions_datadog. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - namespace
+  applimiter_organization_web_hook_calls:
+    description: Gitlab::ApplicationRateLimiter key organization_web_hook_calls. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - organization
+  applimiter_web_hook_event_resend:
+    description: Gitlab::ApplicationRateLimiter key web_hook_event_resend. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - project
+      - group
+      - user
+  applimiter_web_hook_test:
+    description: Gitlab::ApplicationRateLimiter key web_hook_test. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - project
+      - group
+      - organization
+      - user
+  applimiter_wiki_read_unauthenticated:
+    description: Gitlab::ApplicationRateLimiter key wiki_read_unauthenticated. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - project
+      - group
+      - rate_limit_enforced
+  applimiter_work_item_bulk_update:
+    description: Gitlab::ApplicationRateLimiter key work_item_bulk_update. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_work_item_delete:
+    description: Gitlab::ApplicationRateLimiter key work_item_delete. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_work_item_hierarchy_add_children:
+    description: Gitlab::ApplicationRateLimiter key work_item_hierarchy_add_children. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - rate_limit_enforced
+  applimiter_work_item_hierarchy_reorder:
+    description: Gitlab::ApplicationRateLimiter key work_item_hierarchy_reorder. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+  applimiter_work_item_saved_view_broadcast:
+    description: Gitlab::ApplicationRateLimiter key work_item_saved_view_broadcast. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - saved_view
+  applimiter_work_item_update:
+    description: Gitlab::ApplicationRateLimiter key work_item_update. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - user
+      - rate_limit_enforced
+  applimiter_main_db_duration_limit_per_worker:
+    description: Gitlab::ApplicationRateLimiter key main_db_duration_limit_per_worker. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - worker_name
+  applimiter_ci_db_duration_limit_per_worker:
+    description: Gitlab::ApplicationRateLimiter key ci_db_duration_limit_per_worker. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - worker_name
+  applimiter_sec_db_duration_limit_per_worker:
+    description: Gitlab::ApplicationRateLimiter key sec_db_duration_limit_per_worker. The rule and its limits live in SupportedRateLimits.
+    available_properties:
+      - worker_name

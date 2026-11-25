@@ -1,0 +1,125 @@
+---
+stage: none
+group: Embody
+info: This page is owned by <https://handbook.gitlab.com/handbook/engineering/embody-team/>
+description: Access the GitLab Observability API to query traces, metrics, and logs programmatically.
+ignore_in_report: true
+title: Access the Observability API
+---
+
+{{< details >}}
+
+- Tier: Free, Premium, Ultimate
+- Offering: GitLab.com, GitLab Self-Managed
+- Status: Beta
+
+{{< /details >}}
+
+Use the GitLab Observability API to query traces, metrics, and logs,
+and to manage dashboards and alerts programmatically.
+
+## Prerequisites
+
+- Observability must be enabled for your group or personal project.
+  For setup instructions, see
+  [Set up Observability on GitLab.com](setup_gitlab_com.md) or
+  [Set up Observability on GitLab Self-Managed](setup_self_managed.md).
+
+{{< tabs >}}
+
+{{< tab title="Group" >}}
+
+- You must have the Developer, Maintainer, or Owner role for the group.
+
+{{< /tab >}}
+
+{{< tab title="Personal project" >}}
+
+- You must have the Owner role for the project.
+
+{{< /tab >}}
+
+{{< /tabs >}}
+
+## Get your API key
+
+API keys belong to a service account. The service account must have a role,
+or its keys can't read any data.
+
+{{< tabs >}}
+
+{{< tab title="Group" >}}
+
+1. In the top bar, select **Search or go to** and find your group.
+1. In the left sidebar, select **Observe** > **API keys**.
+1. Select **New Service Account**, enter a name, and create the account.
+1. Select the service account. On the **Overview** tab, in **Roles**, select a role
+   (for example, `signoz-viewer`), then select **Save Changes**.
+1. On the **Keys** tab, select **Add Key**, then copy the key.
+
+{{< /tab >}}
+
+{{< tab title="Personal project" >}}
+
+1. In the top bar, select **Search or go to** and find your project.
+1. In the left sidebar, select **Observe** > **API keys**.
+1. Select **New Service Account**, enter a name, and create the account.
+1. Select the service account. On the **Overview** tab, in **Roles**, select a role
+   (for example, `signoz-viewer`), then select **Save Changes**.
+1. On the **Keys** tab, select **Add Key**, then copy the key.
+
+{{< /tab >}}
+
+{{< /tabs >}}
+
+Use this key in the `SIGNOZ-API-KEY` header when you make API requests.
+
+## API endpoint
+
+The API endpoint depends on your GitLab offering.
+
+### GitLab.com
+
+Your API base URL follows this pattern:
+
+```plaintext
+https://<group_id>.gitlab-o11y.com
+```
+
+Replace `<group_id>` with your GitLab group ID.
+
+### GitLab Self-Managed
+
+Your API base URL is the same URL you configured as the
+`o11y_service_url` for your group. For example:
+
+```plaintext
+http://<your-instance-ip>:8080
+```
+
+## Make API requests
+
+Include your API key in the `SIGNOZ-API-KEY` header with every request.
+
+The following example queries the health endpoint:
+
+```shell
+curl --header "SIGNOZ-API-KEY: <your_api_key>" \
+  https://<group_id>.gitlab-o11y.com/api/v1/health
+```
+
+Replace `<your_api_key>` with the key from the **API keys** page, and
+`<group_id>` with your GitLab group ID (or your GitLab Self-Managed instance URL).
+
+## Available API endpoints
+
+GitLab Observability uses the SigNoz API.
+For the complete list of available endpoints, request and response formats,
+and usage examples, see the
+[SigNoz API reference](https://signoz.io/api-reference/).
+
+## Related topics
+
+- [Observability MCP server](mcp_server.md)
+- [Send telemetry data to GitLab Observability](send.md)
+- [Troubleshooting Observability](troubleshooting.md)

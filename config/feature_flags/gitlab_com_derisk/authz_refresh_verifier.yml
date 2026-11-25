@@ -1,0 +1,11 @@
+---
+name: authz_refresh_verifier
+description: Check a random sample of project_authorizations rows and memberships
+  every minute against the calculation, repairing drift the refresh queue missed
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/637594
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/271968
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/640833
+milestone: '19.7'
+group: group::authorization
+type: gitlab_com_derisk
+default_enabled: false

@@ -1,0 +1,10 @@
+---
+name: vsa_skip_covered_stage_backfill
+description: Skip the backfill of a new Value Stream Analytics stage when a completed backfill of a stage with the same events already covers its namespace
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/636175
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/272188
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/640989
+milestone: '19.7'
+group: group::optimize
+type: gitlab_com_derisk
+default_enabled: false

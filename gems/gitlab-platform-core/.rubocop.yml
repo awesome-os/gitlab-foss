@@ -1,0 +1,53 @@
+inherit_from:
+  - ../config/rubocop.yml
+
+Gemfile/MissingFeatureCategory:
+  Enabled: false
+
+# Mirrors the monolith's global settings, so that moving a file into this gem
+# does not change which cops apply to it. See the root `.rubocop.yml`.
+Fips/OpenSSL:
+  Enabled: false
+
+RSpec/ImplicitSubject:
+  Enabled: false
+
+RSpec/MultipleMemoizedHelpers:
+  Max: 25
+  AllowSubject: true
+
+# The monolith scopes this cop to `spec/components/previews/**/*`; this gem has no
+# Lookbook previews, so a `@param url` in an ordinary doc comment is a false positive.
+Gitlab/Lookbook/NoUrlParamInPreview:
+  Enabled: false
+
+# The monolith scopes this cop to controller specs, where `be_success` wraps the
+# deprecated `ActionDispatch::Response#success?`. This gem has no controller specs,
+# and `Process::Status#success?` is a current Ruby API with no `successful?` alias.
+RSpec/BeSuccessMatcher:
+  Enabled: false
+
+Lint/BinaryOperatorWithIdenticalOperands:
+  Exclude:
+    - spec/**/*_spec.rb
+
+# Debt inherited with the moved files, previously held in `.rubocop_todo/`.
+Rails/TimeZone:
+  Exclude:
+    - lib/gitlab/loop_helpers.rb
+
+RSpec/NamedSubject:
+  Exclude:
+    - spec/gitlab/loop_helpers_spec.rb
+
+Style/RedundantParentheses:
+  Exclude:
+    - spec/gitlab/loop_helpers_spec.rb
+
+Layout/LineEndStringConcatenationIndentation:
+  Exclude:
+    - spec/gitlab/insecure_key_fingerprint_spec.rb
+
+RSpec/VerifiedDoubles:
+  Exclude:
+    - spec/gitlab/process_management_spec.rb

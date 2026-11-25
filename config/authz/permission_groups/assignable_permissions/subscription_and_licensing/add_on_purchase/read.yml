@@ -1,0 +1,14 @@
+---
+name: read_add_on_purchase
+description: Grants the ability to read add-on purchases, such as GitLab Duo Pro or Duo Enterprise, with their purchased and assigned seat counts, and the seat assignments of their users.
+boundaries:
+  - group
+  - instance
+available_for:
+  - granular_access_token
+permissions:
+  - read_add_on_purchase
+assignable_when:
+  - condition: admin
+    boundaries:
+      - instance

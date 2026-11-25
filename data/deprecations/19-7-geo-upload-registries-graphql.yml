@@ -1,0 +1,26 @@
+- title: "Geo GraphQL `uploadRegistries` field"
+  removal_milestone: "20.0"
+  announcement_milestone: "19.7"
+  breaking_change: true
+  window:
+  gitlab_com: false
+  reporter: c_fons
+  stage: gitlab dedicated
+  issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/637008
+  check_impact: https://docs.gitlab.com/api/graphql/#verify-against-the-future-breaking-change-schema
+  impact: low
+  impact_offering: Dedicated, self-managed
+  scope: instance
+  resolution_role: Admin
+  manual_task: true
+  body: |  # (required) Don't change this line.
+    The `uploadRegistries` field on the GraphQL `GeoNode` type is deprecated in GitLab 19.7 and will be removed in GitLab 20.0.
+    The `UploadRegistry` type and the `UPLOAD_REGISTRY` value of the `GeoRegistryClass` enum are removed with it.
+
+    In GitLab 19.6, Geo replicates uploads by upload type, such as project uploads and group uploads, instead of as a single uploads data type.
+    Each upload type has its own registries field on `GeoNode`, for example `projectUploadRegistries`, `groupUploadRegistries`, and `userUploadRegistries`.
+    These fields return the same replication and verification state, and become generally available in GitLab 19.9.
+    Until GitLab 20.0, `uploadRegistries` keeps returning this state for all upload types combined.
+
+    To prepare for the removal, query the fields for the upload types you need instead of `uploadRegistries`.
+    Read the upload ID from the field for that type, such as `projectUploadId`, instead of `fileId`. The upload IDs do not change.

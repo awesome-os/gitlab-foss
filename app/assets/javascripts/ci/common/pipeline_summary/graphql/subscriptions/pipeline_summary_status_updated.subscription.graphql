@@ -1,0 +1,46 @@
+# @feature_category: pipeline_composition
+#import "~/graphql_shared/fragments/ci_icon.fragment.graphql"
+
+subscription pipelineSummaryStatusUpdated($pipelineId: CiPipelineID!) {
+  ciPipelineStatusUpdated(pipelineId: $pipelineId) {
+    id
+    detailedStatus {
+      label
+      ...CiIcon
+    }
+    downstream {
+      nodes {
+        id
+        iid
+        name
+        detailedStatus {
+          id
+          detailsPath
+          icon
+          label
+          name
+          tooltip
+        }
+        path
+        project {
+          id
+          name
+          fullPath
+        }
+      }
+    }
+    finishedAt
+    stages {
+      nodes {
+        id
+        name
+        detailedStatus {
+          id
+          icon
+          label
+          tooltip
+        }
+      }
+    }
+  }
+}

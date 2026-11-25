@@ -1,0 +1,4 @@
+# @feature_category: continuous_delivery
+mutation SetEnvironmentToChangeCanary($environment: LocalEnvironmentInput, $weight: Int!) {
+  setEnvironmentToChangeCanary(environment: $environment, weight: $weight) @client
+}

@@ -1,0 +1,9 @@
+# frozen_string_literal: true
+
+source "https://rubygems.org"
+
+# Specify your gem's dependencies in gitlab-platform-core.gemspec
+gemspec
+
+gem 'gitlab-utils', path: '../gitlab-utils'
+gem 'activesupport', '~> 7.2.3'

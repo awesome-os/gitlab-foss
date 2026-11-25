@@ -1,0 +1,152 @@
+import {
+  MOCK_AGGREGATED_DATA_ONE_DIM,
+  MOCK_AGGREGATED_DATA_TWO_DIMS,
+  MOCK_AGGREGATED_FIELDS_ONE_DIM_ONE_METRIC,
+  MOCK_AGGREGATED_FIELDS_ONE_DIM_TWO_METRICS,
+  MOCK_AGGREGATED_FIELDS_TWO_DIMS_ONE_METRIC,
+} from 'jest/glql/mock_data';
+import ColumnChart from './column_chart.vue';
+
+export default {
+  component: ColumnChart,
+  title: 'glql/components/presenters/column_chart',
+  argTypes: {
+    data: { control: false, description: 'Aggregated query result, as `{ nodes: [] }`.' },
+    fields: { control: false, description: 'Dimension and metric fields the query selected.' },
+    loading: { control: 'boolean' },
+    displayConfig: { control: 'object', description: 'Block `displayConfig`.' },
+    pageSize: {
+      control: 'number',
+      description:
+        "How many first-dimension values each page shows, from the block's `limit`. Null shows all.",
+    },
+
+    // events
+    error: { action: 'error' },
+  },
+};
+
+const Template = (args, { argTypes }) => ({
+  components: { ColumnChart },
+  props: Object.keys(argTypes),
+  template: `<column-chart
+    :data="data"
+    :fields="fields"
+    :loading="loading"
+    :page-size="pageSize"
+    :display-config="displayConfig"
+    v-on="{ error }"
+  />`,
+});
+
+export const Default = Template.bind({});
+Default.args = {
+  data: MOCK_AGGREGATED_DATA_ONE_DIM,
+  fields: MOCK_AGGREGATED_FIELDS_ONE_DIM_ONE_METRIC,
+  loading: false,
+  displayConfig: {},
+  pageSize: null,
+};
+
+// One dimension plots a series per metric.
+export const TwoMetrics = Template.bind({});
+TwoMetrics.args = {
+  ...Default.args,
+  fields: MOCK_AGGREGATED_FIELDS_ONE_DIM_TWO_METRICS,
+};
+
+// Stacking has no visible effect on a single metric, so it pairs with two.
+export const Stacked = Template.bind({});
+Stacked.args = {
+  ...TwoMetrics.args,
+  displayConfig: { stacked: true },
+};
+
+// A second dimension becomes the series, which is why only one metric fits.
+export const TwoDimensions = Template.bind({});
+TwoDimensions.args = {
+  ...Default.args,
+  data: MOCK_AGGREGATED_DATA_TWO_DIMS,
+  fields: MOCK_AGGREGATED_FIELDS_TWO_DIMS_ONE_METRIC,
+};
+
+const LANGUAGES = ['ruby', 'python', 'go', 'javascript', 'rust', 'java', 'kotlin'];
+
+// Seven languages over a cap of three: the legend shows three plus `Other (4)`.
+export const TwoDimensionsWithMaxSeries = Template.bind({});
+TwoDimensionsWithMaxSeries.args = {
+  ...TwoDimensions.args,
+  data: {
+    nodes: ['user-0', 'user-1', 'user-2'].flatMap((user, userIndex) =>
+      LANGUAGES.map((language, index) => ({
+        user,
+        language,
+        totalCount: (LANGUAGES.length - index) * (3 - userIndex),
+      })),
+    ),
+  },
+  displayConfig: { maxSeries: 3 },
+};
+
+// Three languages, two to a page: Previous and Next page through them.
+export const Paged = Template.bind({});
+Paged.args = {
+  ...Default.args,
+  pageSize: 2,
+};
+
+// Pages by user, the first dimension, so every bar keeps all of its languages.
+export const TwoDimensionsPaged = Template.bind({});
+TwoDimensionsPaged.args = {
+  ...TwoDimensions.args,
+  pageSize: 1,
+};
+
+// The dashboard panel opts into fitting with `fitChartToPanel`. The 300px tile is about a
+// `height: 39` panel.
+const FitTemplate = (args, { argTypes }) => ({
+  components: { ColumnChart },
+  provide: { fitChartToPanel: true },
+  props: Object.keys(argTypes),
+  template: `<div class="gl-flex gl-flex-col gl-overflow-x-hidden gl-overflow-y-auto gl-border gl-p-3" :style="{ height: tileHeight }">
+    <column-chart
+      :data="data"
+      :fields="fields"
+      :loading="loading"
+      :page-size="pageSize"
+      :display-config="displayConfig"
+      v-on="{ error }"
+    />
+  </div>`,
+});
+
+export const FitsDashboardTile = FitTemplate.bind({});
+FitsDashboardTile.args = {
+  ...Default.args,
+  data: MOCK_AGGREGATED_DATA_TWO_DIMS,
+  fields: MOCK_AGGREGATED_FIELDS_TWO_DIMS_ONE_METRIC,
+  tileHeight: '300px',
+};
+FitsDashboardTile.argTypes = {
+  tileHeight: { control: 'text', description: 'Height of the tile around the chart.' },
+};
+
+// Below the minimum plot height the tile scrolls instead of squeezing the plot.
+export const TileShorterThanMinimum = FitTemplate.bind({});
+TileShorterThanMinimum.args = {
+  ...FitsDashboardTile.args,
+  tileHeight: '180px',
+};
+TileShorterThanMinimum.argTypes = FitsDashboardTile.argTypes;
+
+export const Loading = Template.bind({});
+Loading.args = {
+  ...Default.args,
+  loading: true,
+};
+
+export const NoData = Template.bind({});
+NoData.args = {
+  ...Default.args,
+  data: { nodes: [] },
+};

@@ -1,0 +1,10 @@
+---
+name: web_ide_project_wide_text_search
+description: Search the content of all project files from the Web IDE Search view, not only open files.
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab-web-ide/-/issues/409
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/268604
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/638883
+milestone: '19.7'
+group: group::developer clients
+type: beta
+default_enabled: true

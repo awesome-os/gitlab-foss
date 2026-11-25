@@ -1,0 +1,65 @@
+<script>
+import { GlModal } from '@gitlab/ui';
+import { s__, __, sprintf } from '~/locale';
+
+export default {
+  name: 'JobActionModal',
+  i18n: {
+    actionCancel: { text: __('Cancel') },
+  },
+  components: {
+    GlModal,
+  },
+  model: {
+    prop: 'visible',
+    event: 'change',
+  },
+  props: {
+    customMessage: {
+      type: String,
+      required: true,
+    },
+    visible: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    jobName: {
+      type: String,
+      required: true,
+    },
+  },
+  emits: ['change', 'confirm'],
+  computed: {
+    modalText() {
+      return {
+        confirmButton: {
+          text: sprintf(__('Yes, run %{jobName}'), {
+            jobName: this.jobName,
+          }),
+        },
+        title: sprintf(s__('PipelineGraph|Are you sure you want to run %{jobName}?'), {
+          jobName: this.jobName,
+        }),
+      };
+    },
+  },
+};
+</script>
+
+<template>
+  <gl-modal
+    modal-id="job-action-modal"
+    :action-cancel="$options.i18n.actionCancel"
+    :action-primary="modalText.confirmButton"
+    :title="modalText.title"
+    :visible="visible"
+    @primary="$emit('confirm')"
+    @change="$emit('change', $event)"
+  >
+    <div>
+      <p>{{ customMessage }}</p>
+      <span>{{ s__('PipelineGraph|Do you want to continue?') }}</span>
+    </div>
+  </gl-modal>
+</template>

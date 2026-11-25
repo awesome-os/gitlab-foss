@@ -1,0 +1,11 @@
+---
+name: housekeeping_reuse_incremented_push_count
+description: Reuse the incremented repository housekeeping push counter instead of
+  re-reading it from Redis
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/issues/640053
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/271204
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/issues/640766
+milestone: '19.7'
+group: group::gitaly
+type: beta
+default_enabled: true

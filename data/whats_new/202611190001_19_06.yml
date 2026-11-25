@@ -1,0 +1,151 @@
+- name: GitLab Orbit is generally available
+  description: |
+    In previous versions of GitLab, your agents had to crawl repositories and stitch together
+    API calls to understand how your work connects. Now you can use GitLab Orbit, a context
+    graph of your software lifecycle.
+
+    GitLab Orbit is generally available on GitLab.com. It connects code, merge requests,
+    work items, pipelines, and vulnerabilities in one graph that stays current as you ship.
+    With GitLab Orbit, you can:
+
+    - Query the graph from GitLab Duo Agent Platform, or connect Claude Code, Codex, and other agents.
+    - Keep your existing permissions, so people and agents see only what they're allowed to see.
+    - Map every project, owner, and pipeline a vulnerability affects.
+
+    To start a 30-day trial, contact your account team.
+  stage: knowledge_graph
+  self-managed: false
+  gitlab-com: true
+  available_in: [Premium, Ultimate]
+  documentation_link: https://docs.gitlab.com/orbit/
+  published_at: 2026-11-19
+  release: "19.6"
+
+- name: Govern GitLab MCP server tools for AI agents
+  description: |
+    You can now control which GitLab MCP server tools AI agents can use, with rules that GitLab enforces for every client that connects.
+
+    Owners of a top-level group set each tool to:
+
+    - **Always Deny**: The tool is blocked entirely and is invisible to the agent.
+    - **Always Ask**: The user must approve the tool before it runs.
+    - **Always Allow**: The tool runs as usual.
+
+    This feature is in beta. To provide feedback, see [issue 633490](https://gitlab.com/gitlab-org/gitlab/-/work_items/633490).
+  stage: software_supply_chain_security
+  self-managed: true
+  gitlab-com: true
+  available_in: [Premium, Ultimate]
+  documentation_link: https://docs.gitlab.com/user/ai-governance/tool-governance/#gitlab-mcp-server-tools
+  published_at: 2026-11-19
+  release: "19.6"
+
+- name: Review merge requests faster with Rapid Diffs
+  description: |
+    In previous versions of GitLab, even small merge requests made you wait for the first diff to load.
+    Large ones could slow down or freeze the page.
+
+    Rapid Diffs, a ground-up rewrite of how GitLab renders diffs, is now generally available
+    and replaces the classic diff view.
+    GitLab renders diffs on the server and streams them to your browser, so reviews start in seconds:
+
+    - The first file appears in about 1.5 seconds, down from about 4.5 seconds.
+    - Browser search (<kbd>Control</kbd>+<kbd>F</kbd> or <kbd>Command</kbd>+<kbd>F</kbd>) works right away, without freezing the page.
+
+    Rapid Diffs also supports the review tools you already use:
+
+    - File-by-file mode
+    - Mark as viewed
+    - Full file view
+    - Commit-by-commit navigation
+    - Keyboard shortcuts
+    - Image comments
+  stage: ai_coding
+  self-managed: true
+  gitlab-com: true
+  available_in: [Free, Premium, Ultimate]
+  documentation_link: https://docs.gitlab.com/user/project/merge_requests/changes/#rapid-diffs
+  published_at: 2026-11-19
+  release: "19.6"
+
+- name: Automatic false positive detection on tracked branches
+  description: |
+    In previous versions of GitLab, false positive detection ran automatically only on vulnerabilities
+    in the default branch. Findings on release branches and tags had to be triaged by hand.
+
+    Now, the SAST False Positive Detection Flow runs automatically on new Critical and High
+    vulnerabilities in any tracked branch, and in tracked tags that run SAST jobs, so you can filter out noise before you merge or ship.
+    It runs when you turn on false positive detection in your project settings, or when you use the
+    [automated triage and remediation profile](https://docs.gitlab.com/user/application_security/configuration/security_configuration_profiles/#automated-triage-and-remediation-profile) set to run automatically.
+
+    [Secret false positive detection](https://docs.gitlab.com/user/application_security/vulnerabilities/secret_false_positive_detection/#tracked-branches-and-tags)
+    on tracked branches and tags is available on GitLab.com in this release.
+  stage: security_risk_management
+  self-managed: true
+  gitlab-com: true
+  available_in: [Ultimate]
+  documentation_link: https://docs.gitlab.com/user/application_security/vulnerabilities/false_positive_detection/#tracked-branches-and-tags
+  published_at: 2026-11-19
+  release: "19.6"
+
+- name: Workspace subagents are generally available
+  description: |
+    Workspace subagents, previously released as an experiment, are now generally available.
+
+    Use workspace subagents to keep the details of a task, like linter output, out of the context of the Developer Flow.
+    Or use them for a separate agent with its own instructions and limited tools.
+
+    Define subagents as Markdown files in the `.agents/agents/` directory at the root of your repository.
+    The Developer Flow decides when to delegate a task to one, and receives only the result.
+
+    In GitLab Duo CLI 10.2.0 or later, use `/agents` to list subagents and ask the Developer Flow to use one.
+    In an issue or merge request comment, mention the Developer Flow and ask it to list subagents or delegate a task to one.
+  stage: agent_foundations
+  self-managed: true
+  gitlab-com: true
+  available_in: [Free, Premium, Ultimate]
+  documentation_link: https://docs.gitlab.com/user/duo_agent_platform/customize/workspace_subagents/
+  published_at: 2026-11-19
+  release: "19.6"
+
+- name: Block merge requests that add malicious packages
+  description: |
+    In previous versions of GitLab, merge request approval policies treated malicious packages
+    like any other vulnerability. If a finding was dismissed or fell outside a rule's severity
+    filters, a package built to cause harm could still be merged.
+
+    Now you can add a malware rule to your merge request approval policies. When dependency
+    scanning detects a package listed in the GitLab malware advisories, the merge request
+    requires approval, regardless of the finding's severity or state. The malware rule works
+    alongside your existing scan finding rules, so you can add it to the policies you already
+    have without rebuilding them.
+
+    To use the malware rule, your project must run
+    [dependency scanning by using SBOM](https://docs.gitlab.com/user/application_security/dependency_scanning/dependency_scanning_sbom/#turn-on-dependency-scanning).
+    Malware advisories cover npm, PyPI, Maven, Go, NuGet, Cargo, and RubyGems packages.
+  stage: security_risk_management
+  self-managed: true
+  gitlab-com: true
+  available_in: [Ultimate]
+  documentation_link: https://docs.gitlab.com/user/application_security/policies/merge_request_approval_policies/#block-malicious-packages-with-the-malware-rule
+  published_at: 2026-11-19
+  release: "19.6"
+
+- name: Filter group vulnerability reports by security attributes
+  description: |
+    In earlier versions of GitLab, you could not filter the group vulnerability report
+    by application, business unit, or team.
+    Now, you can filter by the security attributes assigned to your projects.
+
+    Each security category, such as **Business impact** or **Application**, appears as its own filter.
+    Select **is one of** to include attributes or **is not one of** to exclude them.
+    Use these filters to review every vulnerability for one application, even when it spans many projects.
+
+    This filter requires [advanced vulnerability management](https://docs.gitlab.com/user/application_security/vulnerability_report/#advanced-vulnerability-management).
+  stage: security_risk_management
+  self-managed: true
+  gitlab-com: true
+  available_in: [Ultimate]
+  documentation_link: https://docs.gitlab.com/user/application_security/vulnerability_report/#security-attribute-filter
+  published_at: 2026-11-19
+  release: "19.6"

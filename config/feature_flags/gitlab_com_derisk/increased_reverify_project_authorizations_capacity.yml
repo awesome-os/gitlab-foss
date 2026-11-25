@@ -1,0 +1,8 @@
+---
+name: increased_reverify_project_authorizations_capacity
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/258864
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/641125
+milestone: '19.7'
+type: gitlab_com_derisk
+group: group::authorization
+default_enabled: false

@@ -1,0 +1,12 @@
+---
+# Cop supports --autocorrect.
+Style/RedundantParentheses:
+  Exclude:
+    - 'ee/app/services/ci/trigger_downstream_subscription_service.rb'
+    - 'ee/lib/gitlab/llm/chain/tools/summarize_comments/executor.rb'
+    - 'ee/spec/models/analytics/dashboards/visualization_spec.rb'
+    - 'keeps/delete_old_feature_flags.rb'
+    - 'keeps/mark_old_advanced_search_migrations_as_obsolete.rb'
+    - 'lib/gitlab/ci/runner_instructions.rb'
+    - 'rubocop/cops_documentation_generator.rb'
+    - 'spec/lib/gitlab/database/load_balancing/host_spec.rb'

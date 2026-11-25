@@ -1,0 +1,9 @@
+---
+name: read_knowledge_graph_setting
+description: Grants the ability to read the Orbit settings of a top-level group, such as its Orbit access state.
+boundaries:
+  - group
+available_for:
+  - granular_access_token
+permissions:
+  - read_orbit_setting

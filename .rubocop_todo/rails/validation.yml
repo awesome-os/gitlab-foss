@@ -1,0 +1,25 @@
+---
+# Cop supports --autocorrect.
+Rails/Validation:
+  Exclude:
+    - 'ee/app/models/ai/active_context/connection.rb'
+    - 'ee/app/models/analytics/value_stream_dashboard/aggregation.rb'
+    - 'ee/app/models/audit_events/amazon_s3_configuration.rb'
+    - 'ee/app/models/ci/minutes/gitlab_hosted_runner_monthly_usage.rb'
+    - 'ee/app/models/compliance_management/compliance_framework/compliance_requirement.rb'
+    - 'ee/app/models/compliance_management/compliance_framework/compliance_requirements_control.rb'
+    - 'ee/app/models/compliance_management/compliance_framework/project_control_compliance_status.rb'
+    - 'ee/app/models/compliance_management/compliance_framework/project_requirement_compliance_status.rb'
+    - 'ee/app/models/compliance_management/compliance_framework/security_policy_requirement.rb'
+    - 'ee/app/models/compliance_management/projects/compliance_violation.rb'
+    - 'ee/app/models/compliance_management/projects/compliance_violation_issue.rb'
+    - 'ee/app/models/gitlab_subscription.rb'
+    - 'ee/app/models/merge_request_block.rb'
+    - 'ee/app/models/notifications/targeted_message_namespace.rb'
+    - 'ee/app/models/projects/compliance_standards/adherence.rb'
+    - 'ee/app/models/search/zoekt/repository.rb'
+    - 'ee/app/models/security/approval_policy_merge_request_bypass_event.rb'
+    - 'ee/app/models/software_license_policy.rb'
+    - 'ee/app/models/users/compromised_password_detection.rb'
+    - 'ee/app/models/users/country_access_log.rb'
+    - 'ee/app/models/vulnerabilities/triggered_workflow.rb'

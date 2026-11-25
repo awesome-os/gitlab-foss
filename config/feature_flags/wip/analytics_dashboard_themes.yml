@@ -1,0 +1,11 @@
+---
+name: analytics_dashboard_themes
+description: Render analytics dashboards in the theme their YAML names, instead of
+  always the classic theme
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/640941
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/272448
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/640947
+milestone: '19.7'
+group: group::optimize
+type: wip
+default_enabled: false

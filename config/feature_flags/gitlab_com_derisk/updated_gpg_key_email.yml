@@ -1,0 +1,10 @@
+---
+name: updated_gpg_key_email
+description: Email the owner when an update adds a subkey or user ID to their GPG key
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/issues/296977
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/265302
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/issues/636223
+milestone: '19.7'
+group: group::repository services
+type: gitlab_com_derisk
+default_enabled: false

@@ -1,0 +1,16 @@
+# @feature_category: notifications
+query workItemCommentTodos($id: WorkItemID!, $noteId: NoteID!) {
+  workItem(id: $id) {
+    id
+    features {
+      currentUserTodos {
+        type
+        currentUserTodos(state: pending, noteId: $noteId, first: 1) {
+          nodes {
+            id
+          }
+        }
+      }
+    }
+  }
+}

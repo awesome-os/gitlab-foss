@@ -1,0 +1,15 @@
+---
+table_name: import_sync_attachment_uploads
+classes:
+- Import::Sync::AttachmentUpload
+feature_categories:
+- importers
+description: Maps a continuously-synced GitHub attachment URL to the GitLab upload
+  created for it, so later sync passes reuse the upload instead of downloading the
+  attachment again.
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/271915
+milestone: '19.7'
+gitlab_schema: gitlab_main_org
+sharding_key:
+  project_id: projects
+table_size: small

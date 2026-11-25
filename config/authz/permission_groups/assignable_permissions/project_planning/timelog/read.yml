@@ -1,0 +1,10 @@
+---
+name: read_timelog
+description: Grants the ability to read timelogs that track time spent on issuables
+boundaries:
+  - group
+  - project
+available_for:
+  - granular_access_token
+permissions:
+  - read_timelog

@@ -1,0 +1,4 @@
+# @feature_category: continuous_delivery
+mutation SetEnvironmentToStop($environment: LocalEnvironmentInput) {
+  setEnvironmentToStop(environment: $environment) @client
+}

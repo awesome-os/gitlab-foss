@@ -1,0 +1,10 @@
+---
+name: limit_basic_blob_search
+description: Bound the work of Gitaly-backed blob search by passing path filters, a match limit and a match size cap to Gitaly
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/633915
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/264046
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/633958
+milestone: '19.7'
+group: group::global search
+type: gitlab_com_derisk
+default_enabled: false

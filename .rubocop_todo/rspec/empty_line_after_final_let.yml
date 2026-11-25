@@ -1,0 +1,5 @@
+---
+# Cop supports --autocorrect.
+RSpec/EmptyLineAfterFinalLet:
+  Exclude:
+    - 'spec/requests/api/projects_spec.rb'

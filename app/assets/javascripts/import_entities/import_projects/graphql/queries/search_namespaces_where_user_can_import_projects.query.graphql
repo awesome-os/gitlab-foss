@@ -1,0 +1,27 @@
+#import "ee_else_ce/import_entities/import_projects/graphql/fragments/group_continuous_sync.fragment.graphql"
+#import "ee_else_ce/import_entities/import_projects/graphql/fragments/namespace_continuous_sync.fragment.graphql"
+
+query searchNamespacesWhereUserCanImportProjects(
+  $search: String
+  $includeContinuousSync: Boolean = false
+) {
+  currentUser {
+    id
+    groups(permissionScope: IMPORT_PROJECTS, search: $search, sort: SIMILARITY) {
+      nodes {
+        id
+        fullPath
+        name
+        projectCreationLevel
+        visibility
+        webUrl
+        ...ImportGroupContinuousSync @include(if: $includeContinuousSync)
+      }
+    }
+    namespace {
+      id
+      fullPath
+      ...ImportNamespaceContinuousSync @include(if: $includeContinuousSync)
+    }
+  }
+}

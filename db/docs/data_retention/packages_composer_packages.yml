@@ -1,0 +1,10 @@
+---
+# Dedicated table for Composer packages; same role and reasoning as packages_packages.
+exclude:
+  reason: indefinite_retention
+retention_window: -1
+enforcement_strategy: none
+enforcing: false
+pause_mechanism:
+  type: none
+work_item: https://gitlab.com/gitlab-org/gitlab/-/work_items/629753

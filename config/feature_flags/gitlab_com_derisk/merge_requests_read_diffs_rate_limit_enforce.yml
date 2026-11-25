@@ -1,0 +1,10 @@
+---
+name: merge_requests_read_diffs_rate_limit_enforce
+description: Enforces the per-user or per-IP rate limit on the merge request changes, diffs, raw diffs, and diff version API endpoints; while disabled, requests over the limit are only logged
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/606717
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/270291
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/639755
+milestone: '19.7'
+group: group::code review
+type: gitlab_com_derisk
+default_enabled: false

@@ -1,0 +1,4 @@
+---
+name: read_timelog
+description: Grants the ability to read a timelog. Timelogs track time spent on
+  issuables such as issues and merge requests.

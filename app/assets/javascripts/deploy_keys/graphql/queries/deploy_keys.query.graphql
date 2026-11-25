@@ -1,0 +1,32 @@
+# @feature_category: continuous_delivery
+query getDeployKeys(
+  $projectPath: ID!
+  $scope: DeployKeysScope
+  $page: Integer
+  $search: DeployKeysSearch
+) {
+  project(fullPath: $projectPath) {
+    id
+    deployKeys(scope: $scope, page: $page, search: $search) @client {
+      id
+      title
+      fingerprintSha256
+      fingerprint
+      editPath
+      destroyedWhenOrphaned
+      almostOrphaned
+      expiresAt
+      createdAt
+      enablePath
+      disablePath
+      deployKeysProjects {
+        canPush
+        project {
+          id
+          fullPath
+          fullName
+        }
+      }
+    }
+  }
+}

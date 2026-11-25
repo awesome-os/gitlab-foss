@@ -1,0 +1,28 @@
+%p
+  = s_("Notify|Hi %{user}!") % { user: sanitize_name(@user.name) }
+%p
+  - if @subkey_fingerprints.any? && @user_ids.any?
+    = s_("Notify|A GPG key in your account was updated. The update added subkeys and user IDs to the key with this fingerprint:")
+  - elsif @user_ids.any?
+    = s_("Notify|A GPG key in your account was updated. The update added user IDs to the key with this fingerprint:")
+  - else
+    = s_("Notify|A GPG key in your account was updated. The update added subkeys to the key with this fingerprint:")
+%p
+  = safe_format(s_("Notify|Fingerprint: %{fingerprint}"), fingerprint: content_tag(:code, @gpg_key.fingerprint))
+- if @subkey_fingerprints.any?
+  %p
+    = s_("Notify|New subkeys:")
+  %ul
+    - @subkey_fingerprints.each do |fingerprint|
+      %li
+        %code= fingerprint
+- if @user_ids.any?
+  %p
+    = s_("Notify|New user IDs:")
+  %ul
+    - @user_ids.each do |user_id|
+      %li
+        %code= user_id
+%p
+  - keys_link = link_to('', user_settings_gpg_keys_url)
+  = safe_format(s_("Notify|If you did not update this key, revoke or remove it under %{link_start}GPG keys%{link_end}."), tag_pair(keys_link, :link_start, :link_end))

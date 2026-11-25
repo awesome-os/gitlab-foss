@@ -1,0 +1,11 @@
+---
+name: branch_hooks_batched_changed_paths
+description: Batch the CI config check of pushed commits into one Gitaly FindChangedPaths
+  call in Git::BranchHooksService
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/issues/640053
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/271221
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/issues/640711
+milestone: '19.6'
+group: group::change record
+type: gitlab_com_derisk
+default_enabled: false

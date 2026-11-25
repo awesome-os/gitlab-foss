@@ -1,0 +1,7 @@
+---
+# Cop supports --autocorrect.
+Lint/UselessNumericOperation:
+  Exclude:
+    - 'ee/spec/workers/security/analyzers_status/schedule_setting_changed_update_worker_spec.rb'
+    - 'ee/spec/workers/security/triage_coverage/schedule_update_worker_spec.rb'
+    - 'spec/support/shared_examples/models/relative_positioning_shared_examples.rb'

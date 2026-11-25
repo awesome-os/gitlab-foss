@@ -1,0 +1,10 @@
+---
+name: ci_pipeline_create_needs_from_memory
+description: Read in-memory needs when bulk inserting pipeline builds
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/issues/640053
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/272649
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/issues/641264
+milestone: '19.7'
+group: group::pipeline authoring
+type: gitlab_com_derisk
+default_enabled: false

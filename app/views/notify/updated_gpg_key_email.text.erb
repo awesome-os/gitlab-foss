@@ -1,0 +1,27 @@
+<%= s_("Notify|Hi %{user}!") % { user: sanitize_name(@user.name) } %>
+
+<% if @subkey_fingerprints.any? && @user_ids.any? %>
+<%= s_("Notify|A GPG key in your account was updated. The update added subkeys and user IDs to the key with this fingerprint:") %>
+<% elsif @user_ids.any? %>
+<%= s_("Notify|A GPG key in your account was updated. The update added user IDs to the key with this fingerprint:") %>
+<% else %>
+<%= s_("Notify|A GPG key in your account was updated. The update added subkeys to the key with this fingerprint:") %>
+<% end %>
+
+<%= s_("Notify|Fingerprint: %{fingerprint}") % { fingerprint: @gpg_key.fingerprint } %>
+<% if @subkey_fingerprints.any? %>
+
+<%= s_("Notify|New subkeys:") %>
+<% @subkey_fingerprints.each do |fingerprint| %>
+- <%= fingerprint %>
+<% end %>
+<% end %>
+<% if @user_ids.any? %>
+
+<%= s_("Notify|New user IDs:") %>
+<% @user_ids.each do |user_id| %>
+- <%= user_id %>
+<% end %>
+<% end %>
+
+<%= s_("Notify|If you did not update this key, revoke or remove it at %{url}") % { url: user_settings_gpg_keys_url } %>

@@ -1,0 +1,11 @@
+---
+name: enforce_click_house_user_query_budget
+description: Reject ClickHouse selects of users over their ClickHouse budget, instead
+  of only logging them
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/635119
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/270802
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/640008
+milestone: '19.7'
+group: group::optimize
+type: gitlab_com_derisk
+default_enabled: false

@@ -1,0 +1,73 @@
+<script>
+import { GlAvatar, GlLink, GlTooltipDirective } from '@gitlab/ui';
+import LinkCell from '~/ci/runner/components/cells/link_cell.vue';
+import { getIdFromGraphQLId } from '~/graphql_shared/utils';
+
+export default {
+  name: 'PipelineCell',
+  components: {
+    GlAvatar,
+    GlLink,
+    LinkCell,
+  },
+  directives: {
+    GlTooltip: GlTooltipDirective,
+  },
+  props: {
+    job: {
+      type: Object,
+      required: true,
+    },
+  },
+  computed: {
+    pipelineId() {
+      const id = getIdFromGraphQLId(this.job.pipeline.id);
+      return `#${id}`;
+    },
+    pipelinePath() {
+      return this.job.pipeline?.path;
+    },
+    pipelineUserAvatar() {
+      return this.job.pipeline?.user?.avatarUrl;
+    },
+    userPath() {
+      return this.job.pipeline?.user?.webPath;
+    },
+    showAvatar() {
+      return this.job.pipeline?.user;
+    },
+    pipelineUserName() {
+      return this.job.pipeline?.user?.name;
+    },
+  },
+};
+</script>
+
+<template>
+  <div>
+    <div class="-gl-mx-3 -gl-mt-3 gl-p-3">
+      <link-cell :href="pipelinePath" class="gl-truncate" data-testid="pipeline-id">
+        {{ pipelineId }}
+      </link-cell>
+
+      <span class="gl-text-subtle">
+        <span>{{ __('created by') }}</span>
+        <gl-link
+          v-if="showAvatar"
+          v-gl-tooltip
+          :href="userPath"
+          :title="pipelineUserName"
+          :aria-label="pipelineUserName"
+          data-testid="pipeline-user-link"
+        >
+          <gl-avatar :src="pipelineUserAvatar" :size="16" />
+        </gl-link>
+        <span v-else>{{ __('API') }}</span>
+      </span>
+    </div>
+
+    <div v-if="job.stage" class="gl-mt-1 gl-truncate gl-text-sm gl-text-subtle">
+      <span data-testid="job-stage-name">{{ s__('Jobs|Stage') }}: {{ job.stage.name }}</span>
+    </div>
+  </div>
+</template>

@@ -1,0 +1,12 @@
+---
+name: graphql_participant_fields_rate_limit
+description: Enforces the rate limit on GraphQL requests that resolve the participants
+  and subscribed fields more than 20 times in total; while disabled, requests over
+  the limit are only logged
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/635894
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/271502
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/641028
+milestone: '19.7'
+group: group::work items
+type: gitlab_com_derisk
+default_enabled: false

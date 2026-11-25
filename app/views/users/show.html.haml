@@ -1,0 +1,13 @@
+- allowable_actions = profile_actions(@user)
+= render layout: 'users/layout' do
+  - if allowable_actions.any?
+    = render 'users/legacy_tabs', action: @action, endpoint: @endpoint, allowable_actions: allowable_actions
+    .loading.hide
+      = render Pajamas::SpinnerComponent.new(size: :md)
+  - else
+    - if @user.blocked?
+      = render Pajamas::EmptyStateComponent.new(svg_path: 'illustrations/empty-state/empty-access-md.svg',
+        title: s_('UserProfile|This user is blocked'))
+    - else
+      = render Pajamas::EmptyStateComponent.new(svg_path: 'illustrations/empty-state/empty-private-md.svg',
+        title: s_('UserProfile|This user has a private profile'))

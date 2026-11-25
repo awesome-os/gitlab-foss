@@ -1,0 +1,11 @@
+---
+# package_id is set to NULL when the package is deleted; orphaned symbols are removed by
+# Packages::Nuget::CleanupStaleSymbolsWorker.
+exclude:
+  reason: transient_data
+retention_window: -1
+enforcement_strategy: none
+enforcing: false
+pause_mechanism:
+  type: none
+work_item: https://gitlab.com/gitlab-org/gitlab/-/work_items/629753

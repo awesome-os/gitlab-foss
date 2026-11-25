@@ -1,0 +1,5 @@
+---
+# Cop supports --autocorrect.
+Performance/StringIdentifierArgument:
+  Exclude:
+    - 'app/models/concerns/token_authenticatable.rb'

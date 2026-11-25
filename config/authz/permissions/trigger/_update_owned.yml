@@ -1,0 +1,4 @@
+---
+name: _update_owned_trigger
+description: Grants the ability to update pipeline triggers that the user owns.
+conditionally_enables: update_trigger

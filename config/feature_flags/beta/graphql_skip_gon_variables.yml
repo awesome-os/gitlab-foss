@@ -1,0 +1,11 @@
+---
+name: graphql_skip_gon_variables
+description: Skip building gon variables in GraphqlController for requests whose format
+  resolves to HTML
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/issues/640053
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/271228
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/issues/640403
+milestone: '19.7'
+group: group::organizations
+type: beta
+default_enabled: true

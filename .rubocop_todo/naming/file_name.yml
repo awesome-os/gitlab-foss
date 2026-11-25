@@ -1,0 +1,8 @@
+---
+Naming/FileName:
+  Exclude:
+    - 'app/services/security/vulnerability_uuid.rb'
+    - 'ee/lib/gitlab/cidr.rb'
+    - 'ee/lib/sbom/occurrence_uuid.rb'
+    - 'lib/gitlab/web_hooks/recursion_detection/uuid.rb'
+    - 'qa/qa/runtime/key/ecdsa.rb'

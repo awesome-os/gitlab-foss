@@ -1,0 +1,11 @@
+---
+name: ci_skip_environment_workers_without_environment
+description: Skip enqueueing Environments::StopJobSuccessWorker and Environments::RecalculateAutoStopWorker
+  for successful CI jobs that have no environment keyword
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/issues/640053
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/271171
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/issues/640375
+milestone: '19.7'
+group: group::environments
+type: beta
+default_enabled: true

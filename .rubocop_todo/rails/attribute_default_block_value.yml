@@ -1,0 +1,8 @@
+---
+# Cop supports --autocorrect.
+Rails/AttributeDefaultBlockValue:
+  Exclude:
+    - 'ee/app/models/ai/catalog/foundational_flow/attributes.rb'
+    - 'ee/app/models/ai/foundational_chat_agent.rb'
+    - 'ee/app/models/concerns/ai/model_selection/features_configurable.rb'
+    - 'ee/app/models/ee/vulnerability.rb'

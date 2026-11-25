@@ -1,0 +1,11 @@
+---
+name: ci_commit_status_short_lock_retry_interval
+description: Poll the per-commit lock for commit status updates at a shorter, jittered
+  interval
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/637185
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/272376
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/work_items/641123
+milestone: '19.7'
+group: group::pipeline execution
+type: gitlab_com_derisk
+default_enabled: false

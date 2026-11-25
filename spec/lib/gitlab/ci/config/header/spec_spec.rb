@@ -1,0 +1,348 @@
+# frozen_string_literal: true
+
+require 'fast_spec_helper'
+
+RSpec.describe Gitlab::Ci::Config::Header::Spec, feature_category: :pipeline_composition do
+  let(:factory) { Gitlab::Config::Entry::Factory.new(described_class).value(spec_hash) }
+
+  subject(:config) { factory.create!.tap(&:compose!) }
+
+  context 'when spec contains default values for inputs' do
+    let(:spec_hash) do
+      {
+        inputs: {
+          foo: {
+            default: 'bar'
+          }
+        }
+      }
+    end
+
+    it 'passes validations' do
+      expect(config).to be_valid
+      expect(config.errors).to be_empty
+    end
+
+    it 'returns the value' do
+      expect(config.value).to eq(spec_hash)
+    end
+  end
+
+  context 'when spec contains component configuration' do
+    let(:spec_hash) do
+      {
+        component: %w[name sha version reference]
+      }
+    end
+
+    it 'passes validations' do
+      expect(config).to be_valid
+      expect(config.errors).to be_empty
+    end
+
+    it 'returns the component value' do
+      expect(config.component_value).to match_array([:name, :sha, :version, :reference])
+    end
+  end
+
+  context 'when spec contains both inputs and component' do
+    let(:spec_hash) do
+      {
+        inputs: {
+          foo: {
+            default: 'bar'
+          }
+        },
+        component: %w[name version]
+      }
+    end
+
+    it 'passes validations' do
+      expect(config).to be_valid
+      expect(config.errors).to be_empty
+    end
+
+    it 'returns both values correctly' do
+      expect(config.inputs_value).to eq({ foo: { default: 'bar' } })
+      expect(config.component_value).to match_array([:name, :version])
+    end
+  end
+
+  context 'when spec contains empty component array' do
+    let(:spec_hash) do
+      {
+        component: []
+      }
+    end
+
+    it 'passes validations' do
+      expect(config).to be_valid
+      expect(config.errors).to be_empty
+    end
+
+    it 'returns empty component value' do
+      expect(config.component_value).to eq([])
+    end
+  end
+
+  context 'when spec component is not specified' do
+    let(:spec_hash) do
+      {
+        inputs: {
+          foo: {
+            default: 'bar'
+          }
+        }
+      }
+    end
+
+    it 'returns default empty array for component' do
+      expect(config.component_value).to eq([])
+    end
+  end
+
+  context 'when spec contains a required value' do
+    let(:spec_hash) do
+      { inputs: { foo: nil } }
+    end
+
+    it 'parses the config correctly' do
+      expect(config).to be_valid
+      expect(config.errors).to be_empty
+      expect(config.value).to eq({ inputs: { foo: {} } })
+    end
+  end
+
+  context 'when spec contains unknown keywords' do
+    let(:spec_hash) { { test: 123 } }
+    let(:expected_errors) { ['spec config contains unknown keys: test'] }
+
+    it 'fails validations' do
+      expect(config).not_to be_valid
+      expect(config.errors).to eq(expected_errors)
+    end
+
+    it 'returns the value' do
+      expect(config.value).to eq(spec_hash)
+    end
+  end
+
+  context 'when spec contains description' do
+    let(:spec_hash) do
+      {
+        description: 'A short description of the component'
+      }
+    end
+
+    it 'passes validations' do
+      expect(config).to be_valid
+      expect(config.errors).to be_empty
+    end
+
+    it 'returns the description' do
+      expect(config.config_description).to eq('A short description of the component')
+    end
+  end
+
+  context 'when spec contains description with inputs' do
+    let(:spec_hash) do
+      {
+        description: 'A component that does something useful',
+        inputs: {
+          foo: {
+            default: 'bar'
+          }
+        }
+      }
+    end
+
+    it 'passes validations' do
+      expect(config).to be_valid
+      expect(config.errors).to be_empty
+    end
+
+    it 'returns both values correctly' do
+      expect(config.config_description).to eq('A component that does something useful')
+      expect(config.inputs_value).to eq({ foo: { default: 'bar' } })
+    end
+  end
+
+  context 'when spec contains description, inputs, and component' do
+    let(:spec_hash) do
+      {
+        description: 'Full featured component',
+        inputs: {
+          environment: { default: 'production' }
+        },
+        component: %w[name version]
+      }
+    end
+
+    it 'passes validations' do
+      expect(config).to be_valid
+      expect(config.errors).to be_empty
+    end
+
+    it 'returns all values correctly' do
+      expect(config.config_description).to eq('Full featured component')
+      expect(config.inputs_value).to eq({ environment: { default: 'production' } })
+      expect(config.component_value).to match_array([:name, :version])
+    end
+  end
+
+  context 'when description is not a string' do
+    let(:spec_hash) do
+      {
+        description: 123
+      }
+    end
+
+    it 'fails validations' do
+      expect(config).not_to be_valid
+      expect(config.errors).to include(/description should be a string/)
+    end
+  end
+
+  context 'when description exceeds maximum length' do
+    let(:spec_hash) do
+      {
+        description: 'a' * 257
+      }
+    end
+
+    it 'fails validations' do
+      expect(config).not_to be_valid
+      expect(config.errors).to include(/description is too long/)
+    end
+  end
+
+  context 'when spec contains include' do
+    let(:spec_hash) do
+      {
+        inputs: {
+          environment: { default: 'production' }
+        },
+        include: [
+          { local: '/inputs.yml' }
+        ]
+      }
+    end
+
+    it 'passes validations' do
+      expect(config).to be_valid
+      expect(config.errors).to be_empty
+    end
+
+    it 'returns the value with include' do
+      expect(config.value).to eq(spec_hash)
+    end
+
+    it 'has include entry defined' do
+      expect(config.include_value).to eq([{ local: '/inputs.yml' }])
+    end
+  end
+
+  context 'when spec contains only include without inputs' do
+    let(:spec_hash) do
+      {
+        include: [
+          { local: '/inputs.yml' }
+        ]
+      }
+    end
+
+    it 'passes validations' do
+      expect(config).to be_valid
+      expect(config.errors).to be_empty
+    end
+
+    it 'returns the include value' do
+      expect(config.include_value).to eq([{ local: '/inputs.yml' }])
+    end
+  end
+
+  context 'when spec contains inputs, include, and component' do
+    let(:spec_hash) do
+      {
+        inputs: {
+          environment: { default: 'production' }
+        },
+        include: [
+          { local: '/inputs.yml' }
+        ],
+        component: %w[name version]
+      }
+    end
+
+    it 'passes validations' do
+      expect(config).to be_valid
+      expect(config.errors).to be_empty
+    end
+
+    it 'returns all values correctly' do
+      expect(config.inputs_value).to eq({ environment: { default: 'production' } })
+      expect(config.include_value).to eq([{ local: '/inputs.yml' }])
+      expect(config.component_value).to match_array([:name, :version])
+    end
+  end
+
+  describe 'inputs' do
+    let(:rules_enabled) { true }
+
+    before do
+      allow(Gitlab::AppJsonLogger).to receive(:info)
+      allow(Gitlab::Ci::Config::FeatureFlags).to receive(:enabled?) do |flag|
+        flag != :ci_validate_spec_input_rules || rules_enabled
+      end
+    end
+
+    context 'when inputs is a string' do
+      let(:spec_hash) { { inputs: 'foo' } }
+
+      it 'is invalid' do
+        expect(config).not_to be_valid
+        expect(config.errors).to include(match(/inputs config should be a hash/))
+      end
+    end
+
+    context 'when inputs is an array' do
+      let(:spec_hash) { { inputs: %w[a b] } }
+
+      it 'is invalid' do
+        expect(config).not_to be_valid
+        expect(config.errors).to include(match(/inputs config should be a hash/))
+      end
+    end
+
+    context 'when the number of inputs is above the limit' do
+      let(:limit) { Gitlab::Ci::Config::Header::Inputs::MAX_INPUTS }
+      let(:spec_hash) { { inputs: Array.new(limit + 1) { |i| [:"input_#{i}", {}] }.to_h } }
+
+      it 'is invalid' do
+        expect(config).not_to be_valid
+        expect(config.errors).to include(match(/cannot declare more than #{limit} inputs/))
+      end
+    end
+
+    context 'when a rule references an undefined input' do
+      let(:spec_hash) do
+        {
+          inputs: {
+            tier: { rules: [{ if: '$[[ inputs.undefined_input ]] == "value"', options: %w[small], default: 'small' }] }
+          }
+        }
+      end
+
+      it 'is invalid' do
+        expect(config).not_to be_valid
+        expect(config.errors).to include(match(/references undefined inputs: undefined_input/))
+      end
+
+      context 'when ci_validate_spec_input_rules is disabled' do
+        let(:rules_enabled) { false }
+
+        it { is_expected.to be_valid }
+      end
+    end
+  end
+end

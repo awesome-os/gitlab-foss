@@ -1,0 +1,15 @@
+---
+Lint/EmptyBlock:
+  Exclude:
+    - 'config/application.rb'
+    - 'lib/api/helpers/groups_helpers.rb'
+    - 'lib/api/helpers/issues_helpers.rb'
+    - 'lib/api/helpers/protected_branches_helpers.rb'
+    - 'lib/api/helpers/protected_tags_helpers.rb'
+    - 'lib/api/helpers/remote_mirrors_helpers.rb'
+    - 'lib/api/helpers/settings_helpers.rb'
+    - 'lib/api/helpers/users_helpers.rb'
+    - 'lib/api/helpers/variables_helpers.rb'
+    - 'lib/api/merge_requests.rb'
+    - 'lib/gitlab/alert_management/payload/base.rb'
+    - 'lib/gitlab/seeder.rb'

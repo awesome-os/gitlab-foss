@@ -1,0 +1,5 @@
+---
+# Cop supports --autocorrect.
+Lint/InterpolationCheck:
+  Exclude:
+    - 'ee/lib/security/secret_detection/partner_tokens/generator/client_generator.rb'

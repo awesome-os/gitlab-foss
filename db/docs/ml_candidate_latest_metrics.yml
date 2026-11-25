@@ -1,0 +1,13 @@
+---
+table_name: ml_candidate_latest_metrics
+classes:
+- Ml::CandidateLatestMetric
+feature_categories:
+- mlops
+description: Latest value of each metric name recorded for a Machine Learning model candidate
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/270985
+milestone: '19.7'
+gitlab_schema: gitlab_main_org
+table_size: small
+sharding_key:
+  project_id: projects

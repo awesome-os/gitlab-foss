@@ -1,0 +1,9 @@
+# @feature_category: continuous_delivery
+query environmentToRollback {
+  environmentToRollback @client {
+    id
+    name
+    lastDeployment
+    retryUrl
+  }
+}

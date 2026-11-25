@@ -1,0 +1,16 @@
+# @feature_category: continuous_delivery
+query k8sPodLogsWatcherQuery(
+  $configuration: LocalConfiguration
+  $namespace: String
+  $podName: String
+  $containerName: String
+) {
+  k8sPodLogsWatcher(
+    configuration: $configuration
+    namespace: $namespace
+    podName: $podName
+    containerName: $containerName
+  ) @client {
+    watcher
+  }
+}

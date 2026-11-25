@@ -1,0 +1,11 @@
+---
+name: read_google_cloud_artifact_registry
+description: Grants the ability to read Google Artifact Registry repositories and images
+boundaries:
+  - project
+available_for:
+  - granular_access_token
+permissions:
+  - read_google_cloud_artifact_registry
+assignable_when:
+  - condition: saas

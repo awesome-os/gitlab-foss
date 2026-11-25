@@ -1,0 +1,26 @@
+---
+table: projects
+database: main
+ignored_columns:
+  - runners_token
+  - external_webhook_token
+  - runners_token_encrypted
+  - description_html
+replication_targets:
+  - name: clickhouse_main
+    target: siphon_projects
+    priority: 2
+    consistency_checks:
+      - identifier: projects
+        columns:
+          - id
+          - namespace_id
+          - organization_id
+          - path
+          - project_namespace_id
+          - name
+          - updated_at
+          - visibility_level
+  - name: gcs_parquet_consumer
+    dedup_by:
+      - id

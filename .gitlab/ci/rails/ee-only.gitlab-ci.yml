@@ -1,0 +1,173 @@
+# Included from rails.gitlab-ci.yml only in EE projects. Every job here hits an if-not-ee `when: never`
+# rule before any rule that can run it. Jobs that other jobs extend, like `rspec-ee unit-a pg17`, and
+# jobs that can also run outside EE projects stay in rails.gitlab-ci.yml.
+
+rspec-ee unit clickhouse25:
+  extends:
+    - .rspec-base-pg17-clickhouse25
+    - .rails:rules:ee-only-clickhouse-changes
+  parallel: 2
+
+rspec-ee integration pg17 clickhouse25:
+  extends:
+    - .rspec-base-pg17-clickhouse25
+    - .rails:rules:ee-only-integration
+
+rspec-ee unit clickhouse26:
+  extends:
+    - .rspec-base-pg17-clickhouse26
+    - .rails:rules:ee-only-clickhouse-changes
+  parallel: 2
+
+rspec-ee system clickhouse25:
+  tags:
+    - $GLCI_MEDIUM_RUNNER_REQUIRED
+  extends:
+    - .rspec-base-pg17-clickhouse25
+    - .rails:rules:ee-only-clickhouse-system-changes
+  variables:
+    DEBUG_GITLAB_TRANSACTION_STACK: "true"
+
+rspec-ee migration pg17 single-db:
+  extends:
+    - rspec-ee migration pg17
+    - .single-db-rspec
+    - .rails:rules:single-db-ee
+
+rspec-ee background_migration pg17 single-db:
+  extends:
+    - rspec-ee background_migration pg17
+    - .single-db-rspec
+    - .rails:rules:single-db-ee
+
+rspec-ee migration pg17 single-db-ci-connection:
+  extends:
+    - rspec-ee migration pg17
+    - .single-db-ci-connection-rspec
+    - .rails:rules:single-db-ci-connection-ee
+
+rspec-ee background_migration pg17 single-db-ci-connection:
+  extends:
+    - rspec-ee background_migration pg17
+    - .single-db-ci-connection-rspec
+    - .rails:rules:single-db-ci-connection-ee
+
+rspec-ee graphql-query-documents pg17:
+  extends:
+    - .rspec-ee-base-pg17
+    - .rails:rules:graphql-query-documents-ee
+  script:
+    - !reference [.base-script, script]
+    - rspec_section rspec_simple_job "-- ee/spec/graphql/all_queries_spec.rb"
+
+rspec-ee graphql-document-integration pg17:
+  extends:
+    - .rspec-ee-base-pg17
+    - .rails:rules:graphql-document-integration-ee
+  script:
+    - !reference [.base-script, script]
+    - |
+      set -e
+      tests="$(tooling/ci/graphql_query_document_specs.rb ee)"
+      if [ -z "${tests}" ]; then
+        echo "No backend specs read the changed GraphQL query documents. Skipping."
+      else
+        rspec_section rspec_simple_job_with_retry "${RSPEC_TAGS} -- ${tests}"
+      fi
+
+rspec-ee unit-a pg17 single-db:
+  extends:
+    - rspec-ee unit-a pg17
+    - .single-db-rspec
+    - .rspec-ee-unit-a-parallel
+    - .rails:rules:single-db-ee
+
+rspec-ee unit-b pg17 single-db:
+  extends:
+    - rspec-ee unit-b pg17
+    - .single-db-rspec
+    - .rspec-ee-unit-b-parallel
+    - .rails:rules:single-db-ee
+
+rspec-ee unit-a pg17 single-redis:
+  extends:
+    - rspec-ee unit-a pg17
+    - .no-redis-cluster
+    - .rspec-ee-unit-a-parallel
+    - .rails:rules:single-redis-ee
+
+rspec-ee unit-b pg17 single-redis:
+  extends:
+    - rspec-ee unit-b pg17
+    - .no-redis-cluster
+    - .rspec-ee-unit-b-parallel
+    - .rails:rules:single-redis-ee
+
+rspec-ee unit-a pg17 single-db-ci-connection:
+  extends:
+    - rspec-ee unit-a pg17
+    - .single-db-ci-connection-rspec
+    - .rspec-ee-unit-a-parallel
+    - .rails:rules:single-db-ci-connection-ee
+
+rspec-ee unit-b pg17 single-db-ci-connection:
+  extends:
+    - rspec-ee unit-b pg17
+    - .single-db-ci-connection-rspec
+    - .rspec-ee-unit-b-parallel
+    - .rails:rules:single-db-ci-connection-ee
+
+rspec-ee integration pg17 single-db:
+  extends:
+    - rspec-ee integration pg17
+    - .single-db-rspec
+    - .rspec-ee-integration-parallel
+    - .rails:rules:single-db-ee
+
+rspec-ee integration pg17 single-redis:
+  extends:
+    - rspec-ee integration pg17
+    - .no-redis-cluster
+    - .rspec-ee-integration-parallel
+    - .rails:rules:single-redis-ee
+
+rspec-ee integration pg17 single-db-ci-connection:
+  extends:
+    - rspec-ee integration pg17
+    - .single-db-ci-connection-rspec
+    - .rspec-ee-integration-parallel
+    - .rails:rules:single-db-ci-connection-ee
+
+rspec-ee system pg17 single-db:
+  extends:
+    - rspec-ee system pg17
+    - .single-db-rspec
+    - .rspec-ee-system-parallel
+  rules:
+    - !reference [".rails:rules:only-run-system-if-medium-runners-available", rules]
+    - !reference [".rails:rules:single-db-ee", rules]
+
+rspec-ee system pg17 single-redis:
+  extends:
+    - rspec-ee system pg17
+    - .no-redis-cluster
+    - .rspec-ee-system-parallel
+  rules:
+    - !reference [".rails:rules:only-run-system-if-medium-runners-available", rules]
+    - !reference [".rails:rules:single-redis-ee", rules]
+
+rspec-ee system pg17 single-db-ci-connection:
+  extends:
+    - rspec-ee system pg17
+    - .single-db-ci-connection-rspec
+    - .rspec-ee-system-parallel
+  rules:
+    - !reference [".rails:rules:only-run-system-if-medium-runners-available", rules]
+    - !reference [".rails:rules:single-db-ci-connection-ee", rules]
+
+rspec-ee fail-fast:
+  extends:
+    - .rspec-ee-base-pg17
+    - .rspec-fail-fast  # extends from .rspec-fail-fast last to override script from .rspec-ee-base-pg17
+  variables:
+    MATCHING_TESTS_PATH: "${GLCI_PREDICTIVE_RSPEC_MATCHING_TESTS_EE_PATH}"

@@ -1,0 +1,9 @@
+---
+name: restore_github_update
+description: Grants the ability to restore GitHub updates for a project imported with continuous sync, by replacing the stored GitHub personal access token
+boundaries:
+  - project
+available_for:
+  - granular_access_token
+permissions:
+  - restore_github_update

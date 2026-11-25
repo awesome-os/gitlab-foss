@@ -1,0 +1,10 @@
+---
+name: read_branch_rule
+description: Grants the ability to read a branch rule
+boundaries:
+  - project
+available_for:
+  - granular_access_token
+permissions:
+  - read_branch_rule
+  - read_squash_option

@@ -1,0 +1,10 @@
+---
+name: ci_stage_jobs_preload_job_source
+description: Preload the job source of pipeline graph stage jobs
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/issues/640053
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/272677
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/issues/641332
+milestone: '19.7'
+group: group::pipeline execution
+type: gitlab_com_derisk
+default_enabled: false

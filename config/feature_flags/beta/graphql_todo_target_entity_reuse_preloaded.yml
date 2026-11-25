@@ -1,0 +1,10 @@
+---
+name: graphql_todo_target_entity_reuse_preloaded
+description: Reuse the preloaded to-do target for Todo.targetEntity in GraphQL
+feature_issue_url: https://gitlab.com/gitlab-org/gitlab/-/issues/640053
+introduced_by_url: https://gitlab.com/gitlab-org/gitlab/-/merge_requests/271560
+rollout_issue_url: https://gitlab.com/gitlab-org/gitlab/-/issues/640830
+milestone: '19.6'
+group: group::work items
+type: beta
+default_enabled: true
