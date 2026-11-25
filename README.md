@@ -120,3 +120,13 @@ Please see [Getting help for GitLab](https://about.gitlab.com/getting-help/) on 
 ## Why should I use GitLab?
 
 Read [why our customers choose GitLab](https://about.gitlab.com/why-gitlab/).
+
+## Quick Install & Run (Windows / Linux / macOS)
+
+```sh
+# Install / hydrate from v11 CAS via holo-pm
+holo-pm install repository://github.com/awesome-os/gitlab-foss@main
+
+# Or project & run directly via holo-project (0-byte hardlink)
+holo-project "project://node/gitlab-foss?from=repository://github.com/awesome-os/gitlab-foss@main"
+```
